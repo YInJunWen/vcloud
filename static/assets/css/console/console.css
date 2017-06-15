@@ -1,0 +1,809 @@
+﻿html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  user-select: none;
+}
+/* header
+-------------------------------------------------------------------------------*/
+.header-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 768px;
+  width: 100%;
+  height: 50px;
+  background: #666;
+  user-select: none;
+  z-index: 10;
+}
+.header-top .nav-bar {
+  height: 50px;
+}
+.header-top .nav-bar li:hover {
+  background: #373d41;
+}
+.header-top .nav-bar .leftbar {
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+}
+.header-top .nav-bar .leftbar li {
+  float: left;
+  height: 50px;
+  overflow: hidden;
+}
+.header-top .nav-bar .leftbar li:first-child {
+  width: 55px;
+}
+.header-top .nav-bar .leftbar li:hover {
+  background: none;
+}
+.header-top .nav-bar .leftbar li a {
+  display: inline-block;
+  text-align: center;
+  line-height: 50px;
+  width: 49px;
+  height: 40px;
+  padding-top: 10px;
+}
+.header-top .nav-bar .leftbar li a span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: url(../../img/favicon.png) no-repeat;
+  background-size: cover;
+}
+.header-top .nav-bar .leftbar li .console_center,
+.header-top .nav-bar .leftbar li .products_services {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  padding: 0 20px;
+  height: 50px;
+  border-left: 1px solid #999;
+  color: #fff;
+  cursor: pointer;
+}
+.header-top .nav-bar .rightbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+}
+.header-top .nav-bar .rightbar #rightBarlist1,
+.header-top .nav-bar .rightbar #rightBarlist3,
+.header-top .nav-bar .rightbar #rightBarlist4,
+.header-top .nav-bar .rightbar #rightBarlist6 {
+  position: relative;
+}
+.header-top .nav-bar .rightbar #rightBarlist3 ul {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: -75px;
+  width: 140px;
+  height: 100px;
+  background: #fff;
+  padding: 10px 0;
+  border: 1px solid #c5c5c5;
+  border-top: none;
+}
+.header-top .nav-bar .rightbar #rightBarlist3 ul li {
+  display: block;
+  width: 140px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 18px;
+  border-right: none;
+  font-size: 12px;
+}
+.header-top .nav-bar .rightbar #rightBarlist3 ul li:hover {
+  background: #e5e5e5;
+}
+.header-top .nav-bar .rightbar #rightBarlist3 ul a {
+  color: #666;
+}
+.header-top .nav-bar .rightbar #rightBarlist4 ul {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: -75px;
+  width: 140px;
+  height: 140px;
+  padding: 10px 0;
+  background: #fff;
+  border: 1px solid #c5c5c5;
+  border-top: none;
+}
+.header-top .nav-bar .rightbar #rightBarlist4 ul li {
+  width: 140px;
+  height: 40px;
+  padding: 0 18px;
+  border-right: none;
+  line-height: 40px;
+  font-size: 12px;
+}
+.header-top .nav-bar .rightbar #rightBarlist4 ul li:hover {
+  background: #e5e5e5;
+}
+.header-top .nav-bar .rightbar #rightBarlist4 ul a {
+  color: #666;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 190px;
+  min-height: 242px;
+  background: #fff;
+  border-left: 1px solid #c5c5c5;
+  border-bottom: 1px solid #c5c5c5;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter p {
+  width: 100%;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  padding-left: 20px;
+  color: #666;
+  font-size: 12px;
+  margin: 0;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter p span {
+  color: #f00;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter .personCenterBox {
+  width: 190px;
+  min-height: 176px;
+  padding: 8px 15px;
+  margin: 8px 0;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter .personCenterBox a {
+  display: inline-block;
+  float: left;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  color: #666;
+  border-top: none;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter .personCenterBox a:hover {
+  background: #e5e5e5;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter .personCenterBox a span {
+  float: left;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter .personCenterBox a span:first-child {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin: 8px 20px;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter .personCenterBox a span:last-child {
+  width: 80px;
+  height: 25px;
+  display: inline;
+  line-height: 25px;
+  text-align: center;
+}
+.header-top .nav-bar .rightbar #rightBarlist6 .personCenter a {
+  display: block;
+  width: 270px;
+  height: 49px;
+  color: #666;
+  text-align: center;
+  line-height: 49px;
+}
+.header-top .nav-bar .rightbar #rightBarlist1:hover .searchBox {
+  display: block;
+}
+.header-top .nav-bar .rightbar #rightBarlist2:hover .moneyBox {
+  display: block;
+}
+.header-top .nav-bar .rightbar #rightBarlist3:hover .workMessage {
+  display: block;
+}
+.header-top .nav-bar .rightbar #rightBarlist4:hover .beiAn {
+  display: block;
+}
+.header-top .nav-bar .rightbar #rightBarlist5:hover .zhiChi {
+  display: block;
+}
+.header-top .nav-bar .rightbar #rightBarlist6:hover .personCenter {
+  display: block;
+}
+.header-top .nav-bar .rightbar li {
+  display: inline-block;
+  float: left;
+  padding: 0 18px;
+  border-right: 1px solid #999;
+}
+.header-top .nav-bar .rightbar li a {
+  color: #fff;
+  text-decoration: none;
+}
+.header-top .nav-bar .rightbar li .searchBox {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: -1px;
+  width: 110px;
+  // height: 34px;
+line-height: 34px;
+  color: #546478;
+  font-size: 12px;
+  outline: none;
+  border: 2px solid #000;
+}
+.header-top .nav-bar .rightbar li .searchBox ol{
+  width: 110px;
+  // padding: 4px 6px;
+}
+.header-top .nav-bar .rightbar li .searchBox ol li {
+  width: 106px;
+  padding: 0 18px;border: none;background:#fff;
+}.header-top .nav-bar .rightbar li .searchBox ol li:hover{background: #e5e5e5;}
+.header-top .nav-bar .rightbar li:last-child {
+  border: none;
+}
+/* left menus
+-------------------------------------------------------------------------------*/
+.left_menus {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 160px;
+  height: 100%;
+  background: #e5e5e5;
+  user-select: none;
+}
+.left_menus .Huifold {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.left_menus .item {
+  position: relative;
+  width: 160px;
+}
+.left_menus .item h4 {
+  margin: 0;
+  position: relative;
+  font-size: 15px;
+  line-height: 22px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.left_menus .item h4:hover {
+  background: #c3c3c3;
+}
+.left_menus .item h4 b {
+  position: absolute;
+  display: block;
+  cursor: pointer;
+  right: 10px;
+  top: 7px;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  color: #666;
+}
+.left_menus .item .info {
+  display: none;
+  padding: 4px 10px;
+  font-size: 14px;
+}
+.left_menus .item .info li {
+  width: 130px;
+  height: 36px;
+  line-height: 36px;
+  text-align: left;
+  text-decoration: none;
+  color: #000;
+  font-size: 13px;
+}
+.left_menus .item .info li:hover {
+  background: #abcdef;
+}
+.left_menus .item .info li.active {
+  background: #abcdef;
+}
+/* alert Vies
+-------------------------------------------------------------------------------*/
+.alertView {
+  display: none;
+  position: absolute;
+  z-index: 6;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  min-height: 240px;
+  background: #fff;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* main body
+-------------------------------------------------------------------------------*/
+.bodyAll {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+.main-body-wapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 50px 0 0 56px;
+}
+.main-body-wapper #management,
+.main-body-wapper #shiliView,
+.main-body-wapper #yunpanView,
+.main-body-wapper #kuaizhaoView,
+.main-body-wapper #logView,
+.main-body-wapper #manageView,
+.main-body-wapper #orderView {
+  float: left;
+}
+.main-body-wapper #management,
+.main-body-wapper #shiliView,
+.main-body-wapper #yunpanView,
+.main-body-wapper #kuaizhaoView,
+.main-body-wapper #logView,
+.main-body-wapper #manageView,
+.main-body-wapper #orderView {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.main-body-wapper #management .titleInfoBox,
+.main-body-wapper #shiliView .titleInfoBox,
+.main-body-wapper #yunpanView .titleInfoBox,
+.main-body-wapper #kuaizhaoView .titleInfoBox,
+.main-body-wapper #logView .titleInfoBox,
+.main-body-wapper #manageView .titleInfoBox,
+.main-body-wapper #orderView .titleInfoBox {
+  width: 100%;
+  height: 69px;
+  padding: 16px 0;
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 8px;
+}
+.main-body-wapper #management .titleInfoBox .titleInfo,
+.main-body-wapper #shiliView .titleInfoBox .titleInfo,
+.main-body-wapper #yunpanView .titleInfoBox .titleInfo,
+.main-body-wapper #kuaizhaoView .titleInfoBox .titleInfo,
+.main-body-wapper #logView .titleInfoBox .titleInfo,
+.main-body-wapper #manageView .titleInfoBox .titleInfo,
+.main-body-wapper #orderView .titleInfoBox .titleInfo {
+  width: 100px;
+  height: 33px;
+  line-height: 33px;
+  float: left;
+}
+.main-body-wapper #management .titleInfoBox .btnBox,
+.main-body-wapper #shiliView .titleInfoBox .btnBox,
+.main-body-wapper #yunpanView .titleInfoBox .btnBox,
+.main-body-wapper #kuaizhaoView .titleInfoBox .btnBox,
+.main-body-wapper #logView .titleInfoBox .btnBox,
+.main-body-wapper #manageView .titleInfoBox .btnBox,
+.main-body-wapper #orderView .titleInfoBox .btnBox {
+  width: 160px;
+  height: 32px;
+  line-height: 32px;
+  float: right;
+}
+.main-body-wapper #management .titleInfoBox .btnBox .btn1,
+.main-body-wapper #shiliView .titleInfoBox .btnBox .btn1,
+.main-body-wapper #yunpanView .titleInfoBox .btnBox .btn1,
+.main-body-wapper #kuaizhaoView .titleInfoBox .btnBox .btn1,
+.main-body-wapper #logView .titleInfoBox .btnBox .btn1,
+.main-body-wapper #manageView .titleInfoBox .btnBox .btn1,
+.main-body-wapper #orderView .titleInfoBox .btnBox .btn1 {
+  width: 40px;
+  height: 14px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+.main-body-wapper #management .titleInfoBox .btnBox .btn2,
+.main-body-wapper #shiliView .titleInfoBox .btnBox .btn2,
+.main-body-wapper #yunpanView .titleInfoBox .btnBox .btn2,
+.main-body-wapper #kuaizhaoView .titleInfoBox .btnBox .btn2,
+.main-body-wapper #logView .titleInfoBox .btnBox .btn2,
+.main-body-wapper #manageView .titleInfoBox .btnBox .btn2,
+.main-body-wapper #orderView .titleInfoBox .btnBox .btn2 {
+  width: 48px;
+  height: 14px;
+  padding: 8px 16px;
+  border: 1px solid #28b5d6;
+  background: #2a6496;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.main-body-wapper #management .kuaizhaoInfo,
+.main-body-wapper #shiliView .kuaizhaoInfo,
+.main-body-wapper #yunpanView .kuaizhaoInfo,
+.main-body-wapper #kuaizhaoView .kuaizhaoInfo,
+.main-body-wapper #logView .kuaizhaoInfo,
+.main-body-wapper #manageView .kuaizhaoInfo,
+.main-body-wapper #orderView .kuaizhaoInfo {
+  width: 100%;
+  min-height: 68px;
+  color: #090;
+  line-height: 18px;
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  border: 1px solid #C7DDB9;
+  background: #F2FFEA;
+}
+.main-body-wapper #management .kuaizhaoInfo ul,
+.main-body-wapper #shiliView .kuaizhaoInfo ul,
+.main-body-wapper #yunpanView .kuaizhaoInfo ul,
+.main-body-wapper #kuaizhaoView .kuaizhaoInfo ul,
+.main-body-wapper #logView .kuaizhaoInfo ul,
+.main-body-wapper #manageView .kuaizhaoInfo ul,
+.main-body-wapper #orderView .kuaizhaoInfo ul {
+  padding-left: 16px;
+}
+.main-body-wapper #management .kuaizhaoInfo ul li,
+.main-body-wapper #shiliView .kuaizhaoInfo ul li,
+.main-body-wapper #yunpanView .kuaizhaoInfo ul li,
+.main-body-wapper #kuaizhaoView .kuaizhaoInfo ul li,
+.main-body-wapper #logView .kuaizhaoInfo ul li,
+.main-body-wapper #manageView .kuaizhaoInfo ul li,
+.main-body-wapper #orderView .kuaizhaoInfo ul li {
+  list-style: disc;
+}
+.main-body-wapper #management #justSearchWarpper,
+.main-body-wapper #shiliView #justSearchWarpper,
+.main-body-wapper #yunpanView #justSearchWarpper,
+.main-body-wapper #kuaizhaoView #justSearchWarpper,
+.main-body-wapper #logView #justSearchWarpper,
+.main-body-wapper #manageView #justSearchWarpper,
+.main-body-wapper #orderView #justSearchWarpper {
+  width: 100%;
+  height: 40px;
+}
+.main-body-wapper #management #justSearchWarpper select,
+.main-body-wapper #shiliView #justSearchWarpper select,
+.main-body-wapper #yunpanView #justSearchWarpper select,
+.main-body-wapper #kuaizhaoView #justSearchWarpper select,
+.main-body-wapper #logView #justSearchWarpper select,
+.main-body-wapper #manageView #justSearchWarpper select,
+.main-body-wapper #orderView #justSearchWarpper select {
+  width: 108px;
+  height: 32px;
+  padding: 3px;
+  color: #999;
+}
+.main-body-wapper #management #justSearchWarpper input,
+.main-body-wapper #shiliView #justSearchWarpper input,
+.main-body-wapper #yunpanView #justSearchWarpper input,
+.main-body-wapper #kuaizhaoView #justSearchWarpper input,
+.main-body-wapper #logView #justSearchWarpper input,
+.main-body-wapper #manageView #justSearchWarpper input,
+.main-body-wapper #orderView #justSearchWarpper input {
+  width: 253px;
+  height: 32px;
+  padding: 6px;
+  border: 1px solid #ddd;
+}
+.main-body-wapper #management #justSearchWarpper button,
+.main-body-wapper #shiliView #justSearchWarpper button,
+.main-body-wapper #yunpanView #justSearchWarpper button,
+.main-body-wapper #kuaizhaoView #justSearchWarpper button,
+.main-body-wapper #logView #justSearchWarpper button,
+.main-body-wapper #manageView #justSearchWarpper button,
+.main-body-wapper #orderView #justSearchWarpper button {
+  width: 58px;
+  height: 32px;
+  border: 1px solid #ddd;
+  color: #fff;
+  background: #2a6496;
+}
+.main-body-wapper #management .table,
+.main-body-wapper #shiliView .table,
+.main-body-wapper #yunpanView .table,
+.main-body-wapper #kuaizhaoView .table,
+.main-body-wapper #logView .table,
+.main-body-wapper #manageView .table,
+.main-body-wapper #orderView .table {
+  width: 100%;
+  min-height: 35px;
+  border: 1px solid #ddd;
+  background: #F5F6FA;
+  color: #666;
+}
+.main-body-wapper #management .table th,
+.main-body-wapper #shiliView .table th,
+.main-body-wapper #yunpanView .table th,
+.main-body-wapper #kuaizhaoView .table th,
+.main-body-wapper #logView .table th,
+.main-body-wapper #manageView .table th,
+.main-body-wapper #orderView .table th {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  font-weight: normal;
+}
+.main-body-wapper #management .table .pz,
+.main-body-wapper #shiliView .table .pz,
+.main-body-wapper #yunpanView .table .pz,
+.main-body-wapper #kuaizhaoView .table .pz,
+.main-body-wapper #logView .table .pz,
+.main-body-wapper #manageView .table .pz,
+.main-body-wapper #orderView .table .pz {
+  position: relative;
+  text-decoration: underline;
+}
+.main-body-wapper #management .table .pz #hideList,
+.main-body-wapper #shiliView .table .pz #hideList,
+.main-body-wapper #yunpanView .table .pz #hideList,
+.main-body-wapper #kuaizhaoView .table .pz #hideList,
+.main-body-wapper #logView .table .pz #hideList,
+.main-body-wapper #manageView .table .pz #hideList,
+.main-body-wapper #orderView .table .pz #hideList {
+  position: absolute;
+  z-index: 15;
+  display: none;
+  top: -85px;
+  left: 90px;
+  width: 276px;
+  background: #fff;
+  border: 1px solid #999;
+}
+.main-body-wapper #management .table .pz #hideList li,
+.main-body-wapper #shiliView .table .pz #hideList li,
+.main-body-wapper #yunpanView .table .pz #hideList li,
+.main-body-wapper #kuaizhaoView .table .pz #hideList li,
+.main-body-wapper #logView .table .pz #hideList li,
+.main-body-wapper #manageView .table .pz #hideList li,
+.main-body-wapper #orderView .table .pz #hideList li {
+  float: left;
+  width: 100%;
+}
+.main-body-wapper #management .table .pz #hideList li h3,
+.main-body-wapper #shiliView .table .pz #hideList li h3,
+.main-body-wapper #yunpanView .table .pz #hideList li h3,
+.main-body-wapper #kuaizhaoView .table .pz #hideList li h3,
+.main-body-wapper #logView .table .pz #hideList li h3,
+.main-body-wapper #manageView .table .pz #hideList li h3,
+.main-body-wapper #orderView .table .pz #hideList li h3 {
+  width: 100%;
+  font-size: 14px !important;
+  margin: 0 !important;
+  padding: 8px 15px;
+  text-align: center;
+  background: #F5F5F5;
+}
+.main-body-wapper #management .table .pz #hideList:before,
+.main-body-wapper #shiliView .table .pz #hideList:before,
+.main-body-wapper #yunpanView .table .pz #hideList:before,
+.main-body-wapper #kuaizhaoView .table .pz #hideList:before,
+.main-body-wapper #logView .table .pz #hideList:before,
+.main-body-wapper #manageView .table .pz #hideList:before,
+.main-body-wapper #orderView .table .pz #hideList:before {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #999;
+  border-top: none;
+  border-right: none;
+  background: #fff;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  /* IE 9 */
+  -moz-transform: rotate(45deg);
+  /* Firefox */
+  -webkit-transform: rotate(45deg);
+  /* Safari 和 Chrome */
+  -o-transform: rotate(45deg);
+  /* Opera */
+  left: -10px;
+  top: 50%;
+  margin-top: -11px;
+  content: " ";
+}
+.main-body-wapper #management .table .pz:hover #hideList,
+.main-body-wapper #shiliView .table .pz:hover #hideList,
+.main-body-wapper #yunpanView .table .pz:hover #hideList,
+.main-body-wapper #kuaizhaoView .table .pz:hover #hideList,
+.main-body-wapper #logView .table .pz:hover #hideList,
+.main-body-wapper #manageView .table .pz:hover #hideList,
+.main-body-wapper #orderView .table .pz:hover #hideList {
+  display: block;
+}
+.main-body-wapper #management p,
+.main-body-wapper #shiliView p,
+.main-body-wapper #yunpanView p,
+.main-body-wapper #kuaizhaoView p,
+.main-body-wapper #logView p,
+.main-body-wapper #manageView p,
+.main-body-wapper #orderView p {
+  width: 100%;
+  height: 54px;
+  padding: 16px 0;
+  margin: 16px 0;
+  text-align: center;
+}
+#management {
+  padding: 0 15px;
+}
+#management ul {
+  padding-bottom: 16px;
+}
+#management ul li {
+  height: 134px;
+  float: left;
+  padding: 0 15px;
+  margin-bottom: 45px;
+}
+#management .page-header {
+  border: none !important;
+}
+.table-wapper {
+  width: 272px;
+  padding: 10px 15px 25px !important;
+}
+.table-wapper table {
+  width: 244px;
+}
+.table-wapper table .hideTh {
+  width: 64px;
+  height: 30px;
+  padding: 5px 8px !important;
+  border: 1px solid #999 !important;
+}
+.table-wapper table .hideTd {
+  width: 178px !important;
+  height: 30px !important;
+  padding: 5px 8px !important;
+  border: 1px solid #999;
+  border-left: none;
+}
+.console_select {
+  outline: #0064b4;
+  padding: 3px;
+  margin: 0;
+}
+.openWapper,
+.closeWapper,
+.restartWapper,
+.changeWapper,
+.snapshotWapper {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0);
+  z-index: 100000;
+}
+.jumbotron {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  margin-top: -250px;
+  margin-left: -250px;
+  background: #fff;
+  padding: 0 !important;
+  text-indent: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #9b9b9b;
+}
+.jumbotron h3 {
+  margin: 20px 0;
+}
+.jumbotron p {
+  clear: both;
+  font-size: 14px;
+  padding: 12px 0;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: left;
+}
+.jumbotron .checkBar {
+  clear: both;
+  width: 500px;
+  padding: 0 10px 10px;
+  text-align: right;
+}
+.jumbotron label {
+  float: left;
+  margin: 0 15px 15px;
+}
+.jumbotron label input {
+  width: 300px;
+}
+.withdrawWapper,.deleteOrderBar {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0);
+  z-index: 100000;
+}
+
+
+
+
+#management table tbody tr:nth-child(odd),
+#shiliView table tbody tr:nth-child(odd),
+#yunpanView table tbody tr:nth-child(odd),
+#kuaizhaoView table tbody tr:nth-child(odd),
+#logView table tbody tr:nth-child(odd),
+#manageView table tbody tr:nth-child(odd),
+#orderView table tbody tr:nth-child(odd){
+  // color: #31708f;
+  background: #dff0d8;
+}
+
+// #management table tbody tr:nth-child(even),
+// #shiliView table tbody tr:nth-child(even),
+// #yunpanView table tbody tr:nth-child(even),
+// #kuaizhaoView table tbody tr:nth-child(even),
+// #logView table tbody tr:nth-child(even),
+// #manageView table tbody tr:nth-child(even),
+// #orderView table tbody tr:nth-child(even){
+//   color: #a94442;
+//   background: #f2dede;
+// }
+// #management table tbody tr:nth-child(4n+1),
+// #shiliView table tbody tr:nth-child(4n+1),
+// #yunpanView table tbody tr:nth-child(4n+1),
+// #kuaizhaoView table tbody tr:nth-child(4n+1),
+// #logView table tbody tr:nth-child(4n+1),
+// #manageView table tbody tr:nth-child(4n+1),
+// #orderView table tbody tr:nth-child(4n+1){
+//   // color: #31708f;
+//   background: #dff0d8;
+// }
+
+// #management table tbody tr:nth-child(4n+2),
+// #shiliView table tbody tr:nth-child(4n+2),
+// #yunpanView table tbody tr:nth-child(4n+2),
+// #kuaizhaoView table tbody tr:nth-child(4n+2),
+// #logView table tbody tr:nth-child(4n+2),
+// #manageView table tbody tr:nth-child(4n+2),
+// #orderView table tbody tr:nth-child(4n+2){
+//   // color: #a94442;
+//   background: #d9edf7;
+// }
+
+// #management table tbody tr:nth-child(4n+3),
+// #shiliView table tbody tr:nth-child(4n+3),
+// #yunpanView table tbody tr:nth-child(4n+3),
+// #kuaizhaoView table tbody tr:nth-child(4n+3),
+// #logView table tbody tr:nth-child(4n+3),
+// #manageView table tbody tr:nth-child(4n+3),
+// #orderView table tbody tr:nth-child(4n+3){
+//   // color: #a94442;
+//   // background: #fcf8e3;
+//   background: #f2dede;
+// }
+
+// #management table tbody tr:nth-child(4n+4),
+// #shiliView table tbody tr:nth-child(4n+4),
+// #yunpanView table tbody tr:nth-child(4n+4),
+// #kuaizhaoView table tbody tr:nth-child(4n+4),
+// #logView table tbody tr:nth-child(4n+4),
+// #manageView table tbody tr:nth-child(4n+4),
+// #orderView table tbody tr:nth-child(4n+4){
+//   // color: #a94442;
+//   background: #f2dede;
+// }

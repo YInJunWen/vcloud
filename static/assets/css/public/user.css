@@ -1,0 +1,386 @@
+html, * {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+}
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    color: black;
+    background-color: white;
+    cursor: default;
+    /*border-width: 1px;*/
+    border-style: solid;
+    border-color: initial;
+    border-image: initial;
+}
+/* CSS Document */
+@media screen and (max-width: 1000px) {
+    body {
+        padding: 0;
+        margin: 0;
+        width: 680px;
+        font-family: STHeiti, "Microsoft Yahei", Helvetica, Verdana, sans-serif;
+        font-size: 12px;
+        color: #666;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        font-family: STHeiti, "Microsoft Yahei", Helvetica, Verdana, sans-serif;
+        font-size: 12px;
+        color: #666;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+    padding: 0;
+}
+
+img {
+    border: 0;
+}
+
+footer {
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.clear {
+    clear: both;
+}
+
+@media screen and (max-width: 1000px) {
+    .content {
+        display: block;
+        max-width: 680px;
+        min-width: 580px;
+        margin: 0 auto;
+        margin-top: 20px;
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .content {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .top {
+        display: block;
+        max-width: 600px;
+        min-width: 500px;
+        margin: 0 auto;
+        padding: 0 40px;
+        padding-bottom: 5px;
+        border-bottom: solid 1px #EBEBEB;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .top {
+        display: block;
+        max-width: 1000px;
+        min-width: 500px;
+        margin: 0 auto;
+        padding: 0 40px;
+        padding-bottom: 5px;
+        border-bottom: solid 1px #EBEBEB;
+    }
+}
+
+.top li {
+    float: left;
+}
+
+.title {
+    line-height: 40px;
+    font-size: 16px;
+}
+
+#right {
+    float: right;
+}
+
+#right span {
+    float: left;
+    line-height: 28px;
+    margin-top: 6px;
+}
+
+#right a {
+    display: block;
+    width: 50px;
+    height: 28px;
+    border: solid 1px #CCC;
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+#right a:hover {
+    background-color: #128ff9;
+    border: solid 1px #128ff9;
+    color: #fff;
+}
+
+.regform {
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+@media screen and (max-width: 1000px) {
+    .regform ol {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 600px;
+        min-width: 500px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .regform ol {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 1000px;
+        min-width: 500px;
+    }
+}
+
+.regform ol li {
+    width: 485px;
+    margin: 0 auto;
+}
+
+.regform input {
+    width: 328px;
+    height: 16px;
+    padding: 11px 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #666;
+    transition: .3s;
+}
+
+.regform input:focus {
+    border-color: #128ff9;
+}
+
+.regform select {
+    width: 350px;
+    height: 40px;
+    margin: 10px;
+    padding-left: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #666;
+    transition: .3s;
+}
+
+.regform label {
+    display: block;
+    width: 115px;
+    float: left;
+    line-height: 60px;
+    text-align: right;
+    font-size: 16px;
+}
+
+#agreeBox {
+    padding: 0;
+    width: auto;
+    margin-top: 12px;
+    margin-left: -20px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.w-agreeBox {
+    line-height: 50px;
+}
+
+.w-agreeBox a {
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.w-fSubmit {
+    text-align: right;
+}
+
+#fSubmit {
+    width: 350px;
+    height: 40px;
+    background-color: #3CF;
+    border: 1px solid #3CF;
+    color: #FFF;
+    cursor: pointer;
+}
+
+#fSubmit:hover {
+    background-color: #128ff9;
+    border: 1px solid #128ff9;
+}
+
+#myTime {
+    width: 485px;
+    display: block;
+    text-align: left;
+    padding-left: 125px;
+}
+
+#myTime yes {
+    color: #0C0;
+}
+
+#myTime no {
+    color: #F30;
+}
+
+.checkform {
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+@media screen and (max-width: 1000px) {
+    .checkform ol {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 600px;
+        min-width: 500px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .checkform ol {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 1000px;
+        min-width: 500px;
+    }
+}
+
+.checkform ol li {
+    width: 485px;
+    margin: 0 auto;
+}
+
+.checkform input {
+    width: 120px;
+    height: 16px;
+    padding: 11px 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #666;
+    transition: .3s;
+}
+
+.checkform input:focus {
+    border-color: #128ff9;
+}
+
+.checkform label {
+    display: block;
+    width: 115px;
+    float: left;
+    line-height: 60px;
+    text-align: right;
+    font-size: 16px;
+}
+
+.checkform .tel {
+    display: block;
+    float: left;
+    width: 120px;
+    line-height: 60px;
+    margin-left: 31px;
+    font-size: 16px;
+}
+
+.checkform h1 {
+    line-height: 60px;
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+#Button {
+    width: 100px;
+    height: 40px;
+    background-color: #fff;
+    margin-left: 35px;
+    border: 1px solid #ccc;
+    color: #666;
+    cursor: pointer;
+}
+
+#Button:hover {
+    background-color: #128ff9;
+    border: 1px solid #128ff9;
+    color: #fff;
+}
+
+#Button2 {
+    width: 200px;
+    height: 40px;
+    margin-top: 40px;
+    background-color: #3CF;
+    border: 1px solid #3CF;
+    color: #FFF;
+    cursor: pointer;
+}
+
+#Button2:hover {
+    background-color: #128ff9;
+    border: 1px solid #128ff9;
+}
+
+.checkform #myTime {
+    width: 485px;
+    display: block;
+    text-align: left;
+    padding-left: 155px;
+}
+
+/* all */
+::-webkit-input-placeholder {
+    color: #ddd;
+}
+
+::-moz-placeholder {
+    color: #ddd;
+}
+
+/* firefox 19+ */
+:-ms-input-placeholder {
+    color: #ddd;
+}
+
+/* ie */
+input:-moz-placeholder {
+    color: #ddd;
+}

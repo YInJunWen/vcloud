@@ -1,0 +1,120 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.login {
+  width: 100%;
+  height: 100%;
+  background: #2e2e2e;
+  padding: 100px 0 0;
+  box-shadow: inset 100px 100px 260px -70px #000000;
+}
+.login .userContent {
+  display: block;
+  z-index: 10000;
+  width: 500px;
+  min-height: 400px;
+  background: #fff;
+  margin: 0 auto;
+  border-radius: 3px;
+  padding: 30px 0 0;
+}
+.login .userContent .registerContent {
+  z-index: 10000;
+  display: none;
+}
+.login .userContent li {
+  width: 250px;
+  height: 50px;
+  line-height: 50px;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+}
+.login .userContent li.current {
+  background: #d5d5d5;
+}
+.login .userContent form {
+  clear: both;
+  width: 100%;
+  min-height: 330px;
+  padding: 20px 28px 28px 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.login .userContent form p {
+  margin: 28px 0;
+  border: 1px solid #a5a5a5;
+  border-radius: 5px;
+  padding: 10px 0;
+  text-indent: 8px;
+  text-align: left;
+}
+.login .userContent form p input {
+  border: none;
+  cursor: auto;
+  background: #fff;
+}
+.login .userContent form p input:-webkit-autofill,
+.login .userContent form p textarea:-webkit-autofill,
+.login .userContent form p select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+.login .userContent form p input[type=text]:focus,
+.login .userContent form p input[type=password]:focus,
+.login .userContent form p textarea:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+.login .userContent form p #password,
+.login .userContent form p #username,
+.login .userContent form p #email {
+  width: 370px;
+  outline: none;
+  text-indent: 8px;
+}
+.login .userContent form p #password2 {
+  text-indent: 8px;
+}
+.login .userContent form p #remeber {
+  float: left;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+.login .userContent form p .denglu {
+  clear: both;
+  width: 380px;
+  height: 40px;
+  padding: 0;
+  text-align: center;
+  line-height: 40px;
+  background: #2f889a;
+  color: #fff;
+  border-radius: 5px;
+}
+.login .userContent form .no-border {
+  text-align: center;
+  border: none;
+}
+.login .userContent form .no-border label {
+  float: left;
+  font-size: 14px;
+}
+.login .userContent form .no-border span {
+  font-size: 14px;
+}
+.login .userContent form .no-border select {
+  font-size: 14px;
+  vertical-align: middle;
+  padding: 2px;
+}
+.login .userContent form .ts_p {
+  margin: 0;
+  padding: 5px 0;
+}
+.login .userContent form .ts_p a {
+  font-size: 15px;
+  padding: 8px 15px;
+}

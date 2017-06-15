@@ -1,0 +1,640 @@
+html,
+body{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+  	font-family: "Microsoft YaHei",sans-serif;
+  	font-size: 14px;
+  	user-select:none;
+}
+/* header
+-------------------------------------------------------------------------------*/
+.header-top{
+	position: fixed;
+	top: 0;
+	left: 0;
+	min-width: 768px;
+	width: 100%;
+	height: 50px;
+	background: #666;
+    user-select:none;
+    z-index: 10;
+	.nav-bar{
+		height: 50px;
+		li:hover{
+			background: #373d41;
+		}
+		.leftbar{
+			height: 50px;
+			line-height: 50px;
+			display: inline-block;
+			li{
+			float: left;
+			height: 50px;
+			overflow: hidden;
+              &:first-child{
+                width: 55px;
+              }
+              &:hover{
+                background: none;
+              }
+				a{
+					display: inline-block;
+					text-align: center;
+					line-height: 50px;
+					width: 49px;
+					height: 40px;
+					padding-top: 10px;
+					span{
+						display: inline-block;
+						width: 30px;
+						height: 30px;
+						background:url(../../img/favicon.png) no-repeat;
+						background-size: cover;
+					}
+				}
+				.console_center,
+				.products_services{
+					position: relative;
+					display: inline-block;
+					text-align: center;
+					padding: 0 20px;
+					height: 50px;
+					border-left: 1px solid #999;
+					color: #fff;
+					cursor: pointer;
+				}
+			}
+		}
+		.rightbar{
+			position: absolute;
+			top: 0;
+			right: 0;
+			//margin-left: 320px;
+			height: 50px;
+			line-height: 50px;
+			#rightBarlist1,
+            #rightBarlist3,
+            #rightBarlist4,
+            #rightBarlist6{
+				position: relative;
+			}
+            #rightBarlist3{
+              ul{
+                display: none;
+                position: absolute;
+                top: 50px;
+                left: -75px;
+                width: 140px;
+                height: 100px;
+                background: #fff;
+                padding: 10px 0;
+                border: 1px solid #c5c5c5;
+                border-top: none;
+                li{
+                    display: block;
+                    width: 120px;
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0 18px;
+                    border-right: none;
+                    font-size: 12px;
+                    &:hover{
+                      background: #e5e5e5;
+                    }
+                }
+                a{
+                  color: #666;
+                }
+              }
+            }
+            #rightBarlist4{
+              ul{
+                display: none;
+                position: absolute;
+                top: 50px;
+                left: -75px;
+                width: 140px;
+                height: 140px;
+                padding: 10px 0;
+                background: #fff;
+                border: 1px solid #c5c5c5;
+                border-top: none;
+                li{
+                  width: 140px;
+                  height: 40px;
+                  padding: 0 18px;
+                  border-right: none;
+                  line-height: 40px;
+                  font-size: 12px;
+                  &:hover{
+                    background: #e5e5e5;
+                  }
+                }
+                a{
+                  color: #666;
+                }
+              }
+            }
+            #rightBarlist6{
+              .personCenter{
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                width: 190px;
+                min-height: 242px;
+                background: #fff;
+                border-left: 1px solid #c5c5c5;
+                border-bottom: 1px solid #c5c5c5;
+                p{
+                  width: 100%;
+                  height: 25px;
+                  line-height:25px;
+                  text-align: center;
+                  padding-left: 20px;
+                  color: #666;
+                  font-size: 12px;
+                  margin: 0;
+                  span{
+                    color: #f00;
+                  }
+                }
+                .personCenterBox{
+                  width: 190px;
+                  min-height: 176px;
+                  padding: 8px 15px;
+                  margin: 8px 0;
+                  a{
+                    display: inline-block;
+                    float: left;
+                    width: 80px;
+                    height: 80px;
+                    text-align: center;
+                    color: #666;
+                    border-top: none;
+                    &:hover{
+                      background: #e5e5e5;
+                    }
+                    span{
+                      float: left;
+                    }
+                    span:first-child{
+                      display: inline-block;
+                      width: 40px;
+                      height: 40px;
+                      line-height: 40px;
+                      margin: 8px 20px;
+                    }
+                    span:last-child{
+                      width: 80px;
+                      height: 25px;
+                      display: inline;
+                      line-height:25px;
+                      text-align: center;
+                    }
+                  }
+                }
+                a{
+                  display: block;
+                  width: 270px;
+                  height: 49px;
+                  color: #666;
+                  text-align: center;
+                  line-height: 49px;
+                }
+              }
+            }
+
+            //hover 触发
+			#rightBarlist1:hover{
+				.searchBox {
+					display: block;
+				}
+			}
+            #rightBarlist2:hover{
+              .moneyBox {
+                display: block;
+              }
+            }
+            #rightBarlist3:hover{
+              .workMessage {
+                display: block;
+              }
+            }
+            #rightBarlist4:hover{
+              .beiAn{
+                display: block;
+              }
+            }
+            #rightBarlist5:hover{
+              .zhiChi{
+                display: block;
+              }
+            }
+            #rightBarlist6:hover{
+              .personCenter{
+                display: block;
+              }
+            }
+			li{
+				display: inline-block;
+				float: left;
+				padding: 0 18px;
+				border-right: 1px solid #999;
+				a{
+					color: #fff;
+					text-decoration: none;
+				}
+				.searchBox{
+					display: none;
+					position: absolute;
+					top: 50px;
+					right: 0;
+					width: 240px;
+					height: 34px;
+					padding: 4px 6px;
+					line-height: 34px;
+					color: #546478;
+					font-size: 12px;
+					outline: none;
+					border:2px solid #000;
+				}
+			}
+			li:last-child{
+				border: none;
+			}
+		}
+	}
+}
+
+/* left menus
+-------------------------------------------------------------------------------*/
+.left_menus{
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 160px;
+  height: 100%;
+  background: #e5e5e5;
+  user-select:none;
+  .Huifold{
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  .item{
+    position:relative;
+    width: 160px;
+    h4{
+      margin:0;
+      position:relative;
+      font-size:15px;
+      line-height:22px;
+      padding:7px 10px;
+      cursor:pointer;
+      //padding-right:30px;
+      &:hover{
+        background: #c3c3c3;
+      }
+      b{
+        position:absolute;
+        display: block;
+        cursor:pointer;
+        right:10px;
+        top:7px;
+        width:10px;
+        height:10px;
+        text-align:center;
+        color:#666;
+      }
+    }
+    .info{
+      display:none;
+      padding:4px 10px;
+      font-size: 14px;
+      li{
+        width: 130px;
+        height: 36px;
+        line-height:36px;
+        text-align: left;
+        text-decoration: none;
+        color: #000;
+        font-size: 13px;
+        &:hover{
+          background: #abcdef;
+        }
+      }
+      li.active{
+        background: #abcdef;
+      }
+    }
+  }
+  
+}
+
+/* alert Vies
+-------------------------------------------------------------------------------*/
+.alertView{
+  display: none;
+  position: absolute;
+  z-index: 6;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  min-height: 240px;
+  background: #fff;
+  -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* main body
+-------------------------------------------------------------------------------*/
+.bodyAll{
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+.main-body-wapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 50px 0 0 56px;
+  //添加一个管理总览页
+  #management,
+  #shiliView,
+  #yunpanView,
+  #kuaizhaoView,
+  #logView,
+  #manageView,
+  #orderView{
+    float: left;
+    // padding: 0 20px;
+  }
+  #management,
+  #shiliView,
+  #yunpanView,
+  #kuaizhaoView,
+  #logView,
+  #manageView,
+  #orderView{
+    width: 100%;
+    height: 100%;
+    display: block;
+    .titleInfoBox{
+      width: 100%;
+      height: 69px;
+      padding: 16px 0;
+      border-bottom: 1px solid #DDD;
+      margin-bottom: 8px;
+      .titleInfo{
+        width: 100px;
+        height: 33px;
+        line-height: 33px;
+        float: left;
+      }
+      .btnBox{
+        width: 160px;
+        height: 32px;
+        line-height: 32px;
+        float: right;
+        .btn1{
+          width: 40px;
+          height: 14px;
+          padding: 8px 16px;
+          border: 1px solid #ddd;
+          color: #333;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .btn2{
+          width: 48px;
+          height: 14px;
+          padding: 8px 16px;
+          border: 1px solid #28b5d6;
+          background: #2a6496;
+          color: #fff;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+    }
+    .kuaizhaoInfo{
+      width: 100%;
+      min-height: 68px;
+      color: #090;
+      line-height: 18px;
+      padding: 6px 12px;
+      margin-bottom: 6px;
+      border: 1px solid #C7DDB9;
+      background: #F2FFEA;
+      ul{
+        padding-left: 16px;
+        li{
+          list-style: disc;
+        }
+      }
+    }
+    #justSearchWarpper{
+      width: 100%;
+      height: 40px;
+      select{
+        width: 108px;
+        height: 32px;
+        padding: 3px;
+        color: #999;
+      }
+      input{
+        width: 253px;
+        height: 32px;
+        padding: 6px;
+        border: 1px solid #ddd;
+      }
+      button{
+        width: 58px;
+        height: 32px;
+        border: 1px solid #ddd;
+        color: #fff;
+        background: #2a6496;
+      }
+    }
+    .table{
+      width: 100%;
+      min-height: 35px;
+      border: 1px solid #ddd;
+      background: #F5F6FA;
+      color: #666;
+      th{
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        font-weight: normal;
+      }
+      .pz{
+        position: relative;
+        text-decoration: underline;
+        #hideList{
+          position: absolute;
+          z-index: 15;
+          display: none;
+          top: -85px;
+          left: 90px;
+          width: 276px;
+          background: #fff;
+          border: 1px solid #999;
+          //border-radius: 5px;
+          //overflow: hidden;
+          li{
+            float: left;
+            width: 100%;
+            h3{
+              width: 100%;
+              font-size: 14px !important;
+              margin: 0 !important;
+              padding: 8px 15px;
+              text-align: center;
+              background:#F5F5F5;
+            }
+          }
+        }
+        #hideList:before{
+          position: absolute;
+          bottom: 0;
+          width: 20px;
+          height: 20px;
+          border: 1px solid #999;
+          border-top: none;
+          border-right: none;
+          background: #fff;
+          transform:rotate(45deg);
+          -ms-transform:rotate(45deg); 	/* IE 9 */
+          -moz-transform:rotate(45deg); 	/* Firefox */
+          -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+          -o-transform:rotate(45deg); 	/* Opera */
+          left: -10px;
+          top: 50%;
+          margin-top: -11px;
+          content: " ";
+        }
+        &:hover #hideList{
+          display: block;
+        }
+      }
+    }
+    p{
+      width: 100%;
+      height: 54px;
+      padding: 16px 0;
+      margin: 16px 0;
+      text-align: center;
+    }
+  }
+}
+
+#management{
+  //display: block !important;
+  padding: 0 15px;
+  ul{
+    padding-bottom: 16px;
+    li{
+      height: 134px;
+      float: left;
+      padding: 0 15px;
+      margin-bottom: 45px;
+    }
+  }
+  .page-header{
+    border: none !important;
+  }
+}
+
+.table-wapper{
+  width: 272px;
+  padding: 10px 15px 25px !important;
+  table{
+    width: 244px;
+    .hideTh{
+      width: 64px;
+      height: 30px;
+      padding: 5px 8px !important;
+      border:1px solid #999 !important;
+      //line-height: 47px;
+    }
+    .hideTd{
+      width: 178px !important;
+      height: 30px !important;
+      //line-height: 47px;
+      padding: 5px 8px !important;
+      border: 1px solid #999;
+      border-left: none;
+    }
+  }
+}
+
+// 控制台select选项
+
+.console_select{
+  outline: #0064b4;
+  padding: 3px;
+  margin: 0;
+}
+
+//select{
+//  outline: none !important;
+//  padding: 3px !important;
+//  margin: 0 !important;
+//}
+
+.openWapper,
+.closeWapper,
+.restartWapper,
+.changeWapper,
+.snapshotWapper{
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0);
+  z-index: 100000;
+}
+.jumbotron{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  //min-height: 200px;
+  margin-top: -250px;
+  margin-left: -250px;
+  background: #fff;
+  padding: 0 !important;
+  text-indent: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #9b9b9b;
+  h3{
+    margin: 20px 0;
+  }
+  p{
+    clear: both;
+    font-size: 14px;
+    padding: 12px 0;
+    border-top:1px solid #e5e5e5;
+    border-bottom:1px solid #e5e5e5;
+    text-align: left;
+  }
+  .checkBar{
+    clear: both;
+    width: 500px;
+    padding: 0 10px 10px;
+    text-align: right;
+  }
+  label{
+    float: left;
+    margin:0 15px 15px;
+    input{
+      width: 300px;
+    }
+  }
+}

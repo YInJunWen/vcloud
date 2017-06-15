@@ -1,0 +1,76 @@
+{% extends "_base.html" %}
+
+{% block main_show %}
+<div class="main-body-wapper">
+        <div id="logView">
+            <div class="container-fluid">
+                <form action="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="titleInfoBox">
+                                <div class="titleInfo">
+                                    丨 日志列表
+                                </div>
+                                <div class="btnBox" style="width:62px;">
+                                    <a href="" class="btn1" onclick="location.reload(true)">刷新</a>
+                                </div>
+                            </div>
+                            <div id="justSearchWarpper">
+                                <form action="" class="justSearch">
+                                    <div class="select-wrapper">
+                                        <select name="" id="">
+                                            <option value="0" selected="selected">操作对象</option>
+			  <option value="1">操作类型</option>
+			  <option value="2">操作人</option>
+			  <option value="3">操作时间</option>
+                                        </select>
+                                        <input type="text" placeholder="日志条件">
+                                        <button>搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+{% if log_info.has_previous %}
+            <a href="?page={{ log_info.previous_page_number }}">previous</a>
+			        {% endif %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="10">
+                                    </th>
+                                    <th style="text-align:left;width:10%;">操作对象</th>
+                                    <th style="text-align:center;">操作类型</th>
+                                    <th style="text-align:center;">操作人</th>
+                                    <th style="text-align:center">IP</th>
+                                    <th style="text-align:center">操作时间</th>
+                                </tr>
+								</thead>
+{% if log_info %}
+{% for i in log_info %} 
+<tr>
+ <td width='10'></td>
+ <td style="text-align:left;width:10%;text-indent:10px;">{{ i.log_type }}</td>
+ <td style="text-align:center;">{{ i.opt_mode }}</td>
+ <td style="text-align:center;">{{ i.opt_user }}</td>
+ <td style="text-align:center">{{ i.opt_ip }}</td>
+ <td style="text-align:center">{{ i.opt_time }}</td>
+</tr>
+{% endfor %}
+                                <tbody>
+                                </tbody>
+                            </table>
+{% if log_info.has_next %}
+            <a href="?page={{ log_info.next_page_number }}">next</a>
+			        {% endif %}
+{% else %}
+                            <div class="noMessage">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+{% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

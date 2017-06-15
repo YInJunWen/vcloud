@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./order_create.css">
+</head>
+<body> -->
+{% extends "_base.html" %}
+
+{% block main_show %}
+    <div class="main-body-wapper">
+        <div id="order_create">
+            <div class="container-fluid">
+                <form action="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="titleInfoBox">
+                                <div class="titleInfo">
+                                    丨 创建工单
+                                </div>
+                                <div class="btnBox">
+                                    <a href="" class="btn1">刷新</a>
+                                    <a href="" class="btn2">创建实例</a>
+                                </div>
+                            </div>
+                            
+                            <div class="formBox">
+                                <div class="order_titleInfo">
+                                    <span>提交工单</span>
+                                </div>
+                                <div class="formBox_samllBox">
+                                    <form action="" method="post">
+                                        <div class="form-wapper">
+                                            <label for="order_type" class="col-sm-2 order_title order_nofloat">工单类型:</label><select name="order_type" id="order_type" class="col-sm-7 order_nofloat">
+                                                <option value="pt">普通</option>
+                                                <option value="sl">实例</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-wapper">
+                                            <label for="order_server" class="col-sm-2 order_title order_nofloat">服务器:</label><select name="order_server" id="order_server" class="col-sm-7 order_nofloat">
+                                                <option value="">1</option>
+                                                <option value="">2</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-wapper">
+                                            <label for="order_caseName" class="col-sm-2 order_title order_nofloat">实例名:</label><select name="order_caseName" id="order_caseName" class="col-sm-7 order_nofloat">
+                                                <option value="">1</option>
+                                                <option value="">2</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-wapper">
+                                            <label for="order_sendperson" class="col-sm-2 order_title order_nofloat">提交者:</label><input type="text" placeholder="请填写你的名字">
+                                        </div>
+                                        <div class="form-wapper">
+                                            <label for="order_reason" class="col-sm-2 order_title">事由:</label><textarea name="order_reason" id="order_reason" rows="5" class="col-sm-7 order_nofloat" required="required"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-wapper">
+                                            <label for="" class="col-sm-2 order_title order_nofloat"></label>
+                                            <input type="submit" value="继续" class="col-sm-1 order_nofloat order_sendBar">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<!-- <script src="./jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>

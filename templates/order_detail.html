@@ -1,0 +1,114 @@
+{% extends "_base.html" %}
+
+{% block main_show %} 
+    <div class="main-body-wapper">
+        <div id="order_create">
+            <div class="container-fluid">
+                <form action="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="titleInfoBox">
+                                <div class="titleInfo">
+                                    丨 工单详细
+                                </div>
+                                <div class="btnBox">
+                                    <a href="" class="btn1">刷新</a>
+                                    <a href="" class="btn2">创建实例</a>
+                                </div>
+                            </div>
+                            
+{% if ins_info.instance_type == 1 %}
+                            <!-- 普通的 -->
+                            <div class="formBox">
+                                <div class="order_titleInfo">
+                                    <span>普通工单</span>
+                                </div>
+                                <div class="formBox_samllBox">
+                                    <table border="1">
+                                    	<tr>
+											<th class="col-sm-4">创建时间</th>
+											<td class="col-sm-7">2017年5月10日09:43:59</td>
+                                    	</tr>
+                                    	<tr>
+											<th class="col-sm-4">创建者</th>
+											<td class="col-sm-7">Lorem</td>
+                                    	</tr>
+                                    	<tr>
+											<th class="col-sm-4">事由</th>
+											<td class="col-sm-7">Lorem ipsum dolor sit amet, </td>
+                                    	</tr>
+                                    	<tr>
+											<th class="col-sm-4">服务器</th>
+											<td class="col-sm-7">123</td>
+                                    	</tr>
+                                    	<tr>
+											<th class="col-sm-4">实例名</th>
+											<td class="col-sm-7">123</td>
+                                    	</tr>
+                                    	<tr>
+											<th class="col-sm-4">状态</th>
+											<td class="col-sm-7">123</td>
+                                    	</tr>
+                                    </table>
+                                </div>
+                            </div>
+
+{% else %}
+							<!-- 实例 -->
+                            <div class="formBox">
+                                <div class="order_titleInfo">
+                                    <span>实例工单</span>
+                                </div>
+                                <div class="formBox_samllBox">
+                                    <table border="1">
+		                            	<tr>
+											<th class="col-sm-4">实例名称</th>
+											<td class="col-sm-7">{{ ins_info.instance_name }}</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">服务器</th>
+											<td class="col-sm-7">{{ ins_info.server }}</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">CPU</th>
+											<td class="col-sm-7">{{ ins_info.cpu }} </td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">内存</th>
+											<td class="col-sm-7">{{ ins_info.mem }} MB</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">硬盘</th>
+											<td class="col-sm-7">{{ ins_info.disk }} GB</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">带宽</th>
+											<td class="col-sm-7">{{ ins_info.bandwidth }}</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">存储类型</th>
+											<td class="col-sm-7">{{ ins_info.storage }}</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">到期日</th>
+											<td class="col-sm-7">{{ ins_info.expired }}</td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">创建者</th>
+											<td class="col-sm-7">{{ ins_info.created_user }} </td>
+		                            	</tr>
+		                            	<tr>
+											<th class="col-sm-4">状态</th>
+											<td class="col-sm-7">{{ ins_info.status }}</td>
+		                            	</tr>
+		                            </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{%endif%}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

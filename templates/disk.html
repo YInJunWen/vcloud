@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+
+{% block main_show %}
+    <div class="main-body-wapper">
+        <div id="yunpanView">
+            <div class="container-fluid">
+                <form action="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="titleInfoBox">
+                                <div class="titleInfo">
+                                    丨 磁盘列表
+                                </div>
+                                <div class="btnBox">
+                                    <a href="" class="btn1">刷新</a>
+                                    <a href="" class="btn2">创建云盘</a>
+                                </div>
+                            </div>
+                            <div id="justSearchWarpper">
+                                <form action="" class="justSearch">
+                                    <div class="select-wrapper">
+                                        <select name="" id="">
+                                            <option value="0" selected="selected">磁盘名称</option>
+                                            <option value="1">磁盘ID</option>
+                                            <option value="2">实例ID</option>
+                                            <option value="3">自动策略快照ID</option>
+                                        </select>
+                                        <input type="text" placeholder="输入磁盘名称模糊查询">
+                                        <button>搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="10">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th>磁盘ID/磁盘名称</th>
+                                    <th>类型(SSD/SAS)</th>
+                                    <th>磁盘状态(加载中/未加载)</th>
+                                    <th>容量</th>
+                                    <th>有效期</th>
+                                    <th style="text-align: right">操作(加载/卸载)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <div class="noMessage">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

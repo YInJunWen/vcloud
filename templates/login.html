@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>中德宏泰 - 用户登录</title>
+    <link href="/static/assets/css/public/user.css" rel="stylesheet">
+</head>
+<body>
+<div class="content">
+    <ul class="top">
+        <li class="title">| 帐号登录</li>
+        <li id="right">
+            <span>我还未注册，现在就</span>
+            <span>
+                    <a href="/register/">注册</a></span>
+        </li>
+        <div class="clear"></div>
+    </ul>
+    <form class="regform" method="post" action="/checkLogin/" name="regist">
+    {% csrf_token %}
+        <ol>
+            <li style="clear: both;">
+                <label for="username">用户名</label>
+                <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username"
+                       onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
+            </li>
+            <li style="clear: both;">
+                <label for="password">密码</label>
+                <input type="password" name="password" id="password" maxlength="20" placeholder="不能为中文或特殊字符"
+                       onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
+                {% if err %}
+                    <span style="display: block;text-indent: -60px;color: #f00;">{{ err }}</span>
+                {% endif %}
+            </li>
+            <li class="w-fSubmit" style="clear: both;">
+                <input id="fSubmit" name="" type="submit" value="登录"></li>
+            <li style="clear: both;">
+                <p style="text-indent: 120px;margin: 0;">
+                    <a href="/get_password/" style="font-size: 12px;text-decoration: underline;">忘记密码?</a>
+                </p>
+            </li>
+        </ol>
+    </form>
+</div>
+</body>
+</html>

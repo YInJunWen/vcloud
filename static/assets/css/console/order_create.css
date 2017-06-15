@@ -1,0 +1,113 @@
+html,
+body {
+  overflow-x: hidden;
+}
+.main-body-wapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 50px 0 0 56px;
+}
+.main-body-wapper .order_nofloat {
+  float: none !important;
+}
+.main-body-wapper #order_create .titleInfoBox {
+  width: 100%;
+  height: 69px;
+  padding: 16px 0;
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 8px;
+}
+.main-body-wapper #order_create .titleInfoBox .titleInfo {
+  width: 100px;
+  height: 33px;
+  line-height: 33px;
+  float: left;
+}
+.main-body-wapper #order_create .titleInfoBox .btnBox {
+  width: 160px;
+  height: 32px;
+  line-height: 32px;
+  float: right;
+}
+.main-body-wapper #order_create .titleInfoBox .btnBox .btn1 {
+  width: 40px;
+  height: 14px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+.main-body-wapper #order_create .titleInfoBox .btnBox .btn2 {
+  width: 48px;
+  height: 14px;
+  padding: 8px 16px;
+  border: 1px solid #28b5d6;
+  background: #2a6496;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.main-body-wapper #order_create form {
+  font-weight: normal;
+  font-size: 12px;
+  color: #666;
+  clear: both;
+}
+.main-body-wapper #order_create form .form-wapper {
+  margin: 8px 0 16px;
+}
+.main-body-wapper #order_create form .form-wapper .order_title {
+  min-width: 85px;
+  text-align: right;
+}
+.main-body-wapper #order_create form .form-wapper textarea {
+  color: #555;
+  padding: 6px;
+  min-height: 150px;
+}
+.main-body-wapper #order_create form .form-wapper label {
+  padding: 7px 15px 0;
+  margin: 0;
+}
+.main-body-wapper #order_create form .form-wapper input,
+.main-body-wapper #order_create form .form-wapper select {
+  padding: 6px;
+  height: 32px;
+}
+.main-body-wapper #order_create form .form-wapper .order_sendBar {
+  color: #fff;
+  border: 1px solid #28b5d6;
+  background-color: #28b5d6;
+}
+.main-body-wapper #order_create form .form-wapper .order_sendBar:hover {
+  color: #ffffff;
+  background-color: #3276b1;
+  border-color: #285e8e;
+}
+.main-body-wapper #order_create form .formBox {
+  border: 1px solid #ddd;
+  border-top: none;
+}
+.main-body-wapper #order_create form .formBox .order_titleInfo {
+  height: 40px;
+  background: #F5f6FA;
+  line-height: 38px;
+  position: relative;
+  border: 1px solid #e1e6eb;
+  border-left: none;
+  border-right: none;
+  border-left: 4px solid #6d7781;
+}
+.main-body-wapper #order_create form .formBox .order_titleInfo span {
+  font-size: 14px;
+  color: #333333;
+  display: inline-block;
+  margin-left: 16px;
+}
+.main-body-wapper #order_create form .formBox .formBox_samllBox {
+  padding: 20px;
+}

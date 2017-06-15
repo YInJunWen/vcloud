@@ -1,0 +1,200 @@
+{% extends "_base.html" %}
+
+{% block main_show %}
+<div class="main-body-wapper">
+        <div class="main-body" id="shiliView" style="display: block;">
+            <div class="container-fluid">
+                <form action="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="titleInfoBox">
+                                <div class="titleInfo">
+                                    丨 实例列表 
+                                </div>
+                                <div class="btnBox">
+                                    <a href="" class="btn1" onclick="location.reload(true)">刷新</a>
+                                    <a href="/create_instance/" class="btn2">创建实例</a>
+                                </div>
+                            </div>
+                            <div id="justSearchWarpper">
+                                <form action="#" class="justSearch" onsubmit="return false;">
+                                    <div class="select-wrapper">
+                                        <select name="" id="">
+                                            <option value="0" selected="selected">实例ID/名称</option>
+			  <option value="1">IP地址</option>
+			  <option value="2">配置</option>
+			  <option value="3">流量</option>
+			  <option value="4">有效期</option>
+			  <option value="5">状态</option>
+                                        </select>
+                                        <input type="text" placeholder="输入实例名称模糊查询">
+                                        <button id="yDisk-btn" onclick="return false">搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="10">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th >实例ID/名称</th>
+                                    <th>IP地址</th>
+                                    <th>配置</th>
+                                    <th>流量</th>
+                                    <th>有效期至</th>
+                                    <th>状态</th>
+                                    <th style="text-align: center;">操作</th>
+                                </tr>
+                                </thead>
+{% if ins %}
+{% for i in ins %}
+<tr>
+<td width="10"><input type="checkbox"></td>
+<td>{{i.display_name}}</td>
+<td>{{i.ip_address}}</td>
+
+<td class='pz'>详细配置
+
+<ul id='hideList'>
+	<li>
+		 <h3>云主机类型详情:</h3>
+		 <div class='table-wapper'>
+		 <table>
+		<tbody>
+			<tr>
+				<th class='hideTh'>CPU</th>
+				<td class='hideTd'>{{i.vcpus}}</td>
+			</tr>
+			<tr>
+				<th class='hideTh'>RAM</th>
+				<td class='hideTd'>{{i.memory_mb}} MB</td>
+			</tr>
+			<tr>
+			<th class='hideTh'>Disk</th>
+				<td class='hideTd'>Disk对应变量</td>
+			</tr>
+			<tr>
+				<th class='hideTh'>带宽</th>
+				<td class='hideTd'>{{ i.bandwidth}} </td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+		</li>
+		</ul>
+
+</td>
+
+<td>{{i.traffic_out}} MB</td>
+<td>{{i.created_at}}</td>
+{% if i.vm_state == 'active' %}
+<td><span class="fa fa-play" style="color:#00ff00;;"></span>&nbsp;running</td>
+{%else%}
+<td span class="fa fa-stop" style="color:#ff0000;"></span>&nbsp;stopped</td>
+{%endif%}
+<td style='text-align: center;'>
+	<select name="" class="console_select" onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
+		<option value="0">--------</option>
+		<option value="1">开机</option>
+		<option value="2">关机</option>
+		<option value="3">重启</option>
+		<option value="4">修改密码</option>
+		<option value="5">快照</option></select>
+	</select>
+</td>
+</tr>
+{%endfor%}
+{%else%}
+                                <tbody id="yDisk-body">
+
+                                </tbody>
+                            </table>
+                            <div class="noMessage">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+{%endif%}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+	<!--开机弹窗-->
+	<div class="openWapper">
+		<div class="jumbotron">
+			<h3>确认 开启云主机</h3>
+			<p>请确认你的选择,云主机将会被开启!</p>
+			<div class="checkBar">
+				<button class="btn btn-default closeBtnBar">取消</button>
+				<button class="btn btn-primary openBtnComputer">开启云主机</button>
+			</div>
+		</div>
+	</div>
+	<!--关机弹窗-->
+	<div class="closeWapper">
+		<div class="jumbotron">
+			<h3>确认 关闭云主机</h3>
+			<p>请确认你的选择,云主机将会被关闭!</p>
+			<div class="checkBar">
+				<button class="btn btn-default closeBtnBar">取消</button>
+				<button class="btn btn-primary closeBtnComputer">关闭云主机</button>
+			</div>
+		</div>
+	</div>
+	<!--重启-->
+	<div class="restartWapper">
+		<div class="jumbotron">
+			<h3>确认 重启云主机</h3>
+			<p>请确认你的选择,云主机将会被重启!</p>
+			<div class="checkBar">
+				<button class="btn btn-default closeBtnBar">取消</button>
+				<button class="btn btn-primary restartBtnComputer">重启云主机</button>
+			</div>
+		</div>
+	</div>
+	<!--修改密码-->
+	<div class="changeWapper">
+		<div class="jumbotron">
+			<h3>确认 更改密码</h3>
+			<form action="" method="post">
+				<label for="lastpassword">
+					请输入旧密码：<input type="password" id="lastpassword">
+				</label>
+				<label for="newpassword">
+					请输入新密码：<input type="password" id="newpassword">
+				</label>
+				<label for="checkpassword">
+					请确认新密码：<input type="password" id="checkpassword">
+				</label>
+			</form>
+			<div class="checkBar">
+				<button class="btn btn-default closeBtnBar">取消</button>
+				<button class="btn btn-primary changeBtnpassword">确定</button>
+			</div>
+		</div>
+	</div>
+	<!--创建快照-->
+	<div class="snapshotWapper">
+		<div class="jumbotron">
+			<h3>创建快照</h3>
+			<label for="snapshotname">
+				快照名称：<input type="text" id="snapshotname">
+			</label>
+			<p>
+					说明：快照是保存了运行中云主机的磁盘状态的镜像。
+			</p>
+			<div class="checkBar">
+				<button class="btn btn-default closeBtnBar">取消</button>
+				<button class="btn btn-primary snapshotBtnComputer">创建快照</button>
+			</div>
+		</div>
+	</div>
+<script src="/static/assets/js/public/jquery.min.js"></script>
+<script>
+	$.get('/traffic.py',function(data){
+		console.log(data);
+	})
+</script>
+{%endblock%}
