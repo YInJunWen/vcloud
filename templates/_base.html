@@ -13,8 +13,8 @@
 	<link rel="stylesheet" href="/static/assets/css/console/2.css">
 	<link rel="stylesheet" href="/static/assets/css/console/order_create.css">
 	<link rel="stylesheet" href="/static/assets/css/console/order_detail.css">
-	<link rel="stylesheet" href="/static/assets/css/public/paging.css">
-	<link rel="stylesheet" id="skin_id" href="">
+	<link rel="stylesheet" href="/static/assets/css/public/paging.css"></link>
+	<link rel="stylesheet" id="skin_id" href=""
 </head>
 <body>
 	<!--弹出IE8不支持框-->
@@ -81,7 +81,7 @@
 						</li>
 
 						<li id="rightBarlist6">
-							<a href="">{{ username }}</a>
+							<a href="">{{ userinfo.username }}</a>
 							<div class="personCenter">
 								<div class="personCenterBox">
 									<a href="">
@@ -102,7 +102,7 @@
 									</a>
 								</div>
 								<p>本次登录时间 :</p>
-								<p id="NowTime">{{ logtime }}</p>
+								<p id="NowTime">{{ userinfo.logtime }}</p>
 								<!--<a href="">退出管理控制台</a>-->
 							</div>
 						</li>
@@ -146,7 +146,7 @@
 					</a>
 				</li>
 				<li>
-					<a class="nav__item" id='logBar' target="" href="/log/">
+					<a class="nav__item" id='logBar' target="" href="/log_show/">
 						<span class="nav__icon icon__ufile icon--md"></span>
 						<span class="nav__title"><span translate="UNET">日志</span>
 		                </span>
@@ -190,13 +190,13 @@
 
 	<script src="/static/assets/js/public/jquery.min.js"></script>
 	<script src="/static/assets/js/public/bootstrap.min.js"></script>
+	<script src="/static/assets/js/console/echarts.common.min.js"></script>
 	<script src="/static/assets/js/console/bootstrap-datepicker.min.js"></script>
-	<script src="/static/assets/js/console/bootstrap-datepicker.zh-CN.min.js"></script>
+	<script src="/static/assets/js/console/bootstrap-datepicker.zh-CN.min.js"></script>	
 	<script src="/static/assets/js/public/jquery.cookie.js"></script>
 	<script src="/static/assets/js/public/query.js"></script>
 	<script src="/static/assets/js/public/paging.js"></script>
 	<script src="/static/assets/js/console/console.js"></script>
-    <script src="/static/assets/js/console/echarts.min.js"></script>
 	<script src="/static/assets/js/console/echarts.js"></script>
 	<script>
        	 $('#datepicker input').datepicker({
@@ -205,10 +205,10 @@
       	  });
 
 
-{#       	 var log_username = $('#rightBarlist6>a').text();#}
-{#       	 $(function(){#}
-{#       	 	$.post('/log/',{username:log_username})#}
-{#       	 })#}
+       	 var log_username = $('#rightBarlist6>a').text();
+       	 $(function(){
+       	 	$.post('/log/',{username:log_username})
+       	 })
 	var log_num_count = $('.log_num_count').text();
 	$('#pageTool').Paging({ pagesize: 10, count:log_num_count});
 

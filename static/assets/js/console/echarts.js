@@ -138,8 +138,3 @@ pre5.setOption({
     ],
     color:['#428bca', '#BAC3E2']
 });
-// window.onresize = pre1.resize;
-// window.onresize = pre2.resize;
-// window.onresize = pre3.resize;
-// window.onresize = pre4.resize;
-// window.onresize = pre5.resize;

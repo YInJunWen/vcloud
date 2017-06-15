@@ -6,7 +6,7 @@
 	font-style:normal
 }
 [class*=" icon__"],[class^=icon__] {
-	font-family:ucicon !important;
+	font-family:ucicon!important;
 	speak:none;
 	font-style:normal;
 	font-weight:400;

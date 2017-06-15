@@ -19,8 +19,7 @@
         </li>
         <div class="clear"></div>
     </ul>
-    <form class="regform" method="post" action="/checkLogin/" name="regist">
-    {% csrf_token %}
+    <form class="regform" method="post" action="{% url 'go_ckInstance' %}" name="regist">
         <ol>
             <li style="clear: both;">
                 <label for="username">用户名</label>

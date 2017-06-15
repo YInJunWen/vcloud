@@ -1,0 +1,41 @@
+body{
+    font-family: '微软雅黑', sans-serif;
+}
+
+.topbarWapper{
+    color: #fff;
+    height: 60px;
+    min-width: 1000px;
+    position: relative;
+    background: rgba(55,61,65,0);
+    border-bottom: 1px solid hsla(0,0%,100%,.15);
+}
+
+.topbarWapper .common-topbar-nav-list li{
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 16px;
+    position: relative;
+}
+
+.topbarWapper>a{
+    font-size: 14px;
+    color: #fff;
+    float: right;
+    height: 60px;
+    line-height: 60px;
+    background: #00c1de;
+    padding: 0 32px;
+}
+
+.topbarWapper>a:hover{
+    text-decoration: none;
+    background-color: #28d0e9;
+    color: #fff;
+}
+
+.topbarWapper .common-topbar-nav-list li a{
+    color: #fff;
+    font-size: 15px;
+}

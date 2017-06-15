@@ -60,7 +60,7 @@ $(function($) {
         if (target === '#') return;
 
         if ($this.hasClass('smooth-scroll')) {
-            var offset = $(target).offset().top;
+            var offset = $(target).offset().top - 50;
             $.scrollWindow(offset);
         }
     });

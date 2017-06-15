@@ -15,17 +15,17 @@
                 <li id="right">
                     <span>我已注册，现在就</span>
                     <span>
-                    <a href="/login/">登录</a></span>
+                    <a href="{% url 'go_login' %}">登录</a></span>
                 </li>
                 <div class="clear"></div>
             </ul>
-            <form class="regform" method="post" action="/userRegister/" name="register" onsubmit="return Rt_check();">{% csrf_token %}
+            <form class="regform" method="post" action="/check_regist/" name="register" onsubmit="return Rt_check();">
                 <ol>
                     <li style="clear: both;">
                         <label for="username">用户名</label>
                         <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
                        {% if err_name %}
-                            <span style="color: #f90;display: block;text-indent: -83px;">{{ err_name }}</span>
+                            <span style="color: #f90;display: block;text-indent: -150px;">{{ err_name }}</span>
                         {% endif %}
                     </li>
                     <li style="clear: both;">
@@ -76,6 +76,7 @@
                     <li class="w-fSubmit" style="clear: both;">
                         <input id="fSubmit" name="" type="submit" value="注册"></li>
                 </ol>
+                {% csrf_token %}
             </form>
         </div>
     </body>

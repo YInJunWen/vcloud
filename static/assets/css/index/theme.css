@@ -1,4 +1,4 @@
-﻿/*!-------------------------------------------------------------------------------------------------------------------
+/*!-------------------------------------------------------------------------------------------------------------------
  *
  * Ve-Theme - Responsive HTML Site Template
  *
@@ -49,7 +49,7 @@ body {
   color: #5b5c5f;
   font-size: 14px;
   line-height: 24px;
-  font-family: '方正兰亭纤黑_GBK','Roboto', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 300;
   background: #fff;
 }
@@ -320,8 +320,7 @@ del.hover {
  * Text Colors
  *-------------*/
 .text-white {
-  color: #fff !important;
-  font-family: '方正兰亭纤黑_GBK' !important;
+  color: #fff             !important;
 }
 .text-base {
   color: #7ca7b2 !important;
@@ -4314,8 +4313,8 @@ a.tag.tag-danger:active {
   transform: translateY(-50%);
 }
 .section {
-  padding-top: 125px;
-  padding-bottom: 125px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   max-width: 100%;
   overflow: hidden;
 }
