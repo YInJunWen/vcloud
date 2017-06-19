@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>感知demo</title>
+	<link rel="stylesheet" href="/static/assets/zdgz/style.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="nav-left">
+				<img src="/static/assets/zdgz/logo.png" alt="logo" title="logo">
+			</div>
+			<div class="nav-mid">中德宏泰感知系统</div>
+			<div class="nav-right">系统时间:2017-5-24 22:48:13</div>
+		</nav>
+	</header>
+	<div class="container">
+		<!-- 左列表 -->
+		<div class="contaier-left">
+			<div class="LeftSilderTop">
+				<!-- <h5>云主机数量</h5> -->
+				<div id="chart7"></div>
+			</div>
+			<div class="LeftSilderBottom">
+				<!-- <h5>计算量分布</h5> -->
+				<div id="chart1"></div>
+			</div>
+		</div>
+		<!-- 中间地图列表 -->
+		<div class="contaier-mid">
+			<!-- 地图栏 -->
+			<div class="ChinaMap"></div>
+			<!-- 最下层中间chart -->
+			<div class="bottomChart">
+				<div class="bottomChart1">
+					<div id="chart3"></div>
+				</div>
+				<div class="bottomChart2">
+					<div id="chart4"></div>
+				</div>
+				<div class="bottomChart3">
+					<div id="chart5"></div>
+				</div>
+			</div>
+		</div>
+		<!-- 右列表 -->
+		<div class="contaier-right">
+			<div class="rightChart1" style="height: 30%;width: 100%;background: rgba(25, 55, 70, 0.48);margin: 7% 0;">
+				<div id="chart6" style="width: 100%; height: 100%;"></div>
+			</div>
+			<div class="rightChart2" style="height: 30%;width: 100%;background: rgba(25, 55, 70, 0.48);margin: 7% 0;">
+				<!-- <h5 style="margin: 0;text-align: center">核心交换数据</h5> -->
+				<div id="chart2" style="width: 100%;height: 100%;"></div>
+			</div>
+			<div class="rightChart3" style="height: 30%;width: 100%;background: rgba(25, 55, 70, 0.48);margin: 7% 0;">
+				<div id="chart8" style="width: 100%;height: 100%;"></div>
+			</div>
+		</div>
+	</div>
+	<footer></footer>
+	<script src="/static/assets/zdgz/echarts.min.js"></script>
+	<script src="/static/assets/zdgz/zdgz.js"></script>
+</body>
+</html>

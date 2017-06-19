@@ -1,17 +1,18 @@
-body{
+body {
     font-family: '微软雅黑', sans-serif;
 }
 
-.topbarWapper{
+.topbarWapper {
+    position: relative;
     color: #fff;
     height: 60px;
     min-width: 1000px;
-    position: relative;
-    background: rgba(55,61,65,0);
-    border-bottom: 1px solid hsla(0,0%,100%,.15);
+    background: rgba(55, 61, 65, 0);
+    border-bottom: 1px solid hsla(0, 0%, 100%, .15);
+    overflow: hidden;
 }
 
-.topbarWapper .common-topbar-nav-list li{
+.topbarWapper .common-topbar-nav-list li {
     float: left;
     height: 60px;
     line-height: 60px;
@@ -19,7 +20,7 @@ body{
     position: relative;
 }
 
-.topbarWapper>a{
+.topbarWapper > a {
     font-size: 14px;
     color: #fff;
     float: right;
@@ -29,13 +30,88 @@ body{
     padding: 0 32px;
 }
 
-.topbarWapper>a:hover{
+.topbarWapper > a:hover {
     text-decoration: none;
     background-color: #28d0e9;
     color: #fff;
 }
 
-.topbarWapper .common-topbar-nav-list li a{
+.topbarWapper .common-topbar-nav-list li a {
     color: #fff;
     font-size: 15px;
+}
+
+.topbarWapper .common-topbar-nav-list li a:hover {
+    color: #00c1de;
+}
+
+.topbarWapper .common-topbar-nav-list li span {
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    background: #1FAEFF;
+    top: 58px;
+    left: 50%;
+}
+
+/*地图wapper*/
+.mapWapper{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.mapWapper .point-area{
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #6ad7e9;
+    border-radius: 50%;
+}
+
+.mapWapper .point-area p{
+    position: absolute;
+    top: -7px;
+    font-size: 12px;
+    width: 70px;
+    height: 10px;
+    text-indent: 15px;
+}
+
+/*昆山坐标*/
+.mapWapper .point-area:nth-child(2){
+    top: 453px;
+    left: 875px;
+}
+
+/*南京坐标*/
+.mapWapper .point-area:nth-child(3){
+    top: 440px;
+    left: 830px;
+}
+
+/*毫州坐标*/
+.mapWapper .point-area:nth-child(4){
+    top: 415px;
+    left: 765px;
+}
+
+/*成都坐标*/
+.mapWapper .point-area:nth-child(5){
+    top: 465px;
+    left: 620px;
+}
+
+/*苏州坐标*/
+.mapWapper .point-area:nth-child(6){
+    top: 453px;
+    left: 865px;
+}
+
+/*连云港坐标*/
+.mapWapper .point-area:nth-child(7){
+    top: 405px;
+    left: 843px;
 }

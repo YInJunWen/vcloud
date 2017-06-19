@@ -113,6 +113,11 @@ def create_instance(request):
     return render(request, 'create_instance.html')
 
 
+# 中德感知
+def zdgz(request):
+    return render(request, 'zdgz.html')
+
+
 # 创建实例接口
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None).strip()
@@ -146,7 +151,7 @@ def chkcreate_instance(request):
     data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
                            storage=storage, expired=expired)
     data.save()
-    return render(request, 'login.html')
+    return render(request, 'overview.html')
 
 
     # def

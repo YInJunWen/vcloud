@@ -1,0 +1,160 @@
+html,body{
+	width: 100%;
+	height: 100%;
+	background: url(./star.png) no-repeat center center;
+	background-size: cover;
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	overflow: hidden;
+}
+
+header{
+	width: 100%;
+	height: 15%;
+	vertical-align: middle;
+	// border-bottom: 2px solid #f00;
+}
+
+
+header nav{
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	// padding: .5% 0;
+}
+
+.nav-left{
+	width: 15%;
+	height: 100%;
+	float: left;
+	// background: url(./logo.png) no-repeat center center;
+	background-size: contain;
+	box-sizing: border-box;
+	padding: 1.55% 1%;
+}
+
+.nav-left img{
+	width: 100%;
+	height: 100%;
+}
+
+.nav-mid{
+	width: 70%;
+	height: 100%;
+	float: left;
+	letter-spacing: 15px;
+	font-size: 35px;
+	box-sizing: border-box;
+	padding: 2.5% 1%;
+	color: #0EFDF3;
+}
+
+.nav-right{
+	width: 15%;
+	height: 100%;
+	float: left;
+	box-sizing: border-box;
+	padding: 2.5% 1%;
+	line-height: 350%;
+	/*color: #f00;*/
+}
+
+.container{
+	width: 100%;
+	height: 85%;
+}
+
+.container .contaier-left{
+	height: 100%;
+	width: 20%;
+	float: left;
+	// background: #f90;
+}
+
+.container .contaier-left h5{
+	text-align: center;
+	margin: 0;
+	font-size: 14px;
+	line-height: 15px;
+	padding: 3% 0;
+}
+
+.container .contaier-left .LeftSilderTop{
+	width: 100%;
+	height: 50%;
+	box-sizing: border-box;
+	// padding: 10% 0;
+	background: rgba(25, 55, 70, 0.48);
+}
+
+.container .contaier-left .LeftSilderTop #chart7{
+	width: 100%;
+	height: 100%;
+}
+
+.container .contaier-left .LeftSilderBottom{
+	width: 100%;
+	height: 50%;
+	box-sizing: border-box;
+	padding-top: 10%;
+	// background: rgba(25, 55, 70, 0.48);
+}
+
+.container .contaier-left .LeftSilderBottom #chart1{
+	width: 100%;
+	height: 100%;
+	// background: #abcdef;
+}
+
+.container .contaier-mid{
+	height: 100%;
+	float: left;
+	width: 60%;
+}
+.container .contaier-mid .ChinaMap{
+	width: 100%;
+	height: 70%;
+	background: url(./map.png) no-repeat center center;
+	background-size: contain;
+}
+
+.container .contaier-mid .bottomChart{
+	width: 100%;
+	height: 30%;
+	/*background: pink;*/
+}
+.container .contaier-mid .bottomChart .bottomChart1,
+.container .contaier-mid .bottomChart .bottomChart2,
+.container .contaier-mid .bottomChart .bottomChart3{
+	display: inline-block;
+	height: 100%;
+	width: 31%;
+	margin: 0 0.85%;
+}
+
+.container .contaier-mid .bottomChart .bottomChart1{
+	background: rgba(25, 55, 70, 0.48);
+}
+
+.container .contaier-mid .bottomChart .bottomChart2{
+	background: rgba(25, 55, 70, 0.48);
+}
+
+.container .contaier-mid .bottomChart .bottomChart3{
+	background: rgba(25, 55, 70, 0.48);
+}
+
+.container .contaier-right{
+	height: 100%;
+	float: left;
+	width: 20%;
+	// background: green;
+}
+
+.container .contaier-mid #chart3,
+.container .contaier-mid #chart4,
+.container .contaier-mid #chart5{
+	width: 100%;
+	height: 100%;
+}
