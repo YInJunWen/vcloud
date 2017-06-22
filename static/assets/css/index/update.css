@@ -71,6 +71,48 @@ body {
     border-radius: 50%;
 }
 
+.mapWapper .point-area:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #6ad7e9;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        opacity: .5;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(4);
+        transform: scale(4)
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: .5;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(4);
+        transform: scale(4)
+    }
+}
+
 .mapWapper .point-area p{
     position: absolute;
     top: -7px;
@@ -114,4 +156,23 @@ body {
 .mapWapper .point-area:nth-child(7){
     top: 405px;
     left: 843px;
+}
+
+.mapWapper .point-area:nth-child(2):after{
+    animation-delay: 0.25s;
+}
+.mapWapper .point-area:nth-child(3):after{
+    animation-delay: 0.5s;
+}
+.mapWapper .point-area:nth-child(4):after{
+    animation-delay: 0.75s;
+}
+.mapWapper .point-area:nth-child(5):after{
+    animation-delay: 1;
+}
+.mapWapper .point-area:nth-child(6):after{
+    animation-delay: 1.25s;
+}
+.mapWapper .point-area:nth-child(7):after{
+    animation-delay: 1.5s;
 }
