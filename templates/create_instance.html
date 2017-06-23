@@ -1,389 +1,224 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN" class="hd">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>云服务器_云主机_云服务器租用选中德宏泰弹性云，全国3强！</title>
-    <meta name="description"
-          content="云服务器，是中德宏泰核心云产品之一，凭借多年的云服务器运维和云主机开发经验，中德宏泰已经发展成为国内领先的云服务器提供商。为企业和个人网站提供安全、稳定的云主机和云服务器。">
-    <meta name="keywords" content="云服务器,云主机,云主机租用,云服务器租用, 云主机试用,云计算">
-    <!-- 1. 全局基础样式 -->
-    <link rel="stylesheet" href="/static/assets/css/buy/global.css">
-    <!-- 2. 全局常用UI模块样式 -->
-    <link rel="stylesheet" href="/static/assets/css/buy/common.css">
-    <!--书写样式-->
-    <link rel="stylesheet" href="/static/assets/css/buy/wjf-1.0.0.css">
-    <!--[ CSS LINKS PLACEHOLDER ]-->
-    <link rel="stylesheet" href="/static/assets/css/buy/cloudhost.css">
-    <script src="/static/assets/js/buy/html5.min.js"></script>
+	<meta charset="UTF-8">
+	<title>申请云主机</title>
+	<link rel="stylesheet" href="/static/assets/css/public/reset.css">
+	<link rel="stylesheet" href="/static/assets/css/buy/tipso.min.css">
+	<link rel="stylesheet" href="/static/assets/css/buy/jquery.range.css">
+	<link rel="stylesheet" href="/static/assets/css/buy/gobuy.css">
 </head>
-<body class="min990">
-<!--[if lt ie 9 ]>
-<script type="text/javascript" src="js/buy/jresponsed.js"></script> <![endif]-->
-<!--[if lte IE 7]>
-<div class="browser-notice hide" id="J_browserNotice">
-    <div class="wide1190 pos-r">
-        <p class="notice-content">您的浏览器版本太低，为推动浏览器W3C标准及更好的用户体验，本站强烈建议您升级到支持HTML5的浏览器，获取更好的用户体验。</p><i
-            class="close"></i>
-    </div>
-</div>
-<![endif]-->
-
-<!-- 内容区域 开始
-<div id="content">
-    <!- 弹性云主机+套餐云主机 开始 -->
-<div class="host-content">
-    <div class="wide1190">
-        <!-- 选项卡 -->
-        <ul class="wjf-ui-tab-style2 cl" id="J_cloudhostTabDom">
-            <li><a class="active" href="javascript:void(0);" data-target="J_txHostDom">创建实例</a></li>
-            <span onclick="window.history.back()" style="display: inline-block;float: right;padding: 16px 0;width: 200px;font-size: 20px;line-height: 1;text-align: center;cursor: pointer;">返回控制台</span>
-        </ul>
-        <div class="host-config cl">
-            <!-- 弹性云主机 开始 -->
-            <div class="wjf-ui-tab-content active pos-r" id="J_txHostDom">
-                <!-- 当前配置 开始 -->
-                <div class="current-config" id="J_currentConfigDom">
-                    <span class="config-title">当前配置</span>
-                    <!-- 集群ID 隐藏域 -->
-                    <form action="/chkcreate_instance/" name="buy" method="post" onsubmit="return chk_buy()">
-                        <p>
-                            <label class="">主机名：</label>
-{% if not err_name %}
-                            <input class="instance_name" placeholder="请在此输入主机名" name="instance_name" style="border: 1px solid #e5e5e5;box-shadow: 0 0 1px #999;line-height: 18px;text-indent: 5px;color: #999;">
-{% else %}
-<input class="instances_name" name="instance_name" style="border:solid 1px red ;box-shadow: 0 0 1px #ff0000;color:green;text-indent:5px" placeholder= "{{ err_name}}"1>
-                            {% endif %}
-                        </p>
-	        <p>
-                            <label class="">产品类型：</label>
-                            <input class="chanpinleixin ts_input" name="" readonly="readonly" value="商务型">
-                        </p>
-                        <p>
-                            <label class="">CPU：</label>
-                            <input class="cpu ts_input" readonly="readonly" value="2核">
-                            <input type="text" name="cpu" class="hide-form-input input-cpu" value="2">
-	            <input type="text" name="username" class="hide-form-input" value="{{ username }}">
-                        </p>
-                        <p>
-                            <label class="">内存：</label>
-                            <input class="neicun ts_input" readonly="readonly" value="4G">
-                            <input type="text" name="mem" class="hide-form-input input-mem" value="4">
-                        </p>
-                        <p>
-                            <label class="">硬盘：</label>
-                            <input class="yingpan ts_input" readonly="readonly" value="50G">
-                            <input type="text" name="disk" class="hide-form-input input-disk" value="50">
-                        </p>
-                        <p>
-                            <label class="">带宽：</label>
-                            <input class="daikuan ts_input" readonly="readonly" value="1Mbps">
-                            <input type="text" name="bandwidth" class="hide-form-input input-flux" value="1M">
-                        </p>
-                        <p>
-                            <label class="">操作系统：</label>
-                            <input class="caozuoxit ts_input" id="caozuoxit" readonly="readonly" value="--">
-                            <input type="text" name="os" class="hide-form-input input-os" value="-1">
-                        </p>
-                        <p>
-                            <label class="">存储模式：</label>
-                            <input class="chucunmoshi ts_input" readonly="readonly" value="SAS型硬盘">
-                            <input type="text" name="storage" class="hide-form-input input-storage" value="SAS">
-                        </p>
-                        <p style="padding-bottom: 20px;">
-                            <label class="">购买时长：</label>
-                            <input class="goumaishichang ts_input" readonly="readonly" placeholder="一个月">
-                            <input type="text" name="expired" class="hide-form-input input-expired" value="0">
-                        </p>
-                        <div id="priceDiscountDesc" class="orange" style="font-weight: bold;"></div>
-                        <div id="agreement_container" class="cl">
-                            <label for="J_agreement" class="dis-ib checked" id="J_agreement_label"></label>
-                            <div style="overflow:hidden">
-                                我已阅读并同意
-                                <br>
-                                <a href="" target="_blank">中德宏泰云服务器租用协议</a>
-                            </div>
-                        </div>
-                        <div id="J_buyBtnsContainer">
-                            <input type="submit" class="config-btn btn_buy" href="javascript:void(0);" value="立即购买">
-                        </div>
-                        {% csrf_token %}
-                    </form>
+<body>
+<div class="gobuyCenter">
+	<div class="container">
+		<div class="mod1">
+			<ul>
+				<li>
+					<a href="">
+						<img src="/static/assets/img/gobuy1.jpg" class="left" alt="">
+						<div class="imgTitle left">
+							<p class="title1">30元红包</p>
+							<p class="title2">新用户乐享30元</p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="/static/assets/img/gobuy2.jpg" class="left" alt="">
+						<div class="imgTitle left">
+							<p class="title1">68元性价比王</p>
+							<p class="title2">2核 4G内存 5M BGP带宽</p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="/static/assets/img/gobuy3.jpg" class="left" alt="">
+						<div class="imgTitle left">
+							<p class="title1">168元高防云</p>
+							<p class="title2">2核 4G 10M带宽 30G防御 </p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="/static/assets/img/gobuy4.jpg" class="left" alt="">
+						<div class="imgTitle left">
+							<p class="title1">38元香港云</p>
+							<p class="title2">1核CPU 1G内存 2M带宽</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="mod2">
+			<div class="ChildMenu">
+				<div class="ChildSelection ChildType">
+					<div class="Choice clearfix">
+						<span>类型：</span>
+					</div>
+					<a class="tipso" data-tipso="适用于中小企业展示型网站">入门型</a>
+					<a class="tipso" data-tipso="适用于企业官方网站、个人站长">标准型</a>
+					<a class="tipso a_class" data-tipso="适用于地方/行业门户网站">商务型</a>
+					<a class="tipso" data-tipso="适用于网上商城、团购网站等">舒适型</a>
+					<a class="tipso" data-tipso="适用于社区SNS/论坛/ERP/OACRM等">企业型</a>
+					<a class="tipso" data-tipso="适用于网络游戏，其它高端应用等">豪华型</a>
+					<!--<a class="tipso" data-tipso="适用于网络游戏，其它高端应用等">自定义</a>-->
+				</div>
+				<div class="ChildSelection ChildCpu">
+					<div class="Choice clearfix">
+						<span>CPU：</span>
+					</div>
+					<a class="tipso" data-tipso="建议至少用双核，单核在很多情况下容易发生CPU100%占用影响性能!">1核</a>
+					<a class="a_class">2核</a>
+					<a>4核</a>
+					<a>8核</a>
+				</div>
+				<div class="ChildSelection ChildMem">
+					<div class="Choice clearfix">
+						<span>内存：</span>
+					</div>
+					<a class="tipso" data-tipso="建议选择1G以上内存以获得更好的服务体验！">1G</a>
+					<a>2G</a>
+					<a class="a_class">4G</a>
+					<a>8G</a>
+					<a>16G</a>
+				</div>
+				<div class="ChildSelection ChildFlux">
+					<div class="Choice clearfix">
+						<span>带宽：</span>
+					</div>
+					<a>512kbps</a>
+					<a class="a_class">1Mbps</a>
+					<a>2Mbps</a>
+					<a>4Mbps</a>
+					<a>6Mbps</a>
+				</div>
+			</div>
+			<div class="gobuyForm">
+				<div class="gobuyFormWapper">
+                    <div class="formTitle">当前配置</div>
+				<div class="conf">
+					主机名：<span class="zjm">未填写</span>
+				</div>
+				<div class="conf">
+					类　型：<span class="Form_lx">商务型</span>
+				</div>
+				<div class="conf">
+					CPU　：<span class="Form_cpu">2核</span>
+				</div>
+				<div class="conf">
+					内　存：<span class="Form_mem">4G</span>
+				</div>
+				<div class="conf">
+					带　宽：<span class="Form_flux">1Mbps</span>
+				</div>
+				<div class="conf">
+					硬　盘：<span class="Form_yp">50</span>
+				</div>
+				<div class="conf">
+					数据盘：<span class="Form_storage">SAS型硬盘</span>
+				</div>
+				<div class="conf">
+					系　统：<span class="Form_os">--</span>
+				</div>
+				<div class="conf">
+					时　长：<span class="Form_time">1个月</span>
+				</div>
+				<div class="conf">
+					数　量：<span class="Form_sl">1台</span>
+				</div>
+				<div class="conf">
+					费　用：<span class="" style="text-decoration:line-through;">￥142</span>
+				</div>
+				<div class="price-warp">
+					<span>￥128</span>
+				</div>
+				<div class="buyBtn">
+					<input type="button" class="ljgm" value="立即购买">
+				</div>
                 </div>
-                <!-- 当前配置 结束 -->
-                <div class="tx-host">
-                    <div class="tuijian-config" id="J_tuijianBtnsDom">
-                        <a class="pos-r rumen" href="javascript:void(0);" data-value="basic" data-type="tejia">入门型
-                            <div class="manager-tip">适用于中小企业展示型网站<i></i></div>
-                        </a>
-                        <a class="pos-r biaozhun" href="javascript:void(0);" data-value="standard" data-type="biaozhun">标准型
-                            <div class="manager-tip">适用于企业官方网站、个人站长<i></i></div>
-                        </a>
-                        <a class="pos-r shangwu" href="javascript:void(0);" data-value="business" data-type="shangwu">商务型
-                            <div class="manager-tip">适用于地方/行业门户网站<i></i></div>
-                        </a>
-                        <a class="pos-r shushi" href="javascript:void(0);" data-value="comfortable">舒适型
-                            <div class="manager-tip">适用于网上商城、团购网站等<i></i></div>
-                        </a>
-                        <a class="pos-r qiye" href="javascript:void(0);" data-value="enterprise">企业型
-                            <div class="manager-tip" style="width: 204px;">适用于社区SNS/论坛/ERP/OACRM等<i></i></div>
-                        </a>
-                        <a class="pos-r haohua" href="javascript:void(0);" data-value="luxury">豪华型
-                            <div class="manager-tip">适用于网络游戏，其它高端应用等<i></i></div>
-                        </a>
-                    </div>
-                    <div class="config-box cl">
-                        <label for="">CPU:</label>
-
-                        <div class="right-side cl">
-                            <div class="low-config-tip" id="J_cpuLowTip">
-                                建议至少用双核，单核在很多情况下容易发生CPU100%占用影响性能!
-                            </div>
-                            <span class="config-modify config-minus" data-target="cpu"></span>
-                            <input type="text" data-orig-type="range" name="cpu" id="cpuRange" class="range hide"
-                                   onfocus="this.blur();" oninput="cpuRange()">
-                            <span class="config-modify config-plus" data-target="cpu"></span>
-                            <span class="config-count dis-ib" id="cpuCount">4核</span>
-                            <ul class="range-desc cl" id="J_cpuRangeDesc">
-                                <li data-index="1"><a href="javascript:void(0);">1核</a></li>
-                                <li data-index="2"><a href="javascript:void(0);">2核</a></li>
-                                <li data-index="3"><a href="javascript:void(0);">4核</a></li>
-                                <li data-index="4"><a href="javascript:void(0);">8核</a></li>
-                                <!--<li data-index="5"><a href="javascript:void(0);">12核</a></li>-->
-                                <!--<li data-index="6" class="last"><a href="javascript:void(0);">16核</a></li>-->
-                            </ul>
-                        </div>
-                    </div>
-                    <div style="position:absolute;margin-top:-60px;margin-left:115px;">
-                        <a class="pos-r" href="javascript:void(0);">
-                            <span class="icon-question"></span>
-                            <div class="manager-tip" style=" top: 30px;left: -16px; width: 264px; z-index: 100;">
-                                CPU越多，计算速度越快。
-                                <br/>对网站访问量较大的网站，推荐使用4核或8核CPU！
-                                <i></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="config-box cl">
-                        <label for="">内存:</label>
-
-                        <div class="right-side cl">
-                            <div class="low-config-tip" id="J_ramLowTip">
-                                建议选择1G以上内存以获得更好的服务体验！
-                            </div>
-                            <span class="config-modify config-minus" data-target="ram"></span>
-                            <input type="text" data-orig-type="range" name="ram" id="ramRange" class="range hide"
-                                   onfocus="this.blur();">
-                            <span class="config-modify config-plus" data-target="ram"></span>
-                            <span class="config-count dis-ib" id="ramCount">4G</span>
-                            <ul class="range-desc cl" id="J_ramRangeDesc">
-                                <li data-index="1"><a href="javascript:void(0);">1G</a></li>
-                                <li data-index="2"><a href="javascript:void(0);">2G</a></li>
-                                <li data-index="3"><a href="javascript:void(0);">4G</a></li>
-                                <li data-index="4"><a href="javascript:void(0);">8G</a></li>
-                                <li data-index="5"><a href="javascript:void(0);">16G</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div style="position:absolute;margin-top:-60px;margin-left:115px;">
-                        <a class="pos-r" href="javascript:void(0);">
-                            <span class="icon-question"></span>
-                            <div class="manager-tip" style=" top: 30px;left: -16px; width: 264px; z-index: 100;">
-                                内存越大，速度越快；
-                                <br/>为保证良好的体验，512M内存不提供windows操作系统。
-                                <i></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="config-box cl">
-                        <label for="">硬盘:</label>
-                        <div class="right-side cl">
-                            <span class="config-modify config-minus" data-target="data"></span>
-                            <input type="text" data-orig-type="range" name="data" id="dataRange" class="range hide"
-                                   onfocus="this.blur();">
-                            <span class="config-modify config-plus" data-target="data"></span>
-                            <span class="config-count dis-ib" id="dataCount">50G</span>
-                            <ul class="range-desc cl" id="J_dataRangeDesc">
-                                <li data-index="1" class="first"><a href="javascript:void(0);">50G</a></li>
-                                <li data-index="2"><a href="javascript:void(0);">100G</a></li>
-                                <li data-index="3"><a href="javascript:void(0);">200G</a></li>
-                                <li data-index="4" class="last"><a href="javascript:void(0);">500G</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div style="position:absolute;margin-top:-60px;margin-left:115px">
-                        <a class="pos-r" href="javascript:void(0);">
-                            <span class="icon-question"></span>
-                            <div class="manager-tip" style=" top: 30px;left: -16px; width: 264px; ">
-                                最低50G硬盘，其中系统盘分配大小为30GB(可在开通后升级扩容系统盘)；
-                                <br/>数据盘默认为20GB，数据盘以10G递增。
-                                <i></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="config-box cl">
-                        <label for="">带宽:</label>
-                        <div class="right-side cl flux-container">
-                            <span class="config-modify config-minus" data-target="flux"></span>
-                            <input type="text" data-orig-type="range" name="flux" id="fluxRange" class="range hide"
-                                   onfocus="this.blur();">
-                            <span class="config-modify config-plus" data-target="flux"></span>
-                            <span class="config-count dis-ib" id="fluxCount">1Mbps</span>
-                            <ul class="range-desc cl" id="J_fluxRangeDesc">
-                                <li data-index="1"><a href="javascript:void(0);">512Kbps</a></li>
-                                <li data-index="2"><a href="javascript:void(0);">1Mbps</a></li>
-                                <li data-index="3"><a href="javascript:void(0);">2Mbps</a></li>
-                                <li data-index="4"><a href="javascript:void(0);">4Mbps</a></li>
-                                <li data-index="5"><a href="javascript:void(0);">6Mbps</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div style="position:absolute;margin-top:-60px;margin-left:115px;">
-                        <a class="pos-r" href="javascript:void(0);">
-                            <span class="icon-question"></span>
-                            <div class="manager-tip" style=" top: 30px;left: -16px; width: 264px; ">
-                                带宽越大，速度越快、支持的同时访问人数更多。
-                                <br/>1M带宽仅适合于测试、挂机等应用，网站应用至少2M，推荐3M以上带宽！
-                                <i></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="config-box cl" style="zoom: 1; overflow:visible;">
-                        <label>操作系统：</label>
-                        <div class="right-side">
-                            <span class="wjf-ui-select-wrapper">
-                                <span class="wjf-ui-select" id="systemTypeDom">
-
-                                </span>
-                            </span>
-                            <span class="wjf-ui-select-wrapper">
-                                <span class="wjf-ui-select" id="systemSubTypeDom"></span>
-                                <ul class="wjf-ui-select-container" id="systemSubTypeContainer">
-                                </ul>
-                            </span>
-                        </div>
-                        <!-- 操作系统子项 window与linux子项分别渲染-->
-                        <ul class="hide" id="windowSubItems">
-                            <!--<li class="item selected first windXT" data-value="">-->
-                                <!--请选择相关版本-->
-                                <!--<i class="trangle-arrow pngFix">-->
-                                <!--</i>-->
-                            <!--</li>-->
-                            <li class="item windXT OSbar" data-value="win_2008">
-                                <i class="icon-type windows"></i>
-                                Win2008R2 64位(纯净版)
-                                <i class="icon-ver icon-64"></i>
-                            </li>
-                            <li class="item windXT" data-value="win2008_en_clean">
-                                <i class="icon-type windows"></i>
-                                Win2008R2 64位(预装SQLServer)
-                                <i class="icon-ver icon-64"></i>
-                            </li>
-                            <li class="item windXT" data-value="win_2012_mssql2012">
-                                <i class="icon-type windows"></i>
-                                win2012R2 64位(纯净版)
-                                <i class="icon-ver icon-64"></i>
-                            </li>
-                            <li class="item windXT" data-value="win_2012_mssql2012">
-                                <i class="icon-type windows">
-                                </i>
-                                win2012R2 64位(预装SQLServer)
-                                <i class="icon-ver icon-64">
-                                </i>
-                            </li>
-                        </ul>
-                        <ul class="hide" id="linuxSubItems">
-                            <!--<li class="item selected first LinuxXT" data-value="">-->
-                                <!--请选择相关版本-->
-                                <!--<i class="trangle-arrow pngFix">-->
-                                <!--</i>-->
-                            <!--</li>-->
-                            <li class="item LinuxXT" data-value="linux_centos7">
-                                <i class="icon-type linux">
-                                </i>
-                                Linux 64位(CentOS7.2,纯净版)
-                                <i class="icon-ver icon-64">
-                                </i>
-                            </li>
-                            <li class="item LinuxXT" data-value="linux_centos7_lamp">
-                                <i class="icon-type linux">
-                                </i>
-                                Linux 64位(CentOS7.2,纯净版 + Lamp)
-                                <i class="icon-ver icon-64">
-                                </i>
-                            </li>
-                        </ul>
-                        <ul class="hide" id="customSubItems">
-                            <li class="item selected first" data-value="">
-                                请选择相关版本
-                                <i class="trangle-arrow pngFix">
-                                </i>
-                            </li>
-                        </ul>
-                    </div>
-                    <div style="position:absolute;margin-top:-35px;margin-left:113px;">
-                        <a class="pos-r" href="javascript:void(0);">
-                            <span class="icon-question"></span>
-                            <div class="manager-tip" style=" top: 30px;left: -16px; width: 264px; z-index: 9999;">
-                                为了保证良好的性能体验，512M内存不提供windows操作系统
-                                <br/>Sqlserver2000至少需要1G内存
-                                <br/>Sqlserver2005至少需要2G内存
-                                <br/>Sqlserver2008至少需要3G内存
-                                <br/>Windows Server 2008 至少需要2G内存
-                                <br/>Windows server2012至少需要3G内存
-                                <!--<br/>若您想要其他系统，可以开通成功后自己上传ISO文件安装！-->
-                                <i></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="config-box cl" id="J_diskTypeContainerDom">
-                        <label>存储模式：</label>
-                        <a class="link-btn active ml-15 fensanCun" href="javascript:void(0);" data-value="ebs">SAS型硬盘</a>
-                        <!--<a class="link-btn ssdCun" href="javascript:void(0);" data-value="ssd" style="background: #333" >SSD硬盘</a>-->
-                    </div>
-                    <div style="position:absolute;margin-top:-54px;margin-left:112px;"><a class="pos-r" href="" target="_blank">
-                        <span class="icon-question"></span>
-                        <div class="manager-tip" style=" top: 30px;left: -16px; width: 264px; z-index: 100;">
-                            <strong>SAS硬盘:</strong><br/>每份数据保留4份，安全性和稳定性更高，支持热迁移。适合对稳定性、安全性要求很高的应用。<br/><strong>SSD硬盘：</strong><br/>采用Intel企业级高端SSD硬盘，形成Raid阵列，拥有极高的随机读写IOPS。价格较贵，适合对IO要求特别高的应用。
-                            <i></i>
-                        </div>
-                    </a></div>
-
-                    <div class="count-info">
-                        <p class="title">购买时长</p>
-                        <div class="config-box cl" style="overflow: visible;">
-                            <label>购买时长：</label>
-                            <dl class="config-time cl" id="J_renewTimeContainerDom">
-                                <dt data-value="1" data-desc="1个月" data-gift="" class="active">1个月
-
-                                <dt data-value="2" data-desc="3个月" data-gift="">3个月
-                                </dt>
-                                <dt data-value="3" class="gift" data-desc="6个月" data-gift="半个月">6个月
-
-                                </dt>
-                                <dt data-value="4" class="gift" data-desc="1年" data-gift="2个月">12个月
-
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 购买表单数据提交 -->
-
-            <!-- 弹性云主机 结束 -->
-        </div>
-    </div>
+			</div>
+		</div>
+		<div class="mod3">
+			<div class="ChildMenu">
+				<div class="ChildSelection">
+					<div class="Choice clearfix">
+						<span>硬盘：</span>
+					</div>
+					<input type="hidden" class="single-slider hideInput" value="50" />
+				</div>
+				<div class="ChildSelection">
+					<div class="Choice clearfix">
+						<span>数据盘：</span>
+					</div>
+					<a class="tipso a_class" data-tipso="每份数据保留4份，安全性和稳定性更高，支持热迁移。适合对稳定性、安全性要求很高的应用。">SAS型硬盘</a>
+					<a class="tipso" data-tipso="采用Intel企业级高端SSD硬盘，形成Raid阵列，拥有极高的随机读写IOPS。价格较贵，适合对IO要求特别高的应用。(暂未开放)" style="text-decoration:line-through;cursor: not-allowed">SSD型硬盘</a>
+				</div>
+				<div class="ChildSelection">
+					<div class="Choice clearfix">
+						<span>操作系统：</span>
+					</div>
+					<select name="" id="os_Name">
+						<option value="" selected="selected">---请选择---</option>
+						<option value="">Windows</option>
+						<option value="">Linux</option>
+					</select>
+					<select class="os_Option">
+						<option value="" selected="selected">---请选择---</option>
+					</select>
+					<select class="os_Option">
+						<option value="" selected="selected">---请选择---</option>
+						<option value="">Win2008R2 64(纯净版)</option>
+						<option value="">Win2008R2 64(SQLServer)</option>
+						<option value="">Win2012R2 64(纯净版)</option>
+						<option value="">Win2012R2 64(SQLServer)</option>
+					</select>
+					<select class="os_Option">
+						<option value="" selected="selected">---请选择---</option>
+						<option value="">CentOS7.2纯净版</option>
+						<option value="">CentOS7.2纯净版 + Lamp</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="mod4">
+			<div class="ChildMenu">
+				<div class="ChildSelection">
+					<div class="Choice clearfix">
+						<span>主机名：</span>
+					</div>
+					<input type="text" placeholder="请输入名称" class="Host_Name"><span style="color: #f00"> ( * 必填 )</span>
+				</div>
+				<div class="ChildSelection ChildBuyTime">
+					<div class="Choice clearfix">
+						<span>购买时长：</span>
+					</div>
+					<a class="a_class">1个月</a>
+					<a>2个月</a>
+					<a>3个月</a>
+					<a>6个月</a>
+					<a>12个月</a>
+				</div>
+				<div class="ChildSelection">
+					<div class="Choice clearfix">
+						<span>购买数量：</span>
+					</div>
+					<!--<input type="number" style="width: 75px;" oninput="if(value.length>3)value=value.slice(0,3)" > 台-->
+					<div class="buyNumber">
+						<span class="btn jian buyNumberEnd">-</span>
+						<input type="text" value="1" class="buy_number">
+						<span class="btn jia">+</span>
+					</div>
+					<span style="width: 14px;height: 36px;margin-left: 12px;line-height: 36px;">台</span>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<!-- 内容区域 结束 -->
-<!-- 公共JS -->
-<script type="text/javascript" src="/static/assets/js/buy/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="/static/assets/js/buy/wjf-1.0.0.js"></script>
-<script type="text/javascript" src="/static/assets/js/buy/jquery.tools.rangeinput.min.js"></script>
-<!-- 重要的js -->
-<script type="text/javascript" src="/static/assets/js/buy/cloudhost2016.js"></script>
-<!-- 页面通用滚动插件 -->
-<script type="text/javascript" src="/static/assets/js/buy/jquery.SuperSlide.2.1.1.source.js"></script>
-<script type="text/javascript" src="/static/assets/js/buy/buy.js"></script>
+<script src="/static/assets/js/public/jquery.min.js"></script>
+<script src="/static/assets/js/buy/tipso.min.js"></script>
+<script src="/static/assets/js/buy/jquery.range.js"></script>
+<script src="/static/assets/js/buy/gobuy.js"></script>
 </body>
 </html>
-
