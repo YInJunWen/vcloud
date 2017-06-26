@@ -95,38 +95,38 @@
 					<a>6Mbps</a>
 				</div>
 			</div>
-			<div class="gobuyForm">
+			<form class="gobuyForm" method="post" action="/chkcreate_instance/" onsubmit="return checkForm()">
 				<div class="gobuyFormWapper">
                     <div class="formTitle">当前配置</div>
 				<div class="conf">
-					主机名：<span class="zjm">未填写</span>
+					主机名：<input class="zjm" value="未填写" readonly name="instance_name">
 				</div>
 				<div class="conf">
-					类　型：<span class="Form_lx">商务型</span>
+					类　型：<input class="Form_lx" value="商务型" readonly name="">
 				</div>
 				<div class="conf">
-					CPU　：<span class="Form_cpu">2核</span>
+					CPU　：<input class="Form_cpu" value="2核" readonly name="cpu">
 				</div>
 				<div class="conf">
-					内　存：<span class="Form_mem">4G</span>
+					内　存：<input class="Form_mem" value="4G" readonly name="mem">
 				</div>
 				<div class="conf">
-					带　宽：<span class="Form_flux">1Mbps</span>
+					带　宽：<input class="Form_flux" value="1Mbps" readonly name="bandwidth">
 				</div>
 				<div class="conf">
-					硬　盘：<span class="Form_yp">50</span>
+					硬　盘：<input class="Form_yp" value="50" readonly name="disk">
 				</div>
 				<div class="conf">
-					数据盘：<span class="Form_storage">SAS型硬盘</span>
+					数据盘：<input class="Form_storage" value="SAS型硬盘" readonly name="storage">
 				</div>
 				<div class="conf">
-					系　统：<span class="Form_os">--</span>
+					系　统：<input class="Form_os" value="--" readonly name="os">
 				</div>
 				<div class="conf">
-					时　长：<span class="Form_time">1个月</span>
+					时　长：<input class="Form_time" value="1个月" readonly name="expired">
 				</div>
 				<div class="conf">
-					数　量：<span class="Form_sl">1台</span>
+					数　量：<input class="Form_sl" value="1台" readonly name="buyNumber">
 				</div>
 				<div class="conf">
 					费　用：<span class="" style="text-decoration:line-through;">￥142</span>
@@ -135,10 +135,10 @@
 					<span>￥128</span>
 				</div>
 				<div class="buyBtn">
-					<input type="button" class="ljgm" value="立即购买">
+					<input type="submit" class="ljgm" value="立即购买">
 				</div>
                 </div>
-			</div>
+			</form>
 		</div>
 		<div class="mod3">
 			<div class="ChildMenu">
@@ -188,7 +188,11 @@
 					<div class="Choice clearfix">
 						<span>主机名：</span>
 					</div>
-					<input type="text" placeholder="请输入名称" class="Host_Name"><span style="color: #f00"> ( * 必填 )</span>
+                    {% if err_name %}
+                        <input type="text" placeholder="名称已存在" class="Host_Name"><span style="color: #f00"> ( * 请重新输入 )</span>
+                    {% else %}
+					    <input type="text" placeholder="请输入名称" class="Host_Name"><span style="color: #f00"> ( * 必填 )</span>
+                    {% endif %}
 				</div>
 				<div class="ChildSelection ChildBuyTime">
 					<div class="Choice clearfix">
@@ -216,7 +220,7 @@
 		</div>
 	</div>
 </div>
-<script src="/static/assets/js/public/jquery.min.js"></script>
+<script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
 <script src="/static/assets/js/buy/tipso.min.js"></script>
 <script src="/static/assets/js/buy/jquery.range.js"></script>
 <script src="/static/assets/js/buy/gobuy.js"></script>

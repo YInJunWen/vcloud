@@ -5,7 +5,9 @@ import time
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponsePermanentRedirect, HttpResponse
+from django.http import HttpResponsePermanentRedirect, HttpResponse,HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import *
 
 
@@ -119,39 +121,43 @@ def zdgz(request):
 
 
 # 创建实例接口
+# 防止页面403不提交引入 csrf
+@csrf_exempt
 def chkcreate_instance(request):
-    ins_name = request.POST.get('instance_name', None).strip()
-    cpu = request.POST.get('cpu', 0)
-    mem = request.POST.get('mem', 0)
-    disk = request.POST.get('disk', 0)
-    bandwidth = request.POST.get('bandwidth', None)
-    os = request.POST.get('os', None)
-    storage = request.POST.get('storage', None)
-    expired = request.POST.get('expired', None)
-    same = instance_Orders.objects.filter(instance_name=ins_name)
-    if same:
+    ins_name = request.POST.get('instance_name', None)
+    sameName = instance_Orders.objects.filter(instance_name=ins_name)
+    if sameName:
+        print '123'
         return render(request, 'create_instance.html', {'err_name': '此名称已存在'})
+    cpu = request.POST.get('cpu', 2)
+    mem = request.POST.get('mem', 4)
+    disk = request.POST.get('disk', 50)
+    bandwidth = request.POST.get('bandwidth', 1)
+    os = request.POST.get('os', None)
+    storage = request.POST.get('storage', 'sas')
+    expired = request.POST.get('expired', 1)
+    buyNumber = request.POST.get('buyNumber', 1)
+
     # 选择操作系统
-    if os == 'Win0':
+    if os == 'Win2008R2 64(纯净版)':
         os = "win2008R2"
-    if os == 'Win1':
+    if os == 'Win2008R2 64(SQLServer)':
         os = "win2008R2Sql2008R2"
-    if os == "Win2":
+    if os == "Win2012R2 64(纯净版)":
         os = "win2012R2"
-    if os == "Win3":
+    if os == "Win2012R2 64(SQLServer)":
         os = "win2012R2Sql2012R2"
-    if os == "Cent0":
+    if os == "CentOS7.2纯净版":
         os = "Cenots7.2"
-    if os == "Cent1":
+    if os == "CentOS7.2纯净版 + Lamp":
         os = "Centos7.2_lamp"
     # 生成订单
     # ...
     # 生成操作日志
     # ...
-    data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
-                           storage=storage, expired=expired)
+    data = instance_Orders(instance_name=ins_name, mem=_mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
+                           storage=storage, expired=expired, buyNumber=buyNumber)
     data.save()
     return render(request, 'overview.html')
 
 
-    # def

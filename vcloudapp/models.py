@@ -6,7 +6,6 @@ import datetime
 from django.db import models
 from django.db import connection, transaction
 
-
 # Create your models here.
 
 
@@ -48,6 +47,7 @@ class instance_Orders(models.Model):
     os = models.CharField(max_length=30)
     storage = models.CharField(max_length=30, default='sas')
     expired = models.IntegerField(default=30)
+    buyNumber = models.IntegerField(default=1)
 
     class Meta:
         db_table = 'instance_orders'

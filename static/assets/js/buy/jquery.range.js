@@ -225,8 +225,8 @@
 			var text;
 			var value = this.positionToValue(position);
 
-			//  硬盘数值
-			$('.Form_yp').text(value+'G');
+			//  硬盘数值val
+			$('.Form_yp').val(value+'G');
 
 			if ($.isFunction(this.options.format)) {
 				var type = this.isSingle() ? undefined : (pointer.hasClass('low') ? 'low' : 'high');

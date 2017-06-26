@@ -15,11 +15,11 @@
                 <li id="right">
                     <span>我已注册，现在就</span>
                     <span>
-                    <a href="{% url 'go_login' %}">登录</a></span>
+                    <a href="/login/">登录</a></span>
                 </li>
                 <div class="clear"></div>
             </ul>
-            <form class="regform" method="post" action="/check_regist/" name="register" onsubmit="return Rt_check();">
+            <form class="regform" method="post" action="/userRegister/" name="register" onsubmit="return Rt_check();">
                 <ol>
                     <li style="clear: both;">
                         <label for="username">用户名</label>
