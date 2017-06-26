@@ -37,20 +37,30 @@ $(function(){
     //  Child > a
     $('.ChildType a, .ChildCpu a, .ChildMem a, .ChildFlux a, .ChildBuyTime a').click(function(){
         $(this).addClass('a_class').siblings('.ChildType a, .ChildCpu a, .ChildMem a, .ChildFlux a, .ChildBuyTime a').removeClass('a_class');
+        // 处理返回数量
+        var number = parseInt($(this).text());
+        // 判断带宽512
+        if (number === 512) {
+            number = 0.5;
+        }
         if($(this).parent().hasClass('ChildType')){
             $('.Form_lx').val($(this).text());
         }
         if($(this).parent().hasClass('ChildCpu')){
             $('.Form_cpu').val($(this).text());
+            $('.h_Form_cpu').val(number);
         }
         if($(this).parent().hasClass('ChildMem')){
             $('.Form_mem').val($(this).text());
+            $('.h_Form_mem').val(number);
         }
         if($(this).parent().hasClass('ChildFlux')){
             $('.Form_flux').val($(this).text());
+            $('.h_Form_flux').val(number);
         }
         if($(this).parent().hasClass('ChildBuyTime')){
             $('.Form_time').val($(this).text());
+            $('.h_Form_time').val(number);
         }
     });
 
@@ -66,6 +76,7 @@ $(function(){
         $(this).prev().prev().removeClass('buyNumberEnd');
         $(this).parents('.buyNumber').find('input').val(Numbers);
         $('.Form_sl').val(Numbers+'台');
+        $('.h_Form_sl').val(Numbers);
     });
     $('.buyNumber .jian').click(function () {
         //  获取购买数量
@@ -81,12 +92,14 @@ $(function(){
         $(this).prev().prev().removeClass('buyNumberEnd');
         $(this).parents('.buyNumber').find('input').val(Numbers);
         $('.Form_sl').val(Numbers+'台');
+        $('.h_Form_sl').val(Numbers);
     });
 
     //  select 选择
     $('.os_Option').change(function(){
         var value = $(this).children('option:selected').text();
         $('.Form_os').val(value);
+        $('.h_Form_os').val(value);
     });
 
     $('.buy_number').change(function(){
@@ -96,11 +109,13 @@ $(function(){
             $(this).val(value);
         }
         $('.Form_sl').val(value+'台');
+        $('.h_Form_sl').val(value);
     });
 
     //  主机名联动
     $('.Host_Name').keyup(function(){
         $('.zjm').val($(this).val());
+        $('.h_zjm').val($(this).val());
     });
 
 
@@ -161,6 +176,7 @@ $(function(){
 function checkForm() {
     var ins_name = $('.zjm').val();
     var os = $('.Form_os').val();
+    var disk = $('.Form_yp').val();
     if ((ins_name == '未填写') || (ins_name == '')){
         alert('未填写主机名！');
         $('.Host_Name').focus();
@@ -168,6 +184,10 @@ function checkForm() {
     }
     if ((os == '--') || (os == '---请选择---')){
         alert('未选择操作系统！');
+        return false;
+    }
+    if (disk <= 50) {
+        alert('硬盘必须大于50G');
         return false;
     }
 }

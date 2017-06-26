@@ -1,217 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>cloud computing</title>
-	<link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="/static/assets/css/public/reset.css">
-	<link rel="stylesheet" href="/static/assets/css/public/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/static/assets/css/console/bootstrap-datepicker3.min.css">
-	<link rel="stylesheet" href="/static/assets/css/public/buttons.css">
-	<link rel="stylesheet" href="/static/assets/css/console/console.css">
-	<link rel="stylesheet" href="/static/assets/css/console/2.css">
-	<link rel="stylesheet" href="/static/assets/css/console/order_create.css">
-	<link rel="stylesheet" href="/static/assets/css/console/order_detail.css">
-	<link rel="stylesheet" href="/static/assets/css/public/paging.css"></link>
-	<link rel="stylesheet" id="skin_id" href=""
+    <meta charset="UTF-8">
+    <title>cloud computing</title>
+    <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/assets/css/public/reset.css">
+    <link rel="stylesheet" href="/static/assets/css/public/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/assets/css/console/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/static/assets/css/public/buttons.css">
+    <link rel="stylesheet" href="/static/assets/css/console/console.css">
+    <link rel="stylesheet" href="/static/assets/css/console/2.css">
+    <link rel="stylesheet" href="/static/assets/css/console/order_create.css">
+    <link rel="stylesheet" href="/static/assets/css/console/order_detail.css">
+    <link rel="stylesheet" href="/static/assets/css/public/paging.css">
+    <link rel="stylesheet" id="skin_id" href="">
 </head>
 <body>
-	<!--弹出IE8不支持框-->
-	<!--[if lt IE 8]>
+<!--弹出IE8不支持框-->
+<!--[if lt IE 8]>
     <script src="/static/assets/js/console/ie8_.js"></script>
     <![endif]-->
-    <!--[if IE 8]>
+<!--[if IE 8]>
     <script src="/static/assets/js/console/ie8.js"></script>
     <![endif]-->
-	<!--[if lt IE 9]>
+<!--[if lt IE 9]>
 		<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
-	<header>
-		<div class="header-top">
-			<div class="nav-bar">
-				<!-- l bar -->
-				<div class="leftbar">
-					<ul>
-						<li>
-							<!-- company icon -->
-							<a href="">
-								<span></span>
-							</a>
-						</li>
-						<li>
-							<!-- console center -->
-							<div class="console_center">
-								管理控制台
-							</div>
-						</li>
-					</ul>
-				</div>
-				<!-- r bar -->
-				<div class="rightbar">
-					<ul>
-						<li id="rightBarlist1">
-							<a href="">
-								<span class="fa fa-cog fa-spin"></span>  切换皮肤
-							</a>
-							<!--<input type="text" class="searchBox" placeholder="搜索">-->
-							<div class="searchBox">
-								<ol>
-									<li class="body_skin1">skin_A</li>
-									<li class="body_skin2">skin_B</li>
-									<li class="body_skin3">skin_C</li>
-								</ol>
-							</div>
-						</li>
-						<li id="rightBarlist3">
-							<a href="">工单</a>
-							<ul class="workMessage">
-								<li><a href="/order/">我的工单</a></li>
-								<li><a href="/order_create/">创建工单</a></li>
-							</ul>
-						</li>
-						<li id="rightBarlist4">
-							<a href="">支持</a>
-							<ul class="beiAn">
-								<li><a href="">帮助与文档</a></li>
-								<li><a href="">论坛</a></li>
-								<li><a href="">博客</a></li>
-							</ul>
-						</li>
+<header>
+    <div class="header-top">
+        <div class="nav-bar">
+            <!-- l bar -->
+            <div class="leftbar">
+                <ul>
+                    <li>
+                        <!-- company icon -->
+                        <a href="">
+                            <span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- console center -->
+                        <div class="console_center">
+                            管理控制台
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- r bar -->
+            <div class="rightbar">
+                <ul>
+                    <li id="rightBarlist1">
+                        <a href="">
+                            <span class="fa fa-cog fa-spin"></span> 切换皮肤
+                        </a>
+                        <!--<input type="text" class="searchBox" placeholder="搜索">-->
+                        <div class="searchBox">
+                            <ol>
+                                <li class="body_skin1">skin_A</li>
+                                <li class="body_skin2">skin_B</li>
+                                <li class="body_skin3">skin_C</li>
+                            </ol>
+                        </div>
+                    </li>
+                    <li id="rightBarlist3">
+                        <a href="">工单</a>
+                        <ul class="workMessage">
+                            <li><a href="/order/">我的工单</a></li>
+                            <li><a href="/order_create/">创建工单</a></li>
+                        </ul>
+                    </li>
+                    <li id="rightBarlist4">
+                        <a href="">支持</a>
+                        <ul class="beiAn">
+                            <li><a href="">帮助与文档</a></li>
+                            <li><a href="">论坛</a></li>
+                            <li><a href="">博客</a></li>
+                        </ul>
+                    </li>
 
-						<li id="rightBarlist6">
-							<a href="">{{ username }}</a>
-							<div class="personCenter">
-								<div class="personCenterBox">
-									<a href="">
-										<span class="fa fa-book"></span>
-										<span>个人资料</span>
-									</a>
-									<a href="">
-										<span class="fa fa-book"></span>
-										<span>更改密码</span>
-									</a>
-									<a href="">
-										<span class="fa fa-book"></span>
-										<span>操作日志</span>
-									</a>
-									<a href="/logout/">
-										<span class="fa fa-book"></span>
-										<span>退&nbsp;&nbsp;出</span>
-									</a>
-								</div>
-								<p>本次登录时间 :</p>
-								<p id="NowTime">{{ logtime }}</p>
-								<!--<a href="">退出管理控制台</a>-->
-							</div>
-						</li>
+                    <li id="rightBarlist6">
+                        <a href="">{{ username }}</a>
+                        <div class="personCenter">
+                            <div class="personCenterBox">
+                                <a href="">
+                                    <span class="fa fa-book"></span>
+                                    <span>个人资料</span>
+                                </a>
+                                <a href="">
+                                    <span class="fa fa-book"></span>
+                                    <span>更改密码</span>
+                                </a>
+                                <a href="">
+                                    <span class="fa fa-book"></span>
+                                    <span>操作日志</span>
+                                </a>
+                                <a href="/logout/">
+                                    <span class="fa fa-book"></span>
+                                    <span>退&nbsp;&nbsp;出</span>
+                                </a>
+                            </div>
+                            <p>本次登录时间 :</p>
+                            <p id="NowTime">{{ logtime }}</p>
+                            <!--<a href="">退出管理控制台</a>-->
+                        </div>
+                    </li>
 
-					</ul>
-				</div>
-			</div>
-		</div>
-	</header>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
 
-	<div class="bodyAll">
-		<div class="uc-nav">
-			<ul>
-				<li>
-					<a class="nav__item nav__item--dashbord nav__item--current" target="" href="/overview/">
-						<span class="nav__icon icon__dashboard icon--md nav__icon--current"></span>
-						<span class="nav__title">
+<div class="bodyAll">
+    <div class="uc-nav">
+        <ul>
+            <li>
+                <a class="nav__item nav__item--dashbord nav__item--current" target="" href="/overview/">
+                    <span class="nav__icon icon__dashboard icon--md nav__icon--current"></span>
+                    <span class="nav__title">
 		                    <span translate="DASHBOARD">概况</span>
 		                </span>
-					</a>
-				</li>
-				<li>
-					<a class="nav__item" id="shiliViewBar" target="" href="/instances/">
-						<span class="nav__icon icon__unet icon--md"></span>
-						<span class="nav__title"><span translate="UNET">云主机</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav__item" id="shiliViewBar" target="" href="/instances/">
+                    <span class="nav__icon icon__unet icon--md"></span>
+                    <span class="nav__title"><span translate="UNET">云主机</span>
 		                </span>
-					</a>
-				</li>
-				<li>
-					<a class="nav__item" id="yunpanbar" target="" href="/disk/">
-						<span class="nav__icon icon__udisk icon--md"></span>
-						<span class="nav__title"><span translate="UNET">云盘</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav__item" id="yunpanbar" target="" href="/disk/">
+                    <span class="nav__icon icon__udisk icon--md"></span>
+                    <span class="nav__title"><span translate="UNET">云盘</span>
 		                </span>
-					</a>
-				</li>
-				<li>
-					<a class="nav__item" id="kuaizhaobar" target="" href="/snapshot/">
-						<span class="nav__icon icon__shockwave icon--md"></span>
-						<span class="nav__title"><span translate="UNET">快照</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav__item" id="kuaizhaobar" target="" href="/snapshot/">
+                    <span class="nav__icon icon__shockwave icon--md"></span>
+                    <span class="nav__title"><span translate="UNET">快照</span>
 		                </span>
-					</a>
-				</li>
-				<li>
-					<a class="nav__item" id='logBar' target="" href="/log_show/">
-						<span class="nav__icon icon__ufile icon--md"></span>
-						<span class="nav__title"><span translate="UNET">日志</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav__item" id='logBar' target="" href="/log/">
+                    <span class="nav__icon icon__ufile icon--md"></span>
+                    <span class="nav__title"><span translate="UNET">日志</span>
 		                </span>
-					</a>
-				</li>
-				<li>
-					<a class="nav__item" id="orderBar" target="" href="/order/">
-						<span class="nav__icon icon__umon icon--md"></span>
-						<span class="nav__title"><span translate="UNET">工单</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav__item" id="orderBar" target="" href="/order/">
+                    <span class="nav__icon icon__umon icon--md"></span>
+                    <span class="nav__title"><span translate="UNET">工单</span>
 		                </span>
-					</a>
-				</li>
-{% if userinfo.role != 2 %}
-				<li>
-					<a class="nav__item" id="manageBar" target="" id="guanlibar" href="javascript:void(0)">
-						<span class="nav__icon icon__umon icon--md"></span>
-						<span class="nav__title"><span translate="UNET">管理</span>
+                </a>
+            </li>
+            {% if userinfo.role != 2 %}
+                <li>
+                    <a class="nav__item" id="manageBar" target="" id="guanlibar" href="javascript:void(0)">
+                        <span class="nav__icon icon__umon icon--md"></span>
+                        <span class="nav__title"><span translate="UNET">管理</span>
 		                </span>
-					</a>
-				</li>
-			</ul>
-			<div class="manage_hidden" style="width: 55px;height: 104px;display: none;">
-				<ul>
-					<li class="nav__item" style="text-align: center;text-indent: 25px;">
-						<a href="/order_checking/">审核中</a>
-					</li>
-					<li class="nav__item" style="text-align: center;text-indent: 25px;">
-						<a href="/order_finished/">已完成</a>
-					</li>
-				</ul>
-			</div>
-{% endif %}
-		</div>
-		<!--main-body-->
-		<!--云主机对应view层-->
-		<!-- 模板所在位置-->
-{% block main_show  %}
+                    </a>
+                </li>
+                </ul>
+                <div class="manage_hidden" style="width: 55px;height: 104px;display: none;">
+                    <ul>
+                        <li class="nav__item" style="text-align: center;text-indent: 25px;">
+                            <a href="/order_checking/">审核中</a>
+                        </li>
+                        <li class="nav__item" style="text-align: center;text-indent: 25px;">
+                            <a href="/order_finished/">已完成</a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+    </div>
+    <!--main-body-->
+    <!--云主机对应view层-->
+    <!-- 模板所在位置-->
+    {% block main_show %}
 
-{% endblock %}
-	</div>
+    {% endblock %}
+</div>
 
-	<script src="/static/assets/js/public/jquery.min.js"></script>
-	<script src="/static/assets/js/public/bootstrap.min.js"></script>
-	<script src="/static/assets/js/console/echarts.common.min.js"></script>
-	<script src="/static/assets/js/console/bootstrap-datepicker.min.js"></script>
-	<script src="/static/assets/js/console/bootstrap-datepicker.zh-CN.min.js"></script>	
-	<script src="/static/assets/js/public/jquery.cookie.js"></script>
-	<script src="/static/assets/js/public/query.js"></script>
-	<script src="/static/assets/js/public/paging.js"></script>
-	<script src="/static/assets/js/console/console.js"></script>
-	<script src="/static/assets/js/console/echarts.js"></script>
-	<script>
-       	 $('#datepicker input').datepicker({
-          	        language: "zh-CN",
-          	        todayHighlight: true
-      	  });
+<script src="/static/assets/js/public/jquery.min.js"></script>
+<script src="/static/assets/js/public/bootstrap.min.js"></script>
+<script src="/static/assets/js/console/echarts.common.min.js"></script>
+<script src="/static/assets/js/console/bootstrap-datepicker.min.js"></script>
+<script src="/static/assets/js/console/bootstrap-datepicker.zh-CN.min.js"></script>
+<script src="/static/assets/js/public/jquery.cookie.js"></script>
+<script src="/static/assets/js/public/query.js"></script>
+<script src="/static/assets/js/public/paging.js"></script>
+<script src="/static/assets/js/console/console.js"></script>
+<script src="/static/assets/js/console/echarts.js"></script>
+<script>
+    $('#datepicker input').datepicker({
+        language: "zh-CN",
+        todayHighlight: true
+    });
 
 
-       	 var log_username = $('#rightBarlist6>a').text();
-       	 $(function(){
-       	 	$.post('/log/',{username:log_username})
-       	 })
-	var log_num_count = $('.log_num_count').text();
-	$('#pageTool').Paging({ pagesize: 10, count:log_num_count});
+    var log_username = $('#rightBarlist6>a').text();
+    var log_num_count = $('.log_num_count').text();
+    $('#pageTool').Paging({pagesize: 10, count: log_num_count});
 
+    $('#manageBar').click(function(){
+       return false;
+    });
 </script>
 </body>
 </html>

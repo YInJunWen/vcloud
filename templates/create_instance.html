@@ -99,34 +99,43 @@
 				<div class="gobuyFormWapper">
                     <div class="formTitle">当前配置</div>
 				<div class="conf">
-					主机名：<input class="zjm" value="未填写" readonly name="instance_name">
+					主机名：<input class="zjm" value="未填写" readonly>
+                    <input type="hidden" name="instance_name" class="h_zjm" value="未填写">
 				</div>
 				<div class="conf">
 					类　型：<input class="Form_lx" value="商务型" readonly name="">
 				</div>
 				<div class="conf">
-					CPU　：<input class="Form_cpu" value="2核" readonly name="cpu">
+					CPU　：<input class="Form_cpu" value="2核" readonly>
+                    <input type="hidden" class="h_Form_cpu" name="cpu" value="2">
 				</div>
 				<div class="conf">
-					内　存：<input class="Form_mem" value="4G" readonly name="mem">
+					内　存：<input class="Form_mem" value="4G" readonly>
+                    <input type="hidden" class="h_Form_mem" name="mem" value="4">
 				</div>
 				<div class="conf">
-					带　宽：<input class="Form_flux" value="1Mbps" readonly name="bandwidth">
+					带　宽：<input class="Form_flux" value="1Mbps" readonly>
+                    <input type="hidden" value="1" class="h_Form_flux" name="bandwidth">
 				</div>
 				<div class="conf">
-					硬　盘：<input class="Form_yp" value="50" readonly name="disk">
+					硬　盘：<input class="Form_yp" value="50" readonly>
+                    <input type="hidden" class="h_Form_yp" value="50" name="disk">
 				</div>
 				<div class="conf">
-					数据盘：<input class="Form_storage" value="SAS型硬盘" readonly name="storage">
+					数据盘：<input class="Form_storage" value="SAS型硬盘" readonly>
+                    <input type="hidden" class="h_Form_storage" value="SAS" name="storage">
 				</div>
 				<div class="conf">
-					系　统：<input class="Form_os" value="--" readonly name="os">
+					系　统：<input class="Form_os" value="--" readonly>
+                    <input type="hidden" class="h_Form_os" value="--" name="os">
 				</div>
 				<div class="conf">
-					时　长：<input class="Form_time" value="1个月" readonly name="expired">
+					时　长：<input class="Form_time" value="1个月" readonly>
+                    <input type="hidden" class="h_Form_time" value="1" name="expired">
 				</div>
 				<div class="conf">
-					数　量：<input class="Form_sl" value="1台" readonly name="buyNumber">
+					数　量：<input class="Form_sl" value="1台" readonly>
+                    <input type="hidden" class="h_Form_sl" value="1" name="buyNumber">
 				</div>
 				<div class="conf">
 					费　用：<span class="" style="text-decoration:line-through;">￥142</span>

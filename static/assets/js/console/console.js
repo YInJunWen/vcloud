@@ -80,10 +80,10 @@ $(function(){
         $('#logView').show();
         $('#kuaizhaoView,#shiliView,#yunpanView,#manageView,#orderView').hide();
     });
-    $('#manageBar').bind('click',function(){
-        $('#manageView').show();
-        $('#kuaizhaoView,#shiliView,#yunpanView,#logView,#orderView').hide();
-    });
+    // $('#manageBar').bind('click',function(){
+    //     $('#manageView').show();
+    //     $('#kuaizhaoView,#shiliView,#yunpanView,#logView,#orderView').hide();
+    // });
     $('#orderBar').bind('click',function(){
         $('#orderView').show();
         $('#kuaizhaoView,#shiliView,#yunpanView,#logView,#manageView').hide();

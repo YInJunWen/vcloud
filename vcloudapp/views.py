@@ -120,6 +120,22 @@ def zdgz(request):
     return render(request, 'zdgz.html')
 
 
+# 创建工单
+def order_create(request):
+    return render(request, 'order_create.html')
+
+
+# 审核中
+def order_checking(request):
+    return render(request, 'order_checking.html')
+
+
+# 已完成
+def order_finished(request):
+    return render(request, 'order_finished.html')
+
+
+
 # 创建实例接口
 # 防止页面403不提交引入 csrf
 @csrf_exempt
@@ -155,7 +171,7 @@ def chkcreate_instance(request):
     # ...
     # 生成操作日志
     # ...
-    data = instance_Orders(instance_name=ins_name, mem=_mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
+    data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
                            storage=storage, expired=expired, buyNumber=buyNumber)
     data.save()
     return render(request, 'overview.html')
