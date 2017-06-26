@@ -5,7 +5,7 @@ import time
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponsePermanentRedirect, HttpResponse,HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
@@ -178,3 +178,15 @@ def chkcreate_instance(request):
     return render(request, 'overview.html')
 
 
+# 请求价格接口
+@csrf_exempt
+def calculatePrice(request):
+    cpu = int(request.POST.get('cpu'))
+    mem = int(request.POST.get('mem'))
+    flux = int(request.POST.get('flux'))
+    disk = int(request.POST.get('disk'))
+    expired = int(request.POST.get('expired'))
+    buyNumber = int(request.POST.get('buyNumber'))
+    discount = 0.8
+    price = round((cpu * 25 + mem * 25 + flux * 25 + disk * 1) * expired * buyNumber * discount, 2)
+    return JsonResponse({'price': price, 'discount': discount})

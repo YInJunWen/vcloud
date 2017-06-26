@@ -62,6 +62,7 @@ $(function(){
             $('.Form_time').val($(this).text());
             $('.h_Form_time').val(number);
         }
+        calculatePrice();
     });
 
     //  购买数量
@@ -77,6 +78,7 @@ $(function(){
         $(this).parents('.buyNumber').find('input').val(Numbers);
         $('.Form_sl').val(Numbers+'台');
         $('.h_Form_sl').val(Numbers);
+        calculatePrice();
     });
     $('.buyNumber .jian').click(function () {
         //  获取购买数量
@@ -93,6 +95,7 @@ $(function(){
         $(this).parents('.buyNumber').find('input').val(Numbers);
         $('.Form_sl').val(Numbers+'台');
         $('.h_Form_sl').val(Numbers);
+        calculatePrice();
     });
 
     //  select 选择
@@ -111,6 +114,11 @@ $(function(){
         $('.Form_sl').val(value+'台');
         $('.h_Form_sl').val(value);
     });
+
+    $('.h_Form_yp').change(function(){
+        calculatePrice();
+    });
+
 
     //  主机名联动
     $('.Host_Name').keyup(function(){
@@ -165,6 +173,7 @@ $(function(){
     $(window).scroll(rsfc);
     $(window).resize(rsfc);
     rsfc();
+
 });
 
 /**
@@ -193,3 +202,21 @@ function checkForm() {
 }
 
 
+
+// calculate price
+function calculatePrice(){
+    $.post('/calculatePrice/',
+        {
+            'cpu': $('.h_Form_cpu').val(),
+            'mem': $('.h_Form_mem').val(),
+            'flux': $('.h_Form_flux').val(),
+            'disk': $('.h_Form_yp').val(),
+            'expired': $('.h_Form_time').val(),
+            'buyNumber': $('.h_Form_sl').val()
+        },
+        function(data){
+        // console.log(data)
+            $('#price').text('￥'+data.price);
+            $('#oldPrice').text('￥'+(data.price)/(data.discount))
+    })
+}

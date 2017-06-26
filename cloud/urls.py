@@ -17,10 +17,14 @@ Including another URLconf
 
 from django.conf.urls import url
 from django.contrib import admin
+
+# from cloud.views import calculatePrice
 from vcloudapp.views import *
 
 urlpatterns = {
     # url(r'^admin/', admin.site.urls),
+    # url(r'^test1/$', test1, name='test1'),  # 测试
+    # url(r'^test2/$', test2, name='test2'),  # 测试
     url(r'^$', home, name='home'),  # 主页
     url(r'^login/$', userLogin, name='userLogin'),  # 登陆跳转
     url(r'^register/$', register, name='register'),  # 注册跳转
@@ -40,6 +44,6 @@ urlpatterns = {
     url(r'^order_create/$', order_create, name='order_create'),  # 创建工单
     url(r'^order_checking/$', order_checking, name='order_checking'),  # 审核中
     url(r'^order_finished/$', order_finished, name='order_finished'),  # 已完成
-    # url(r'^/$', x, name='x'),
+    url(r'^calculatePrice/$', calculatePrice, name='calculatePrice'),  # 获取价格
     # url(r'^/$', x, name='x'),
 }

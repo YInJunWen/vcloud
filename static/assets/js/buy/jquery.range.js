@@ -227,6 +227,7 @@
 
 			//  硬盘数值val
 			$('.Form_yp').val(value+'G');
+			$('.h_Form_yp').val(value).change();
 
 			if ($.isFunction(this.options.format)) {
 				var type = this.isSingle() ? undefined : (pointer.hasClass('low') ? 'low' : 'high');
