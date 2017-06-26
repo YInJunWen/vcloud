@@ -36,10 +36,10 @@ urlpatterns = {
     url(r'^order/$', order, name='order'),  # 工单
     url(r'^create_instance/$', create_instance, name='create_instance'),  # 创建实例跳转
     url(r'^chkcreate_instance/$', chkcreate_instance, name='chkcreate_instance'),  # 创建实例接口
-    url(r'^zdgz/$', zdgz, name='zdgz'),
-    # url(r'^/$', x, name='x'),
-    # url(r'^/$', x, name='x'),
-    # url(r'^/$', x, name='x'),
+    url(r'^zdgz/$', zdgz, name='zdgz'),  # 感知系统
+    url(r'^order_create/$', order_create, name='order_create'),  # 创建工单
+    url(r'^order_checking/$', order_checking, name='order_checking'),  # 审核中
+    url(r'^order_finished/$', order_finished, name='order_finished'),  # 已完成
     # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
 }

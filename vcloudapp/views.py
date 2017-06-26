@@ -142,6 +142,7 @@ def order_finished(request):
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None)
     sameName = instance_Orders.objects.filter(instance_name=ins_name)
+    print sameName
     if sameName:
         print '123'
         return render(request, 'create_instance.html', {'err_name': '此名称已存在'})

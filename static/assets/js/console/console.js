@@ -168,7 +168,7 @@ function yzj_Change(v){
 
     $('.order_deleteBtnOpen').on('click',function(){
     	$('.deleteOrderBar').show();
-    })
+    });
 
     //对应关闭
     $('.closeBtnBar').click(function(){
@@ -183,14 +183,14 @@ $('.withdrawBtnComputer').click(function(){
     $.post('/order_rollback/',{'order_index':order_id},function(){
         window.location.href = "http://10.1.1.102/order/";
     })
-})
+});
 
 $('.deleteBtnComputer').click(function(){
     $(".deleteOrderBar").hide();
     $.post('/order_delete/',{'order_index':order_id},function(){
          window.location.href = "http://10.1.1.102/order/";
     })
-})
+});
 
 // 切换skin按钮 
 
@@ -199,25 +199,25 @@ $('.deleteBtnComputer').click(function(){
         var skin1 = "/static/assets/css/public/body_skin1.css";
         $("#skin_id").attr("href",skin1);
         $.cookie("the_skin",skin1,{ expires: 7, path: '/' });
-    })
+    });
 
 $('.body_skin2').click(function(){
 	var skin2 = "/static/assets/css/public/body_skin2.css";
 	$('#skin_id').attr("href",skin2);
 	$.cookie('the_skin',skin2,{ expires: 7,path: '/'});
-})
+});
 
 $('.body_skin3').click(function(){
 	var skin3 = "/static/assets/css/public/body_skin3.css";
 	$('#skin_id').attr("href",skin3);
 	$.cookie('the_skin',skin3,{ expires: 7,path: '/'});
-})
+});
 
 // 页面每次加载都去读取存在的皮肤cookie
 $(function(){
        	 var cookie_skin = $.cookie('the_skin');
        	 $("#skin_id").attr('href',cookie_skin);
-})
+});
 
 
 // 日志页 分页跳转
