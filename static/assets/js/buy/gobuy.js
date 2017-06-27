@@ -185,7 +185,7 @@ $(function(){
 function checkForm() {
     var ins_name = $('.zjm').val();
     var os = $('.Form_os').val();
-    var disk = $('.Form_yp').val();
+    var disk = $('.h_Form_yp').val();
     if ((ins_name == '未填写') || (ins_name == '')){
         alert('未填写主机名！');
         $('.Host_Name').focus();
