@@ -183,10 +183,11 @@ def chkcreate_instance(request):
 def calculatePrice(request):
     cpu = int(request.POST.get('cpu'))
     mem = int(request.POST.get('mem'))
-    flux = int(request.POST.get('flux'))
+    flux = float(request.POST.get('flux'))
     disk = int(request.POST.get('disk'))
     expired = int(request.POST.get('expired'))
     buyNumber = int(request.POST.get('buyNumber'))
     discount = 0.8
-    price = round((cpu * 25 + mem * 25 + flux * 25 + disk * 1) * expired * buyNumber * discount, 2)
+    print flux
+    price = round((cpu * 25 + mem * 25 + flux * 25 + disk * 1) * discount * expired * buyNumber, 2)
     return JsonResponse({'price': price, 'discount': discount})

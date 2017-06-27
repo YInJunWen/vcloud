@@ -195,8 +195,8 @@ function checkForm() {
         alert('未选择操作系统！');
         return false;
     }
-    if (disk <= 50) {
-        alert('硬盘必须大于50G');
+    if (disk < 50) {
+        alert('硬盘必须大于等于50G');
         return false;
     }
 }
