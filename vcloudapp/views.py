@@ -2,12 +2,9 @@
 from __future__ import unicode_literals
 
 import time
-# import redis
-from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponsePermanentRedirect, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -89,7 +86,7 @@ def get_password(request):
 def overview(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'overview.html')
 
 
@@ -97,7 +94,7 @@ def overview(request):
 def instances(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('login.html', context={'err': '登录已过期！！'})
     return render(request, 'instances.html')
 
 
@@ -105,7 +102,7 @@ def instances(request):
 def disk(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'disk.html')
 
 
@@ -113,7 +110,7 @@ def disk(request):
 def snapshot(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'snapshot.html')
 
 
@@ -121,7 +118,7 @@ def snapshot(request):
 def log(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'log.html')
 
 
@@ -129,7 +126,7 @@ def log(request):
 def order(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'order.html')
 
 
@@ -137,7 +134,7 @@ def order(request):
 def create_instance(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'create_instance.html')
 
 
@@ -150,7 +147,7 @@ def zdgz(request):
 def order_create(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'order_create.html')
 
 
@@ -163,7 +160,7 @@ def order_checking(request):
 def order_finished(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+        return HttpResponseRedirect('/login/')
     return render(request, 'order_finished.html')
 
 
@@ -219,9 +216,9 @@ def calculatePrice(request):
     disk = int(request.POST.get('disk'))
     expired = int(request.POST.get('expired'))
     buyNumber = int(request.POST.get('buyNumber'))
-    discount = 0.8
-    price = round((cpu * 25 + mem * 25 + flux * 25 + disk * 1) * discount * expired * buyNumber, 2)
-    return JsonResponse({'price': price, 'discount': discount})
+    # discount = 0.8
+    price = round((cpu * 28 + mem * 15 + flux * 10 + disk * 0.5) * expired * buyNumber, 2)
+    return JsonResponse({'price': price})
 
 
 # logout
@@ -231,37 +228,10 @@ def logout(request):
     session_key = request.session.session_key
     Session.objects.filter(session_key=session_key).delete()
     # del request.session['username']
-    return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
+    return HttpResponseRedirect('/login/')
 
 
-def test1(request):
-    return render(request, 'test1.html')
-
-
-@csrf_exempt
-def test2(request):
-
-    value = request.session.get('UserId', default=None)
-    print value
-    return JsonResponse({'data': value})
-
-    # sessionStore = SessionStore()
-    # sessionStore["str"] = "hello"  # 字串映射
-    # sessionStore["dict"] = {}  # 可以定义多级的字典结构
-    # sessionStore["dict"]["key1"] = "value1"
-    # sessionStore["dict"]["key2"] = "value2"
-    # sessionStore.save()
-    # print(sessionStore.session_key)
-    # print(sessionStore.keys())
-    # session_key = sessionStore.session_key
-    # 读取保存的session
-    # session = Session.objects.get(pk=session_key)
-    # print(session.session_data)  # 返回session的存储（加密过）
-    # print(session.get_decoded())  # 返回session的数据结构（加过解码）
-    # print(session.expire_date)
-    # return JsonResponse({'data': '123'})
-
-
+# 判断是否登录
 def logined(request):
     session_key = request.session.session_key
     session_id = Session.objects.filter(session_key__exact=session_key)
@@ -275,5 +245,18 @@ def logined(request):
     # 另一个函数 获取用户名并返回json数据 再由js动态加载
     # data = request.session.get('UserId', default=None)
     # print data
+
+
+# 测试
+def test1(request):
+    return render(request, 'test1.html')
+
+
+@csrf_exempt
+def test2(request):
+
+    value = request.session.get('UserId', default=None)
+    print value
+    return JsonResponse({'data': value})
 
 

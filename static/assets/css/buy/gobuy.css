@@ -257,6 +257,12 @@ body{
 }
 
 /*悬浮表单*/
+.mod2 .gobuyFormWapper{
+    background: #fff;
+    position: relative;
+    z-index: 10;
+}
+
 .mod2 .gobuyForm{
     width: 215px;
     /*height: 430px;*/

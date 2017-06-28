@@ -215,8 +215,8 @@ function calculatePrice(){
             'buyNumber': $('.h_Form_sl').val()
         },
         function(data){
-        // console.log(data)
-            $('#price').text('￥'+data.price);
-            $('#oldPrice').text('￥'+(data.price)/(data.discount))
+            var price = parseInt(data.price);
+            $('#price').text('￥'+ price);
+            $('#oldPrice').text('￥'+ price / 0.8)
     })
 }
