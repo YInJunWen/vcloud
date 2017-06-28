@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 
 import time
-
+# import redis
+from django.contrib.sessions.backends.db import SessionStore
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponsePermanentRedirect, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
 
 from .models import *
 
@@ -183,11 +185,37 @@ def chkcreate_instance(request):
 def calculatePrice(request):
     cpu = int(request.POST.get('cpu'))
     mem = int(request.POST.get('mem'))
-    flux = float(request.POST.get('flux'))
+    flux = int(request.POST.get('flux'))
     disk = int(request.POST.get('disk'))
     expired = int(request.POST.get('expired'))
     buyNumber = int(request.POST.get('buyNumber'))
     discount = 0.8
-    print flux
     price = round((cpu * 25 + mem * 25 + flux * 25 + disk * 1) * discount * expired * buyNumber, 2)
     return JsonResponse({'price': price, 'discount': discount})
+
+
+# common
+# def get_redis_conn():
+#     r = redis.StrictRedis(host='10.1.1.203', port=6379, db=0)
+#     return r
+
+
+
+
+
+def test1(request):
+    return render(request, 'test1.html')
+
+
+@csrf_exempt
+def test2(request):
+    # request.session['some_id'] = 'some_id'
+    # o = session.get('some_id', False)
+
+    sessionStore = SessionStore()
+    sessionStore["str"] = "hello"
+    sessionStore.save()
+    print('1.' + sessionStore.session_key)
+    print('2.' + sessionStore.keys())
+    return JsonResponse({'data': '123'})
+
