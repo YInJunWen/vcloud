@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import time
 # import redis
 from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.sessions.models import Session
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponsePermanentRedirect, HttpResponse, HttpResponseRedirect, JsonResponse
@@ -57,7 +58,7 @@ def userRegister(request):
         return render(request, 'register.html', {'err_name': err_name})
     data = UserInfo(username=username, email=email, password=password, dept=dept, reg_time=reg_time)
     data.save()
-    return render(request, 'login.html')
+    return HttpResponseRedirect('/login/')
 
 
 def checkLogin(request):
@@ -72,8 +73,11 @@ def checkLogin(request):
     if not loginInfo:
         return render(request, 'login.html', context={'err': '用户名或密码错误!'})
     else:
+        request.session['username'] = username
+        request.session.set_expiry(20 * 60)
         data.save()
-        return render(request, 'overview.html', context={'username': username, 'logtime': nowtime})
+        return HttpResponseRedirect('/overview/')
+        # return HttpResponseRedirect
 
 
 # 忘记密码跳转
@@ -83,37 +87,57 @@ def get_password(request):
 
 # overview
 def overview(request):
-    # r = get_redis_conn()
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'overview.html')
 
 
 # 云主机
 def instances(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'instances.html')
 
 
 # 云盘
 def disk(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'disk.html')
 
 
 # 快照
 def snapshot(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'snapshot.html')
 
 
 # 日志
 def log(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'log.html')
 
 
 # 工单
 def order(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'order.html')
 
 
 # 创建实例跳转
 def create_instance(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'create_instance.html')
 
 
@@ -124,6 +148,9 @@ def zdgz(request):
 
 # 创建工单
 def order_create(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'order_create.html')
 
 
@@ -134,6 +161,9 @@ def order_checking(request):
 
 # 已完成
 def order_finished(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
     return render(request, 'order_finished.html')
 
 
@@ -177,7 +207,7 @@ def chkcreate_instance(request):
     data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
                            storage=storage, expired=expired, buyNumber=buyNumber)
     data.save()
-    return render(request, 'overview.html')
+    return HttpResponseRedirect('/overview/')
 
 
 # 请求价格接口
@@ -194,13 +224,14 @@ def calculatePrice(request):
     return JsonResponse({'price': price, 'discount': discount})
 
 
-# common
-# def get_redis_conn():
-#     r = redis.StrictRedis(host='10.1.1.203', port=6379, db=0)
-#     return r
-
-
-
+# logout
+def logout(request):
+    # logined(request)
+    # request.session.set_expiry(0)
+    session_key = request.session.session_key
+    Session.objects.filter(session_key=session_key).delete()
+    # del request.session['username']
+    return HttpResponseRedirect('/login/', content={'err': '登录已过期！！'})
 
 
 def test1(request):
@@ -209,13 +240,40 @@ def test1(request):
 
 @csrf_exempt
 def test2(request):
-    # request.session['some_id'] = 'some_id'
-    # o = session.get('some_id', False)
 
-    sessionStore = SessionStore()
-    sessionStore["str"] = "hello"
-    sessionStore.save()
-    print('1.' + sessionStore.session_key)
-    print('2.' + sessionStore.keys())
-    return JsonResponse({'data': '123'})
+    value = request.session.get('UserId', default=None)
+    print value
+    return JsonResponse({'data': value})
+
+    # sessionStore = SessionStore()
+    # sessionStore["str"] = "hello"  # 字串映射
+    # sessionStore["dict"] = {}  # 可以定义多级的字典结构
+    # sessionStore["dict"]["key1"] = "value1"
+    # sessionStore["dict"]["key2"] = "value2"
+    # sessionStore.save()
+    # print(sessionStore.session_key)
+    # print(sessionStore.keys())
+    # session_key = sessionStore.session_key
+    # 读取保存的session
+    # session = Session.objects.get(pk=session_key)
+    # print(session.session_data)  # 返回session的存储（加密过）
+    # print(session.get_decoded())  # 返回session的数据结构（加过解码）
+    # print(session.expire_date)
+    # return JsonResponse({'data': '123'})
+
+
+def logined(request):
+    session_key = request.session.session_key
+    session_id = Session.objects.filter(session_key__exact=session_key)
+    if session_id:
+        return True
+    else:
+        return False
+
+
+# def
+    # 另一个函数 获取用户名并返回json数据 再由js动态加载
+    # data = request.session.get('UserId', default=None)
+    # print data
+
 
