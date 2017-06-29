@@ -22,10 +22,13 @@ class UserInfo(models.Model):
         verbose_name = u"用户注册信息"
 
 
-# 登陆日志表
+# 日志表
 class UserLog(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=20, verbose_name=u"用户名")
+    actionObject = models.CharField(max_length=20, verbose_name=u"操作对象")
+    operationType = models.CharField(max_length=20, verbose_name=u"操作类型")
+    ip = models.GenericIPAddressField(protocol='IPV4')
     logintime = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -35,10 +38,8 @@ class UserLog(models.Model):
 
 # 创建实例工单页
 class instance_Orders(models.Model):
-    # username:  这个值没有读取到session
     id = models.AutoField(primary_key=True)
-    # session 没值取不到 created_user = models.CharField(max_length=30, default=None)
-
+    created_user = models.CharField(max_length=30, default=None)
     instance_name = models.CharField(max_length=30)
     mem = models.IntegerField(default=1024)
     cpu = models.IntegerField(default=1)

@@ -146,7 +146,7 @@
 		                </span>
                 </a>
             </li>
-            <li>
+            <li id="accessLog">
                 <a class="nav__item" id='logBar' target="" href="/log/">
                     <span class="nav__icon icon__ufile icon--md"></span>
                     <span class="nav__title"><span translate="UNET">日志</span>
@@ -213,6 +213,38 @@
     $('#manageBar').click(function(){
        return false;
     });
+</script>
+
+{#日志页面点击触发#}
+<script>
+    $.ajax({
+        url: '/accessLog/',
+        success: function(data) {
+            $.each(data.data, function(key, value){
+                tbody = '<tr><td width="10"></td> <td style="text-align:left;width:10%;text-indent:10px;">'+ value.actionObject +'</td><td style="text-align:center;">'+ value.operationType +'</td><td style="text-align:center;">'+ value.username +'</td><td style="text-align:center">'+ value.ip +'</td><td style="text-align:center">'+ value.logintime +'</td></tr>';
+                $('#Logtbody').append(tbody);
+                if ($('#Logtbody tr').length > 1) {
+                    $('.log_noMessage').hide();
+                }
+            })
+        }
+    })
+</script>
+
+{#主机页面点击触发#}
+<script>
+    $.ajax({
+        url: '/accessIns/',
+        success: function(data) {
+            $.each(data.data, function(key, value){
+                tbody = '<tr><td width="10"></td> <td style="text-align:left;width:10%;text-indent:10px;">'+ value.actionObject +'</td><td style="text-align:center;">'+ value.operationType +'</td><td style="text-align:center;">'+ value.username +'</td><td style="text-align:center">'+ value.ip +'</td><td style="text-align:center">'+ value.logintime +'</td></tr>';
+{#                $('#Logtbody').append(tbody);#}
+{#                if ($('#Logtbody tr').length > 1) {#}
+{#                    $('.log_noMessage').hide();#}
+{#                }#}
+            })
+        }
+    })
 </script>
 </body>
 </html>

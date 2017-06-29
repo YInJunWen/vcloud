@@ -71,30 +71,16 @@
                                     <th style="text-align:center">操作时间</th>
                                 </tr>
 								</thead>
-{% if log_info %}
-{% for i in log_info %} 
-<tr>
- <td width='10'></td>
- <td style="text-align:left;width:10%;text-indent:10px;">{{ i.log_type }}</td>
- <td style="text-align:center;">{{ i.opt_mode }}</td>
- <td style="text-align:center;">{{ i.opt_user }}</td>
- <td style="text-align:center">{{ i.opt_ip }}</td>
- <td style="text-align:center">{{ i.opt_time }}</td>
-</tr>
-{% endfor %}
-{% else %}
-                                <tbody>
+                                <tbody id="Logtbody">
                                 </tbody>
                             </table>
-                            <div class="noMessage">
+                            <div class="noMessage log_noMessage">
                                 <p>没有查询到符合条件的记录!</p>
                             </div>
-{% endif %}
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 {% endblock %}

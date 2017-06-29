@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 import time
-from django.contrib.sessions.models import Session
-from django.shortcuts import render, render_to_response
+# from datetime import date
+
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
 
 from .models import *
 
@@ -34,7 +34,6 @@ def userRegister(request):
     password = request.POST.get('password', None).strip()
     email = request.POST.get('e_mail', None).strip()
     dept = request.POST.get('dept', None).strip()
-    # reg_time = time.time()
     date = time.time()
     reg_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
     if len(username) < 6:
@@ -63,10 +62,11 @@ def checkLogin(request):
     password = request.POST.get('password', None).strip()
     date = time.time()
     nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=password)
 
     # 用户登陆 log记录
-    data = UserLog(username=username, logintime=nowtime)
+    data = UserLog(username=username, actionObject='登录', operationType='信息', ip=ip, logintime=nowtime)
     if not loginInfo:
         return render(request, 'login.html', context={'err': '用户名或密码错误!'})
     else:
@@ -74,7 +74,6 @@ def checkLogin(request):
         request.session.set_expiry(20 * 60)
         data.save()
         return HttpResponseRedirect('/overview/')
-        # return HttpResponseRedirect
 
 
 # 忘记密码跳转
@@ -94,7 +93,7 @@ def overview(request):
 def instances(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('login.html', context={'err': '登录已过期！！'})
+        return HttpResponseRedirect('//')
     return render(request, 'instances.html')
 
 
@@ -164,7 +163,6 @@ def order_finished(request):
     return render(request, 'order_finished.html')
 
 
-
 # 创建实例接口
 # 防止页面403不提交引入 csrf
 @csrf_exempt
@@ -173,7 +171,7 @@ def chkcreate_instance(request):
     sameName = instance_Orders.objects.filter(instance_name=ins_name)
     print sameName
     if sameName:
-        print '123'
+        # print '123'
         return render(request, 'create_instance.html', {'err_name': '此名称已存在'})
     cpu = request.POST.get('cpu', 2)
     mem = request.POST.get('mem', 4)
@@ -183,6 +181,9 @@ def chkcreate_instance(request):
     storage = request.POST.get('storage', 'sas')
     expired = request.POST.get('expired', 1)
     buyNumber = request.POST.get('buyNumber', 1)
+    created_user = request.session.get('username')
+    # nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
 
     # 选择操作系统
     if os == 'Win2008R2 64(纯净版)':
@@ -197,13 +198,13 @@ def chkcreate_instance(request):
         os = "Cenots7.2"
     if os == "CentOS7.2纯净版 + Lamp":
         os = "Centos7.2_lamp"
-    # 生成订单
-    # ...
     # 生成操作日志
-    # ...
-    data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
-                           storage=storage, expired=expired, buyNumber=buyNumber)
-    data.save()
+    log_data = UserLog(username=created_user, actionObject='购买', operationType='申请云主机', ip=ip)
+    log_data.save()
+    # 生成订单
+    ins_data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
+                               storage=storage, expired=expired, buyNumber=buyNumber, created_user=created_user)
+    ins_data.save()
     return HttpResponseRedirect('/overview/')
 
 
@@ -216,35 +217,40 @@ def calculatePrice(request):
     disk = int(request.POST.get('disk'))
     expired = int(request.POST.get('expired'))
     buyNumber = int(request.POST.get('buyNumber'))
-    # discount = 0.8
     price = round((cpu * 28 + mem * 15 + flux * 10 + disk * 0.5) * expired * buyNumber, 2)
     return JsonResponse({'price': price})
 
 
 # logout
 def logout(request):
-    # logined(request)
-    # request.session.set_expiry(0)
-    session_key = request.session.session_key
-    Session.objects.filter(session_key=session_key).delete()
-    # del request.session['username']
+    del request.session['username']
     return HttpResponseRedirect('/login/')
+
+
+# 获取日志信息
+@csrf_exempt
+def accessLog(request):
+    username = request.session.get('username')
+    data = UserLog.objects.filter(username=username).values('actionObject', 'id', 'ip', 'logintime', 'operationType',
+                                                            'username')
+    return JsonResponse({'data': list(data)})
+
+
+@csrf_exempt
+def accessIns(request):
+    username = request.session.get('username')
+    data = instance_Orders.objects.filter(created_user=username).values('bandwidth', 'buyNumber', 'cpu', 'created_user',
+                                                                        'disk', 'expired', 'id', 'instance_name', 'mem',
+                                                                        'os', 'storage')
+    return JsonResponse({'data': list(data)})
 
 
 # 判断是否登录
 def logined(request):
-    session_key = request.session.session_key
-    session_id = Session.objects.filter(session_key__exact=session_key)
-    if session_id:
+    username = request.session.get('username')
+    if username:
         return True
-    else:
-        return False
-
-
-# def
-    # 另一个函数 获取用户名并返回json数据 再由js动态加载
-    # data = request.session.get('UserId', default=None)
-    # print data
+    return False
 
 
 # 测试
@@ -254,9 +260,5 @@ def test1(request):
 
 @csrf_exempt
 def test2(request):
-
-    value = request.session.get('UserId', default=None)
-    print value
+    value = request.session.get('username', default=None)
     return JsonResponse({'data': value})
-
-

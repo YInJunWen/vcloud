@@ -113,6 +113,7 @@ $(function(){
         }
         $('.Form_sl').val(value+'台');
         $('.h_Form_sl').val(value);
+        calculatePrice();
     });
 
     $('.h_Form_yp').change(function(){
