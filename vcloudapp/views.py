@@ -35,7 +35,7 @@ def userRegister(request):
     email = request.POST.get('e_mail', None).strip()
     dept = request.POST.get('dept', None).strip()
     date = time.time()
-    reg_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    reg_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(date))
     if len(username) < 6:
         err_name = '用户名至少6个字符以上！'
         return render(request, 'register.html', context={'err_name': err_name})
@@ -61,7 +61,7 @@ def checkLogin(request):
     username = request.POST.get('username', None).strip()
     password = request.POST.get('password', None).strip()
     date = time.time()
-    nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    nowtime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(date))
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=password)
 
@@ -182,7 +182,7 @@ def chkcreate_instance(request):
     expired = request.POST.get('expired', 1)
     buyNumber = request.POST.get('buyNumber', 1)
     created_user = request.session.get('username')
-    # nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    # nowtime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(date))
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
 
     # 选择操作系统
@@ -249,7 +249,9 @@ def accessIns(request):
 def logined(request):
     username = request.session.get('username')
     if username:
+        request.session.set_expiry(20 * 60)
         return True
+    request.session.set_expiry(0)
     return False
 
 
