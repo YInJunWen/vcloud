@@ -10,16 +10,56 @@ $(function(){
     });
 
     // 滑块
-    $('.single-slider').jRange({
-        from: 0,
-        to: 500,
-        step: 1,
-        scale: ['0','100G','200G','300G','400G','500G'],
-        format: '%s',
-        width: 636,
-        showLabels: true,
-        showScale: true
-    });
+    // $('.single-slider').jRange({
+    //     from: 0,
+    //     to: 500,
+    //     step: 1,
+    //     scale: ['0','100G','200G','300G','400G','500G'],
+    //     format: '%s',
+    //     width: 636,
+    //     showLabels: true,
+    //     showScale: true
+    // });
+
+    // 硬盘滑块
+    $(".slider_Disk")
+        .slider({
+            max: 1000,
+            values: [50]
+        })
+        .slider("pips", {
+            step: 100,
+            rest: "label",
+            labels: { first: "0", last: "1000"}
+        })
+        // .slider("float")
+        .on("slidechange", function(e, num) {
+            console.log(num.value);
+            $('.Form_yp').val(num.value + "GB");
+            $('.h_Form_yp').val(num.value);
+            calculatePrice();
+        });
+
+    // 带宽滑块
+    $(".slider_Flux")
+        .slider({
+            max: 10,
+            values: [1]
+        })
+        .slider("pips", {
+            step: 1,
+            rest: "label",
+            labels: { first: "0", last: "10"}
+        })
+        // .slider("float")
+        .on("slidechange", function(e, num) {
+            console.log(num.value);
+            $('.Form_flux').val(num.value + "Mbps");
+            $('.h_Form_flux').val(num.value);
+            calculatePrice();
+        });
+
+
 
     // 二级联动
     var currentShowCity = 0;
@@ -140,8 +180,8 @@ $(function(){
         var cpu = parseInt($('.Form_cpu').val());
         var mem = parseInt($('.Form_mem').val());
         var flux = parseInt($('.Form_flux').val());
-        if (flux == '512') {
-            flux = 0.5;
+        if (flux == '0') {
+            alert('系统赠送50G系统盘！')
         }
         var disk = parseInt($('.Form_yp').val());
         var diskType = $('.Form_storage').val();

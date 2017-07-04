@@ -5,7 +5,8 @@
 	<title>申请云主机</title>
 	<link rel="stylesheet" href="/static/assets/css/public/reset.css">
 	<link rel="stylesheet" href="/static/assets/css/buy/tipso.min.css">
-	<link rel="stylesheet" href="/static/assets/css/buy/jquery.range.css">
+	<link rel="stylesheet" href="/static/assets/css/buy/jquery-ui.css">
+	<link rel="stylesheet" href="/static/assets/css/buy/jquery-ui-slider-pips.css">
 	<link rel="stylesheet" href="/static/assets/css/buy/gobuy.css">
 </head>
 <body>
@@ -92,10 +93,11 @@
 						<span>带宽：</span>
 					</div>
 {#					<a>512Kbps</a>#}
-					<a class="a_class">1Mbps</a>
-					<a>2Mbps</a>
-					<a>4Mbps</a>
-					<a>6Mbps</a>
+{#					<a class="a_class">1Mbps</a>#}
+{#					<a>2Mbps</a>#}
+{#					<a>4Mbps</a>#}
+{#					<a>6Mbps</a>#}
+                    <div class="slider_Flux"></div>
 				</div>
 			</div>
 			<form class="gobuyForm" method="post" action="/chkcreate_instance/" onsubmit="return checkForm()">
@@ -121,7 +123,7 @@
                     <input type="hidden" value="1" class="h_Form_flux" name="bandwidth">
 				</div>
 				<div class="conf">
-					硬　盘：<input class="Form_yp" value="50" readonly>
+					硬　盘：<input class="Form_yp" value="50GB" readonly>
                     <input type="hidden" class="h_Form_yp" value="50" name="disk">
 				</div>
 				<div class="conf">
@@ -158,7 +160,8 @@
 					<div class="Choice clearfix">
 						<span>硬盘：</span>
 					</div>
-					<input type="hidden" class="single-slider hideInput" value="50" />
+{#					<input type="hidden" class="single-slider hideInput" value="50" />#}
+                    <div class="slider_Disk"></div>
 				</div>
 				<div class="ChildSelection">
 					<div class="Choice clearfix">
@@ -233,9 +236,11 @@
 	</div>
 </div>
 
-<script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
+{#<script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>#}
+<script src="/static/assets/js/buy/jquery-2.1.1.js"></script>
 <script src="/static/assets/js/buy/tipso.min.js"></script>
-<script src="/static/assets/js/buy/jquery.range.js"></script>
+<script src="/static/assets/js/buy/jquery-ui.js"></script>
+<script src="/static/assets/js/buy/jquery-ui-slider-pips.js"></script>
 <script src="/static/assets/js/buy/gobuy.js"></script>
 </body>
 </html>

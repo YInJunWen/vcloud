@@ -359,6 +359,15 @@ body{
     clear: both;
 }
 
+/*滑块*/
+body .slider_Disk,
+body .slider_Flux{
+    position: relative;
+    top: 8px;
+    width: 750px !important;
+    float: left;
+}
+
 /*a的公共 class*/
 
 .a_class{
