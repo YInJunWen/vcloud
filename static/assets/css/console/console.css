@@ -558,8 +558,8 @@ line-height: 34px;
   position: absolute;
   z-index: 15;
   display: none;
-  top: -85px;
-  left: 90px;
+  top: -93px;
+  left: 175px;
   width: 276px;
   background: #fff;
   border: 1px solid #999;
@@ -753,57 +753,74 @@ line-height: 34px;
   background: #dff0d8;
 }
 
-/*// #management table tbody tr:nth-child(even),*/
-/*// #shiliView table tbody tr:nth-child(even),*/
-/*// #yunpanView table tbody tr:nth-child(even),*/
-/*// #kuaizhaoView table tbody tr:nth-child(even),*/
-/*// #logView table tbody tr:nth-child(even),*/
-/*// #manageView table tbody tr:nth-child(even),*/
-/*// #orderView table tbody tr:nth-child(even){*/
-/*//   color: #a94442;*/
-/*//   background: #f2dede;*/
-/*// }*/
-/*// #management table tbody tr:nth-child(4n+1),*/
-/*// #shiliView table tbody tr:nth-child(4n+1),*/
-/*// #yunpanView table tbody tr:nth-child(4n+1),*/
-/*// #kuaizhaoView table tbody tr:nth-child(4n+1),*/
-/*// #logView table tbody tr:nth-child(4n+1),*/
-/*// #manageView table tbody tr:nth-child(4n+1),*/
-/*// #orderView table tbody tr:nth-child(4n+1){*/
-/*//   // color: #31708f;*/
-/*//   background: #dff0d8;*/
-/*// }*/
+#management table tbody td:nth-child(1),
+#shiliView table tbody td:nth-child(1),
+#yunpanView table tbody td:nth-child(1),
+#kuaizhaoView table tbody td:nth-child(1),
+#logView table tbody td:nth-child(1),
+#manageView table tbody td:nth-child(1),
+#orderView table tbody td:nth-child(1){
+  text-indent:22px;
+}
 
-/*// #management table tbody tr:nth-child(4n+2),*/
-/*// #shiliView table tbody tr:nth-child(4n+2),*/
-/*// #yunpanView table tbody tr:nth-child(4n+2),*/
-/*// #kuaizhaoView table tbody tr:nth-child(4n+2),*/
-/*// #logView table tbody tr:nth-child(4n+2),*/
-/*// #manageView table tbody tr:nth-child(4n+2),*/
-/*// #orderView table tbody tr:nth-child(4n+2){*/
-/*//   // color: #a94442;*/
-/*//   background: #d9edf7;*/
-/*// }*/
+#management table tbody td:nth-child(2),
+#shiliView table tbody td:nth-child(2),
+#yunpanView table tbody td:nth-child(2),
+#kuaizhaoView table tbody td:nth-child(2),
+#logView table tbody td:nth-child(2),
+#manageView table tbody td:nth-child(2),
+#orderView table tbody td:nth-child(2){
+  text-align:left;
+  width:10%;
+  /*text-indent:65px;*/
+}
 
-/*// #management table tbody tr:nth-child(4n+3),*/
-/*// #shiliView table tbody tr:nth-child(4n+3),*/
-/*// #yunpanView table tbody tr:nth-child(4n+3),*/
-/*// #kuaizhaoView table tbody tr:nth-child(4n+3),*/
-/*// #logView table tbody tr:nth-child(4n+3),*/
-/*// #manageView table tbody tr:nth-child(4n+3),*/
-/*// #orderView table tbody tr:nth-child(4n+3){*/
-/*//   // color: #a94442;*/
-/*//   // background: #fcf8e3;*/
-/*//   background: #f2dede;*/
-/*// }*/
+#management table tbody td:nth-child(3),
+#shiliView table tbody td:nth-child(3),
+#yunpanView table tbody td:nth-child(3),
+#kuaizhaoView table tbody td:nth-child(3),
+#logView table tbody td:nth-child(3),
+#manageView table tbody td:nth-child(3),
+#orderView table tbody td:nth-child(3){
+  text-align: center;
+}
 
-/*// #management table tbody tr:nth-child(4n+4),*/
-/*// #shiliView table tbody tr:nth-child(4n+4),*/
-/*// #yunpanView table tbody tr:nth-child(4n+4),*/
-/*// #kuaizhaoView table tbody tr:nth-child(4n+4),*/
-/*// #logView table tbody tr:nth-child(4n+4),*/
-/*// #manageView table tbody tr:nth-child(4n+4),*/
-/*// #orderView table tbody tr:nth-child(4n+4){*/
-/*//   // color: #a94442;*/
-/*//   background: #f2dede;*/
-/*// }*/
+#management table tbody td:nth-child(4),
+#shiliView table tbody td:nth-child(4),
+#yunpanView table tbody td:nth-child(4),
+#kuaizhaoView table tbody td:nth-child(4),
+#logView table tbody td:nth-child(4),
+#manageView table tbody td:nth-child(4),
+#orderView table tbody td:nth-child(4){
+  text-align: center;
+}
+
+#management table tbody td:nth-child(5),
+#shiliView table tbody td:nth-child(5),
+#yunpanView table tbody td:nth-child(5),
+#kuaizhaoView table tbody td:nth-child(5),
+#logView table tbody td:nth-child(5),
+#manageView table tbody td:nth-child(5),
+#orderView table tbody td:nth-child(5){
+  text-align: center;
+}
+
+#management table tbody td:nth-child(6),
+#shiliView table tbody td:nth-child(6),
+#yunpanView table tbody td:nth-child(6),
+#kuaizhaoView table tbody td:nth-child(6),
+#logView table tbody td:nth-child(6),
+#manageView table tbody td:nth-child(6),
+#orderView table tbody td:nth-child(6){
+  text-align: center;
+}
+
+#management table tbody td:nth-child(7),
+#shiliView table tbody td:nth-child(7),
+#yunpanView table tbody td:nth-child(7),
+#kuaizhaoView table tbody td:nth-child(7),
+#logView table tbody td:nth-child(7),
+#manageView table tbody td:nth-child(7),
+#orderView table tbody td:nth-child(7){
+  text-align: center;
+}

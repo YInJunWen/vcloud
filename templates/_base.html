@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/static/assets/css/console/order_create.css">
     <link rel="stylesheet" href="/static/assets/css/console/order_detail.css">
     <link rel="stylesheet" href="/static/assets/css/public/paging.css">
+    <link rel="stylesheet" href="/static/assets/css/public/z_pager.css">
+    <link rel="stylesheet" href="/static/assets/css/public/jquery.dataTables.min.css">
     <link rel="stylesheet" id="skin_id" href="">
 </head>
 <body>
@@ -189,6 +191,7 @@
     {% endblock %}
 </div>
 
+
 <script src="/static/assets/js/public/jquery.min.js"></script>
 <script src="/static/assets/js/public/bootstrap.min.js"></script>
 <script src="/static/assets/js/console/echarts.common.min.js"></script>
@@ -199,6 +202,8 @@
 <script src="/static/assets/js/public/paging.js"></script>
 <script src="/static/assets/js/console/console.js"></script>
 <script src="/static/assets/js/console/echarts.js"></script>
+<script src="/static/assets/js/public/jquery.dataTables.min.js"></script>
+<script src="/static/assets/js/public/jquery.z-pager.js"></script>
 <script>
     $('#datepicker input').datepicker({
         language: "zh-CN",
@@ -217,19 +222,65 @@
 
 {#日志页面点击触发#}
 <script>
-    $.ajax({
-        url: '/accessLog/',
-        success: function (data) {
-            console.log(data.data);
-            $.each(data.data, function (key, value) {
-                tbody = '<tr><td width="10"></td> <td style="text-align:left;width:10%;text-indent:10px;">' + value.actionObject + '</td><td style="text-align:center;">' + value.operationType + '</td><td style="text-align:center;">' + value.username + '</td><td style="text-align:center">' + value.ip + '</td><td style="text-align:center">' + value.logintime + '</td></tr>';
-                $('#Logtbody').append(tbody);
-                if ($('#Logtbody tr').length > 1) {
-                    $('.log_noMessage').hide();
-                }
-            })
+    /***
+     * actionObject
+     * operationType
+     * username
+     * ip
+     * logintime
+     */
+
+    $('#logTable').DataTable({
+        ajax: '/accessLog/',
+        columns: [
+{#            { data: ' '},#}
+            { data: 'actionObject'},
+            { data: 'operationType'},
+            { data: 'username'},
+            { data: 'ip'},
+            { data: 'logintime'}
+        ],
+{#        "sLengthMenu" :  "每页显示 _MENU_ 条记录" ,#}
+{#        "sInfo" :  "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录" ,#}
+{#        "sInfoFiltered" :  "数据表中共为 _MAX_ 条记录" ,#}
+{#        "sSearch" :  "搜索" ,#}
+{#        "oPaginate" : {#}
+{#            "sFirst": "首页",#}
+{#            "sPrevious": "上一页",#}
+{#            "sNext": "下一页",#}
+{#            "sLast": "末页"#}
+{#        },#}
+        "fnInitComplete": function () {
+            if ($('#Logtbody tr').length > 1) {
+                $('.log_noMessage').hide();
+            }
         }
-    })
+    });
+
+
+    {#    $('#pager2').zPager({#}
+    {#        url: /accessLog/,#}
+    {#        htmlBox: $('#wraper'),#}
+    {#        btnShow: false,#}
+    {#        dataRender: function(data) {#}
+    {#            console.log(data)#}
+    {#        }#}
+    {#    });#}
+
+
+{#        $.ajax({#}
+{#            url: '/accessLog/',#}
+{#            success: function (data) {#}
+{#                console.log(data.data);#}
+{#                $.each(data.data, function (key, value) {#}
+{#                    tbody = '<tr><td width="10"></td> <td style="text-align:left;width:10%;text-indent:10px;">' + value.actionObject + '</td><td style="text-align:center;">' + value.operationType + '</td><td style="text-align:center;">' + value.username + '</td><td style="text-align:center">' + value.ip + '</td><td style="text-align:center">' + value.logintime + '</td></tr>';#}
+{#                    $('#Logtbody').append(tbody);#}
+{#                    if ($('#Logtbody tr').length > 1) {#}
+{#                        $('.log_noMessage').hide();#}
+{#                    }#}
+{#                })#}
+{#            }#}
+{#        })#}
 </script>
 
 {#主机页面点击触发#}
