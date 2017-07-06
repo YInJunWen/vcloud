@@ -673,6 +673,7 @@ line-height: 34px;
   padding: 5px 8px !important;
   border: 1px solid #999;
   border-left: none;
+  text-indent: 0 !important;
 }
 .console_select {
   outline: #0064b4;
@@ -772,7 +773,7 @@ line-height: 34px;
 #orderView table tbody td:nth-child(2){
   text-align:left;
   width:10%;
-  /*text-indent:65px;*/
+  text-indent:65px;
 }
 
 #management table tbody td:nth-child(3),
