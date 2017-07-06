@@ -66,29 +66,29 @@ body{
     background: #acafff;
 }
 
-.gobuyCenter .container .mod1 li:after{
-    display: block;
-    content: '';
-    width: 1px;
-    overflow: hidden;
-    height: 80px;
-    background: #e2e2e2;
-    position: absolute;
-    right: 0;
-    top: 10px;
-}
+/*.gobuyCenter .container .mod1 li:after{*/
+    /*display: block;*/
+    /*content: '';*/
+    /*width: 1px;*/
+    /*overflow: hidden;*/
+    /*height: 80px;*/
+    /*background: #e2e2e2;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 10px;*/
+/*}*/
 
-.gobuyCenter .container .mod1 li:after{
-    display: block;
-    content: '';
-    width: 1px;
-    overflow: hidden;
-    height: 80px;
-    background: #e2e2e2;
-    position: absolute;
-    right: 0;
-    top: 10px;
-}
+/*.gobuyCenter .container .mod1 li:after{*/
+    /*display: block;*/
+    /*content: '';*/
+    /*width: 1px;*/
+    /*overflow: hidden;*/
+    /*height: 80px;*/
+    /*background: #e2e2e2;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 10px;*/
+/*}*/
 
 .gobuyCenter .container .mod1 li:last-child:after{
     display: none;  
@@ -112,6 +112,11 @@ body{
     width: 190px;
     padding-top: 3px;
 }
+
+/*.gobuyCenter .container .mod1 li img{*/
+    /*width: 190px;*/
+    /*height: 100px;*/
+/*}*/
 
 /*广告推广end*/
 

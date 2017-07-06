@@ -35,29 +35,29 @@ $(function(){
         }
 
         var move = '<select name="" class="console_select" onchange="yzj_Change(this.options[this.options.selectedIndex].value)"><option value="0">--------</option><option value="1">开机</option><option value="2">关机</option><option value="3">重启</option><option value="4">修改密码</option><option value="5">快照</option></select>';
-        $.ajax({
-            async: true,
-            url:'./data.json',
-            dataType:'json',
-            success:function(data){
-                // 判断来的数据源里面 runningor close 设成变量 直接套<td>并给样式
-                $.each(data,function(k, v){
-                    str = "<tr>"+"<td width='10'><input type='checkbox'></td>"+
-                        "<td>"+v.name+"</td>"+
-                        "<td>"+v.ip+"</td>"+
-                        "<td class='pz'>"+v.pz+"" +
-                        "<ul id='hideList'><li><h3>云主机类型详情:</h3><div class='table-wapper'><table><tbody><tr><th class='hideTh'>CPU:</th><td class='hideTd'>CPU对应变量</td></tr><tr><th class='hideTh'>RAM:</th><td class='hideTd'>RAM对应变量</td></tr><tr><th class='hideTh'>Disk:</th><td class='hideTd'>Disk对应变量</td></tr><tr><th class='hideTh'>Flux:</th><td class='hideTd'>flux对应变量</td></tr></tbody></table></div></li></ul>" +
-                        "</td>"+
-                        "<td>"+v.liuliang+"</td>"+
-                        "<td style='text-align: center'>"+v.yxq+"</td>"+
-                        "<td style='text-align: center'>"+v.status+"</td>" + "<td style='text-align: right'>"+move+"</td>"+
-                        "</tr>";
-                    // 可以用变量代替selete
-                    $('#yDisk-body').append(str);
-                });
-            }
-        });
-        $('.noMessage').hide();
+        // $.ajax({
+        //     async: true,
+        //     url:'./data.json',
+        //     dataType:'json',
+        //     success:function(data){
+        //         // 判断来的数据源里面 runningor close 设成变量 直接套<td>并给样式
+        //         $.each(data,function(k, v){
+        //             str = "<tr>"+"<td width='10'><input type='checkbox'></td>"+
+        //                 "<td>"+v.name+"</td>"+
+        //                 "<td>"+v.ip+"</td>"+
+        //                 "<td class='pz'>"+v.pz+"" +
+        //                 "<ul id='hideList'><li><h3>云主机类型详情:</h3><div class='table-wapper'><table><tbody><tr><th class='hideTh'>CPU:</th><td class='hideTd'>CPU对应变量</td></tr><tr><th class='hideTh'>RAM:</th><td class='hideTd'>RAM对应变量</td></tr><tr><th class='hideTh'>Disk:</th><td class='hideTd'>Disk对应变量</td></tr><tr><th class='hideTh'>Flux:</th><td class='hideTd'>flux对应变量</td></tr></tbody></table></div></li></ul>" +
+        //                 "</td>"+
+        //                 "<td>"+v.liuliang+"</td>"+
+        //                 "<td style='text-align: center'>"+v.yxq+"</td>"+
+        //                 "<td style='text-align: center'>"+v.status+"</td>" + "<td style='text-align: right'>"+move+"</td>"+
+        //                 "</tr>";
+        //             // 可以用变量代替selete
+        //             $('#yDisk-body').append(str);
+        //         });
+        //     }
+        // });
+        // $('.noMessage').hide();
     })
 });
 

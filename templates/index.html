@@ -3,7 +3,7 @@
 <head>
 
     <!-- Page title -->
-    <title>VDIN云-为了无法计算的价值</title>
+    <title>VDIN云-为了无法估量的价值</title>
     <!-- /Page title -->
 
     <!-- Meta -->
@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="/static/assets/css/index/magnific-popup.css">
     <link rel="stylesheet" href="/static/assets/css/index/theme.css" title="theme-default">
     <link rel="stylesheet" href="/static/assets/css/public/reset.css">
+    <link rel="stylesheet" href="/static/assets/css/index/animate.min.css">
     <!-- 轮播图css -->
     <link rel="stylesheet" href="/static/assets/css/public/swiper.min.css">
     <!-- /Styles -->
@@ -121,16 +122,16 @@
             <a href="" target="_blank" style="background: none">控制台</a>
         </div>
         <!-- 云主机 -->
-        <div class="swiper-container">
+        <div class="swiper-container" style="min-width: 1280px;">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" style="width:100%;height:640px;">
-{#                    <img src="/static/assets/img/banner11.jpg" alt="" height="100%" width="100%">#}
+                    <img src="/static/assets/img/home_bn11.png" alt="" height="100%" width="100%" class="home_bn">
                 </div>
                 <div class="swiper-slide" style="width:100%;height:640px;">
-{#                    <img src="/static/assets/img/banner22.jpg" alt="" height="100%" width="100%">#}
+                    <img src="/static/assets/img/home_bn2.png" alt="" height="100%" width="100%">
                 </div>
                 <div class="swiper-slide" style="width:100%;height:640px;">
-{#                    <img src="/static/assets/img/banner33.jpg" alt="" height="100%" width="100%">#}
+                    <img src="/static/assets/img/home_bn3.png" alt="" height="100%" width="100%">
                 </div>
             </div>
             <!-- 如果需要分页器 -->
@@ -143,7 +144,7 @@
 
     <!-- SECTION: Features -->
     <section id="features" class="section">
-        <div class="container">
+        <div class="container_myself">
 
             <!-- Section Content -->
             <div class="row mapWapper">
@@ -777,7 +778,12 @@
 {#        fade: {#}
 {#            crossFade: false,#}
 {#        },#}
-        autoplayDisableOnInteraction: false
+        autoplayDisableOnInteraction: false,
+        onSlideChangeStart: function(swiper){
+            // 每个文字都执行一遍animate还有图片
+{#            $('.home_bn').addClass('fadeInUp animated');#}
+            console.log(swiper.activeIndex)
+        }
     });
 
     // nav hover

@@ -176,3 +176,12 @@ body {
 .mapWapper .point-area:nth-child(7):after{
     animation-delay: 1.5s;
 }
+
+
+.container_myself{
+    width: 1170px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
