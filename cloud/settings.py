@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for cloud project.
 
@@ -127,3 +128,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'static')
 ]
+
+
+EMAIL_HOST = "smtp.sina.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "877564747@qq.com"
+EMAIL_HOST_PASSWORD = "A.123456a"
+EMAIL_USE_TLS = True
+EMAIL_FROM = "test"

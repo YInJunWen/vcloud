@@ -12,7 +12,7 @@ from django.db import connection, transaction
 # 注册信息表
 class UserInfo(models.Model):
     username = models.CharField(max_length=20, verbose_name=u"用户名", primary_key=True)
-    password = models.CharField(max_length=20, verbose_name=u"密码")
+    password = models.CharField(max_length=32, verbose_name=u"密码")
     email = models.EmailField(verbose_name=u"邮箱")
     dept = models.CharField(max_length=4, default='cp', verbose_name=u"部门")
     reg_time = models.DateTimeField(auto_now_add=True)
