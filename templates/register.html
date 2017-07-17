@@ -25,7 +25,7 @@
                         <label for="username">用户名</label>
                         <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
                        {% if err_name %}
-                            <span style="color: #f90;display: block;text-indent: -150px;">{{ err_name }}</span>
+                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_name }}</span>
                         {% endif %}
                     </li>
                     <li style="clear: both;">
@@ -37,7 +37,7 @@
                         <label for="repassword">确认密码</label>
                         <input type="password" name="repassword" id="repassword" maxlength="20" placeholder="不能为中文或特殊字符" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
                         {% if err_password %}
-                            <span style="color: #f90; display: block;text-indent: 70px;">{{ err_password }}</span>
+                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_password }}</span>
                         {% endif %}
                     </li>
                     <li style="clear: both;">
@@ -66,7 +66,7 @@
                             <option value="lxb">利辛办</option>
                         </select>
                         {% if dept %}
-                            <span style="color: #f90; display: block;text-indent: -135px;">{{dept}}</span>
+                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{dept}}</span>
                         {% endif %}
                     </li>
                     <li class="w-agreeBox" style="clear: both;">

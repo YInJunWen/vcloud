@@ -32,7 +32,7 @@
                 <input type="password" name="password" id="password" maxlength="20" placeholder="不能为中文或特殊字符"
                        onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
                 {% if err %}
-                    <span style="display: block;text-indent: -60px;color: #f00;">{{ err }}</span>
+                    <span style="position:relative; left: 135px;color: #f00;display: block;text-align: left;">{{ err }}</span>
                 {% endif %}
             </li>
             <li class="w-fSubmit" style="clear: both;">

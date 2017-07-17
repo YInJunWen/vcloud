@@ -8,8 +8,8 @@ import hashlib
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
-
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseBadRequest
 from .models import *
 
 
@@ -258,10 +258,18 @@ def logined(request):
 
 
 # 发送邮件
-# def sendSimpleEmail(request, emailto):
-#     res = send_mail("hello paul", "comment tu vas?", )
-
-
+def send_email(request):
+    subject = request.POST.get('subject', '')
+    message = request.POST.get('message', '')
+    from_email = request.POST.get('from_email', '')
+    if subject and message and from_email:
+        try:
+            send_mail(subject, message, from_email, ['admin@example.com'])
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        return HttpResponseRedirect('/contact/thanks/')
+    else:
+        return HttpResponse('Make sure all fields are entered and valid.')
 
 
 # 测试
