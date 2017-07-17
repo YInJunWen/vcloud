@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 
 import time
+import hashlib
 # from datetime import date
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
 
 from .models import *
 
@@ -52,7 +54,8 @@ def userRegister(request):
     if UserInfo.objects.filter(username__exact=username):
         err_name = '用户名已存在'
         return render(request, 'register.html', {'err_name': err_name})
-    data = UserInfo(username=username, email=email, password=password, dept=dept, reg_time=reg_time)
+    md5_password = hashlib.md5(password).hexdigest().upper()
+    data = UserInfo(username=username, email=email, password=md5_password, dept=dept, reg_time=reg_time)
     data.save()
     return HttpResponseRedirect('/login/')
 
@@ -63,7 +66,8 @@ def checkLogin(request):
     date = time.time()
     nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
-    loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=password)
+    md5_password = hashlib.md5(password).hexdigest().upper()
+    loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
 
     # 用户登陆 log记录
     data = UserLog(username=username, actionObject='登录', operationType='信息', ip=ip, logintime=nowtime)
@@ -251,6 +255,13 @@ def logined(request):
     if username:
         return True
     return False
+
+
+# 发送邮件
+# def sendSimpleEmail(request, emailto):
+#     res = send_mail("hello paul", "comment tu vas?", )
+
+
 
 
 # 测试
