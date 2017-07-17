@@ -258,16 +258,24 @@ def logined(request):
 
 
 # 发送邮件
+@csrf_exempt
 def send_email(request):
-    subject = request.POST.get('subject', '')
-    message = request.POST.get('message', '')
-    from_email = request.POST.get('from_email', '')
-    if subject and message and from_email:
+    username = request.POST.get('username', None)
+    from_email = request.POST.get('from_email', None)
+    check_mail = UserInfo.objects.filter(username__exact=username, email__exact=from_email)
+    if check_mail:
         try:
-            send_mail(subject, message, from_email, ['admin@example.com'])
+            #  第一个是 邮件的标题
+            #  第二个是 邮件的内容
+            #  第三个是 邮件的发起人账号 管理员邮箱
+            #  第四个是 给谁发送可多人
+            user_password = UserInfo.objects.filter(username__exact=username, email__exact=from_email).values_list(
+                'password').first()
+            print user_password
+            send_mail('vdin云找回密码', 'message', '877564747@qq.com', [from_email])
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
-        return HttpResponseRedirect('/contact/thanks/')
+        return HttpResponseRedirect('/login/')
     else:
         return HttpResponse('Make sure all fields are entered and valid.')
 

@@ -45,5 +45,11 @@ urlpatterns = {
     url(r'^order_checking/$', order_checking, name='order_checking'),  # 审核中
     url(r'^order_finished/$', order_finished, name='order_finished'),  # 已完成
     url(r'^calculatePrice/$', calculatePrice, name='calculatePrice'),  # 获取价格
+    url(r'^logout/$', logout, name='logout'),  # 退出登录
+    url(r'^send_email/$', send_email, name='send_email'),  # 找回密码发送邮件
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
 }

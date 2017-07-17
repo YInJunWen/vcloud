@@ -81,11 +81,8 @@ DATABASES = {
     #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 		'ENGINE': 'django.db.backends.mysql',
 		'NAME': 'vcloud',
-		# 'HOST': '127.0.0.1',
 		'HOST': '10.1.1.203',
-		# 'USER': 'root',
 		'USER': 'vcloud',
-		# 'PASSWORD': 'root',
         'PASSWORD': 'vdin*1234',
     }
 }
@@ -136,6 +133,6 @@ STATICFILES_DIRS = [
 EMAIL_HOST = "smtp.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = "877564747@qq.com"
-EMAIL_HOST_PASSWORD = "A.123456a"
+EMAIL_HOST_PASSWORD = "ztzxaulnsjacbaje"
 EMAIL_USE_TLS = True
 EMAIL_FROM = "test"
