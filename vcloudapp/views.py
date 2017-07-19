@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import random
 import time
+# import sys
 import hashlib
 # from datetime import date
 
@@ -14,6 +16,9 @@ from .models import *
 
 
 # Create your views here.
+# reload(sys)
+# sys.setdefaultencoding('utf8')
+
 
 # 主页
 def home(request):
@@ -97,7 +102,7 @@ def overview(request):
 def instances(request):
     o = logined(request)
     if not o:
-        return HttpResponseRedirect('//')
+        return HttpResponseRedirect('/login/')
     return render(request, 'instances.html')
 
 
@@ -261,18 +266,29 @@ def logined(request):
 @csrf_exempt
 def send_email(request):
     username = request.POST.get('username', None)
-    from_email = request.POST.get('from_email', None)
-    check_mail = UserInfo.objects.filter(username__exact=username, email__exact=from_email)
+    # from_email = request.POST.get('from_email', None)
+    check_mail = UserInfo.objects.filter(username__exact=username)
+    print check_mail
     if check_mail:
+        email = UserInfo.objects.get(username=username).email
         try:
             #  第一个是 邮件的标题
             #  第二个是 邮件的内容
             #  第三个是 邮件的发起人账号 管理员邮箱
             #  第四个是 给谁发送可多人
-            user_password = UserInfo.objects.filter(username__exact=username, email__exact=from_email).values_list(
-                'password').first()
-            print user_password
-            send_mail('vdin云找回密码', 'message', '877564747@qq.com', [from_email])
+            email_title = '密码重置通知!'
+            email_password = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
+            print email_password
+            email_message = '您的密码已初始化为： ' + email_password + ", 可登录后在控制台页面修改新密码！"
+            email_sendPerson = 'no-reply@vdin.net'
+            email_recPerson = email
+            send_mail(email_title, email_message, email_sendPerson, [email_recPerson])
+
+            #  新密码存储至数据库
+            data = UserInfo.objects.get(username=username)
+            md5_password = hashlib.md5(email_password).hexdigest().upper()
+            data.password = md5_password
+            data.save()
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
         return HttpResponseRedirect('/login/')

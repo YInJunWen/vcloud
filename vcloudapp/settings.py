@@ -130,7 +130,6 @@ STATICFILES_DIRS = [
 ]
 
 
-
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = "no-reply@vdin.net"
