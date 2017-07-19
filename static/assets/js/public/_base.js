@@ -85,12 +85,14 @@ $('.change_psw_ok').click(function () {
             'new_psw': new_psw,
             'confirm_psw': confirm_psw
         },
-        success: function(req){
-            if(req.data == '1') {
+        success: function (req) {
+            if (req.data == '1') {
                 $('.change_psw_Wapper').hide();
                 window.location.href = '/login/'
-            }else{
+            } else {
                 $('.mistake').show();
+                $('#old_psw, #new_psw, #confirm_psw').val('');
+                $('#old_psw').focus();
                 return false;
             }
         }
