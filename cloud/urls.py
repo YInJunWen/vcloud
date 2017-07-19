@@ -49,7 +49,7 @@ urlpatterns = {
     url(r'^send_email/$', send_email, name='send_email'),  # 找回密码发送邮件
     url(r'^accessLog/$', accessLog, name='accessLog'),  # 日志信息获取
     url(r'^accessIns/$', accessIns, name='accessIns'),  # 主机列表信息
-    # url(r'^/$', x, name='x'),
+    url(r'^change_psw/$', change_psw, name='change_psw'),  # 修改登陆密码
     # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
 }

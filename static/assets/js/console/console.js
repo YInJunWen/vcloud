@@ -2,7 +2,7 @@
  * Created by YIn on 2017/3/4.
  */
 //切换三角
-(function(){
+(function () {
 
     //获取dom
     var products_services = document.getElementById('products_services');
@@ -26,11 +26,11 @@
  * yDisk-body
  * yDisk-btn触发
  * */
-$(function(){
-    $('#yDisk-btn').click(function(){
+$(function () {
+    $('#yDisk-btn').click(function () {
         // 判断是否有内容 有内容清空
         var step = $('#yDisk-body').text();
-        if(step.length > 0) {
+        if (step.length > 0) {
             $('#yDisk-body').html(' ');
         }
 
@@ -62,21 +62,21 @@ $(function(){
 });
 
 //点击对应view打开
-$(function(){
+$(function () {
     // 获取实力li
-    $('#shiliViewBar').click(function(){
+    $('#shiliViewBar').click(function () {
         $('#shiliView').show();
         $('#yunpanView,#kuaizhaoView,#logView,#manageView,#orderView').hide();
     });
-    $('#yunpanbar').bind('click',function(){
+    $('#yunpanbar').bind('click', function () {
         $('#yunpanView').show();
         $('#shiliView,#kuaizhaoView,#logView,#manageView,#orderView').hide();
     });
-    $('#kuaizhaobar').bind('click',function(){
+    $('#kuaizhaobar').bind('click', function () {
         $('#kuaizhaoView').show();
         $('#shiliView,#yunpanView,#logView,#manageView,#orderView').hide();
     });
-    $('#logBar').bind('click',function(){
+    $('#logBar').bind('click', function () {
         $('#logView').show();
         $('#kuaizhaoView,#shiliView,#yunpanView,#manageView,#orderView').hide();
     });
@@ -84,139 +84,142 @@ $(function(){
     //     $('#manageView').show();
     //     $('#kuaizhaoView,#shiliView,#yunpanView,#logView,#orderView').hide();
     // });
-    $('#orderBar').bind('click',function(){
+    $('#orderBar').bind('click', function () {
         $('#orderView').show();
         $('#kuaizhaoView,#shiliView,#yunpanView,#logView,#manageView').hide();
     });
 });
 
 // 原本就存在的dom方法不执行再jQuery中
-$('.table thead input').click(function(){
+$('.table thead input').click(function () {
     var is_check = $(this)[0].checked;
-    $('.table tbody input').each(function(){
+    $('.table tbody input').each(function () {
         $(this)[0].checked = is_check;
     })
 });
 
 
 // select对应打开逻辑
-$(function(){
+$(function () {
     //  取消按钮点击
-    $('.closeBtnBar').click(function(){
-        $('.openWapper,.closeWapper,.restartWapper,.changeWapper,.snapshotWapper').hide();
+    $('.closeBtnBar').click(function () {
+        $('.openWapper,.closeWapper,.restartWapper,.changeWapper,.snapshotWapper,.change_psw_Wapper').hide();
     });
 
     //  开启云主机
-    $('.openBtnComputer').click(function(){
+    $('.openBtnComputer').click(function () {
         $('.openWapper').hide();
         //给服务器发送关闭请求
 
     });
 
     //  关闭云主机
-    $('.closeBtnComputer').click(function(){
+    $('.closeBtnComputer').click(function () {
         $('.closeWapper').hide();
         //给服务器发送关闭请求
 
     });
 
     // 重启云主机
-    $('.restartBtnComputer').click(function(){
+    $('.restartBtnComputer').click(function () {
         $('.restartWapper').hide();
         //给服务器发送关闭请求
 
     });
 
     // 更改密码
-    $('.changeBtnpassword').click(function(){
+    $('.changeBtnpassword').click(function () {
         $('.changeWapper').hide();
         //给服务器发送关闭请求
 
     });
 
     // 创建快照
-    $('.snapshotBtnComputer').click(function(){
+    $('.snapshotBtnComputer').click(function () {
         $('.snapshotWapper').hide();
         //给服务器发送关闭请求
 
     });
+
+    // 修改登陆密码
+
 });
 
-function yzj_Change(v){
-    if(v == '1') {
+function yzj_Change(v) {
+    if (v == '1') {
         $('.openWapper').show();
     }
-    if(v == '2') {
+    if (v == '2') {
         $('.closeWapper').show();
     }
-    if(v == '3') {
+    if (v == '3') {
         $('.restartWapper').show();
     }
-    if(v == '4') {
+    if (v == '4') {
         $('.changeWapper').show();
     }
-    if(v == '5') {
+    if (v == '5') {
         $('.snapshotWapper').show();
     }
 }
 
 // 工单撤销对应逻辑
-(function(){
-    $('.orderBtnOpen').on('click',function(){
+(function () {
+    $('.orderBtnOpen').on('click', function () {
         $('.withdrawWapper').show();
     });
 
-    $('.order_deleteBtnOpen').on('click',function(){
-    	$('.deleteOrderBar').show();
+    $('.order_deleteBtnOpen').on('click', function () {
+        $('.deleteOrderBar').show();
     });
 
     //对应关闭
-    $('.closeBtnBar').click(function(){
+    $('.closeBtnBar').click(function () {
         $('.withdrawWapper,.deleteOrderBar').hide()
     });
 })();
 
 // 对应撤销按钮发送请求
 var order_id = $('.order_id').text();
-$('.withdrawBtnComputer').click(function(){
+$('.withdrawBtnComputer').click(function () {
     $(".withdrawWapper").hide();
-    $.post('/order_rollback/',{'order_index':order_id},function(){
+    $.post('/order_rollback/', {'order_index': order_id}, function () {
         window.location.href = "http://10.1.1.102/order/";
     })
 });
 
-$('.deleteBtnComputer').click(function(){
+$('.deleteBtnComputer').click(function () {
     $(".deleteOrderBar").hide();
-    $.post('/order_delete/',{'order_index':order_id},function(){
-         window.location.href = "http://10.1.1.102/order/";
+    $.post('/order_delete/', {'order_index': order_id}, function () {
+        window.location.href = "http://10.1.1.102/order/";
     })
 });
 
 // 切换skin按钮 
 
-    $('.body_skin1').click(function(){
-        // 每次都存cookie
-        var skin1 = "/static/assets/css/public/body_skin1.css";
-        $("#skin_id").attr("href",skin1);
-        $.cookie("the_skin",skin1,{ expires: 7, path: '/' });
-    });
-
-$('.body_skin2').click(function(){
-	var skin2 = "/static/assets/css/public/body_skin2.css";
-	$('#skin_id').attr("href",skin2);
-	$.cookie('the_skin',skin2,{ expires: 7,path: '/'});
+$('.body_skin1').click(function () {
+    // 每次都存cookie
+    var skin1 = "/static/assets/css/public/body_skin1.css";
+    $("#skin_id").attr("href", skin1);
+    $.cookie("the_skin", skin1, {expires: 7, path: '/'});
 });
 
-$('.body_skin3').click(function(){
-	var skin3 = "/static/assets/css/public/body_skin3.css";
-	$('#skin_id').attr("href",skin3);
-	$.cookie('the_skin',skin3,{ expires: 7,path: '/'});
+$('.body_skin2').click(function () {
+    var skin2 = "/static/assets/css/public/body_skin2.css";
+    $('#skin_id').attr("href", skin2);
+    $.cookie('the_skin', skin2, {expires: 7, path: '/'});
+});
+
+$('.body_skin3').click(function () {
+    var skin3 = "/static/assets/css/public/body_skin3.css";
+    $('#skin_id').attr("href", skin3);
+    $.cookie('the_skin', skin3, {expires: 7, path: '/'});
 });
 
 // 页面每次加载都去读取存在的皮肤cookie
-$(function(){
-       	 var cookie_skin = $.cookie('the_skin');
-       	 $("#skin_id").attr('href',cookie_skin);
+$(function () {
+    var cookie_skin = $.cookie('the_skin');
+    $("#skin_id").attr('href', cookie_skin);
 });
 
 
@@ -232,16 +235,15 @@ $(function(){
 
 // })
 
-function dataPage(data){
+function dataPage(data) {
     var count = data.getAttribute('data-page');
     console.log(count);
-    $.get('/log_show/',{'page':count});
+    $.get('/log_show/', {'page': count});
 }
-
 
 
 //  管理界面隐藏显示关闭
 
-$('#manageBar').mouseenter(function(){
+$('#manageBar').mouseenter(function () {
     $('.manage_hidden').slideDown('500');
 })

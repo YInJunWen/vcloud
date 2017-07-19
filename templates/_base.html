@@ -92,7 +92,7 @@
                                     <span class="fa fa-book"></span>
                                     <span>个人资料</span>
                                 </a>
-                                <a href="">
+                                <a href="javascript:void(0)" id="change_psw">
                                     <span class="fa fa-book"></span>
                                     <span>更改密码</span>
                                 </a>
@@ -189,6 +189,32 @@
     {% block main_show %}
 
     {% endblock %}
+
+    <div class="change_psw_Wapper">
+        <div class="jumbotron">
+            <h3>更改登陆密码</h3>
+            <form action="/change_psw/" method="post" class="change_psw_form" onsubmit="return checkPassWord()">
+                <label for="old_psw">
+                    请输入旧密码： <input style="width: 230px;text-indent: 8px;" type="password" name="old_psw" id="old_psw" minlength="8" maxlength="20"
+                                  placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required>
+                    <span style="color: #f00;display: none;" class="mistake">密码错误！</span>
+                </label>
+                <label for="new_psw">
+                    请输入新密码： <input style="width: 230px;text-indent: 8px;" type="password" name="new_psw" id="new_psw" minlength="8" maxlength="20"
+                                  placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
+                    <span style="color: #f00;display: none;" class="nosame">密码格式有误！</span>
+                </label>
+                <label for="confirm_psw">
+                    请确认新密码： <input style="width: 230px;text-indent: 8px;" type="password" name="confirm_psw" id="confirm_psw" minlength="8" maxlength="20"
+                                  placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
+                </label>
+                <div class="checkBar">
+                    <button class="btn btn-primary change_psw_ok">确定</button>
+                    <button class="btn btn-default closeBtnBar">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -204,89 +230,6 @@
 <script src="/static/assets/js/console/echarts.js"></script>
 <script src="/static/assets/js/public/jquery.dataTables.min.js"></script>
 <script src="/static/assets/js/public/jquery.z-pager.js"></script>
-<script>
-    $('#datepicker input').datepicker({
-        language: "zh-CN",
-        todayHighlight: true
-    });
-
-
-    var log_username = $('#rightBarlist6>a').text();
-    var log_num_count = $('.log_num_count').text();
-    $('#pageTool').Paging({pagesize: 10, count: log_num_count});
-
-    $('#manageBar').click(function () {
-        return false;
-    });
-</script>
-
-{#日志页面点击触发#}
-<script>
-    /***
-     * actionObject
-     * operationType
-     * username
-     * ip
-     * logintime
-     */
-
-    $('#logTable').DataTable({
-        ajax: '/accessLog/',
-        columns: [
-            { data: 'actionObject'},
-            { data: 'operationType'},
-            { data: 'username'},
-            { data: 'ip'},
-            { data: 'logintime'}
-        ],
-        "fnInitComplete": function () {
-            if ($('#Logtbody tr').length > 1) {
-                $('.log_noMessage').hide();
-            }
-        }
-    });
-
-
-    {#    $('#pager2').zPager({#}
-    {#        url: /accessLog/,#}
-    {#        htmlBox: $('#wraper'),#}
-    {#        btnShow: false,#}
-    {#        dataRender: function(data) {#}
-    {#            console.log(data)#}
-    {#        }#}
-    {#    });#}
-
-
-{#        $.ajax({#}
-{#            url: '/accessLog/',#}
-{#            success: function (data) {#}
-{#                console.log(data.data);#}
-{#                $.each(data.data, function (key, value) {#}
-{#                    tbody = '<tr><td width="10"></td> <td style="text-align:left;width:10%;text-indent:10px;">' + value.actionObject + '</td><td style="text-align:center;">' + value.operationType + '</td><td style="text-align:center;">' + value.username + '</td><td style="text-align:center">' + value.ip + '</td><td style="text-align:center">' + value.logintime + '</td></tr>';#}
-{#                    $('#Logtbody').append(tbody);#}
-{#                    if ($('#Logtbody tr').length > 1) {#}
-{#                        $('.log_noMessage').hide();#}
-{#                    }#}
-{#                })#}
-{#            }#}
-{#        })#}
-</script>
-
-{#主机页面点击触发#}
-<script>
-    $.ajax({
-        url: '/accessIns/',
-        success: function (data) {
-            {#            console.log(data.data[0]);#}
-            $.each(data.data, function (key, value) {
-                tbody = '<tr><td width="10"><input type="checkbox"></td><td>' + value.instance_name + '</td><td>255.255.255.255</td><td class="pz">详细配置<ul id="hideList"><li><h3>云主机类型详情:</h3><div class="table-wapper"><table><tbody><tr><th class="hideTh">CPU</th><td class="hideTd">' + value.cpu + '核</td></tr><tr><th class="hideTh">内存</th><td class="hideTd">' + value.mem + 'GB</td></tr><tr><th class="hideTh">Disk</th><td class="hideTd">' + value.disk + 'GB</td></tr><tr><th class="hideTh">带宽</th><td class="hideTd">' + value.bandwidth + 'MB</td></tr><tr><th class="hideTh">系统</th><td class="hideTd">' + value.os + '</td></tr></tbody></table></div></li></ul></td><td>1 MB</td><td>1</td>' + '<td>判断运行</td>' + '<td style="text-align:center"><select name="" class="console_select" onchange="yzj_Change(this.options[this.options.selectedIndex].value)"><option value="0">--------</option><option value="1">开机</option><option value="2">关机</option><option value="3">重启</option><option value="4">修改密码</option><option value="5">快照</option></select></td></tr>';
-                $('#yDisk-body').append(tbody);
-                if ($('#yDisk-body tr').length > 1) {
-                    $('.ins_noMessage').hide();
-                }
-            })
-        }
-    })
-</script>
+<script src="/static/assets/js/public/_base.js"></script>
 </body>
 </html>

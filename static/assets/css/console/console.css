@@ -684,7 +684,8 @@ line-height: 34px;
 .closeWapper,
 .restartWapper,
 .changeWapper,
-.snapshotWapper {
+.snapshotWapper,
+.change_psw_Wapper{
   display: none;
   position: fixed;
   width: 100%;
@@ -726,6 +727,7 @@ line-height: 34px;
 .jumbotron label {
   float: left;
   margin: 0 15px 15px;
+  font-weight: normal !important;
 }
 .jumbotron label input {
   width: 300px;

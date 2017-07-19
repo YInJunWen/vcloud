@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import random
 import time
-# import sys
 import hashlib
 # from datetime import date
 
@@ -13,11 +12,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseBadRequest
 from .models import *
-
-
-# Create your views here.
-# reload(sys)
-# sys.setdefaultencoding('utf8')
 
 
 # 主页
@@ -296,9 +290,30 @@ def send_email(request):
         return HttpResponse('Make sure all fields are entered and valid.')
 
 
+@csrf_exempt
+def change_psw(request):
+    username = request.session.get('username')
+    old = request.POST.get('old_psw')
+    new = request.POST.get('new_psw')
+    confirm = request.POST.get('confirm_psw')
+    md5_old = hashlib.md5(old).hexdigest().upper()
+    SQLpassword = UserInfo.objects.get(username=username).password
+    if new == confirm and md5_old == SQLpassword:
+        check_old = UserInfo.objects.filter(username__exact=username)
+        if check_old:
+            md5_new = hashlib.md5(new).hexdigest().upper()
+            data = UserInfo.objects.get(username=username)  # 获取这条数据
+            data.password = md5_new
+            data.save()
+            del request.session['username']
+            return JsonResponse({'data': '1'})
+    else:
+        return JsonResponse({'data': '0'})
+
+
 # 测试
 def test1(request):
-    return render(request, 'test1.html')
+        return render(request, 'test1.html')
 
 
 @csrf_exempt
