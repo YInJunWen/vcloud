@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="/static/assets/css/index/animate.min.css">
     <link rel="stylesheet" href="/static/assets/css/public/swiper.min.css">
     <link rel="stylesheet" href="/static/assets/css/index/update.css">
+    <link href="http://vjs.zencdn.net/6.2.0/video-js.css" rel="stylesheet">
 </head>
 <body>
 
@@ -107,10 +108,10 @@
                     <img src="/static/assets/img/home_bn11.png" alt="" height="100%" width="100%" class="home_bn">
                 </div>
                 <div class="swiper-slide" style="width:100%;height:640px;">
-                    <img src="/static/assets/img/home_bn2.png" alt="" height="100%" width="100%">
+                    <img src="/static/assets/img/home_bn22.png" alt="" height="100%" width="100%">
                 </div>
                 <div class="swiper-slide" style="width:100%;height:640px;">
-                    <img src="/static/assets/img/home_bn3.png" alt="" height="100%" width="100%">
+                    <img src="/static/assets/img/home_bn33.png" alt="" height="100%" width="100%">
                 </div>
             </div>
             <!-- 如果需要分页器 -->
@@ -224,14 +225,14 @@
                                     </p>
 
                                     <ul class="list-unstyled mb">
-                                        <li><i class="icon icon-inline fa fa-star"></i>hahaha</li>
-                                        <li><i class="icon icon-inline fa fa-check"></i>haha</li>
+                                        <li><i class="icon icon-inline fa fa-star"></i>收藏</li>
+                                        <li><i class="icon icon-inline fa fa-check"></i>关注</li>
                                     </ul>
 
                                     <div class="alert alert-info" role="alert">
                                         <i class="icon icon-inline icon-inline-block icon-1p5x fa fa-info-circle text-info"></i>
-                                        <span class="strong">信息:</span>
-                                        嘿嘿嘿
+                                        <span class="strong">热点:</span>
+                                        大数据一体机
                                     </div>
                                 </div>
                             </div>
@@ -253,14 +254,14 @@
                                     </p>
 
                                     <ul class="list-unstyled mb">
-                                        <li><i class="icon icon-inline fa fa-star"></i>hahaha</li>
-                                        <li><i class="icon icon-inline fa fa-check"></i>haha</li>
+                                        <li><i class="icon icon-inline fa fa-star"></i>收藏</li>
+                                        <li><i class="icon icon-inline fa fa-check"></i>关注</li>
                                     </ul>
 
                                     <div class="alert alert-info" role="alert">
                                         <i class="icon icon-inline icon-inline-block icon-1p5x fa fa-info-circle text-info"></i>
                                         <span class="strong">信息:</span>
-                                        23165464
+                                        定制企业的数据潮
                                     </div>
                                 </div>
                             </div>
@@ -281,14 +282,14 @@
                                     </p>
 
                                     <ul class="list-unstyled mb">
-                                        <li><i class="icon icon-inline fa fa-star"></i>hahaha</li>
-                                        <li><i class="icon icon-inline fa fa-check"></i>haha</li>
+                                        <li><i class="icon icon-inline fa fa-star"></i>收藏</li>
+                                        <li><i class="icon icon-inline fa fa-check"></i>关注</li>
                                     </ul>
 
                                     <div class="alert alert-info" role="alert">
                                         <i class="icon icon-inline icon-inline-block icon-1p5x fa fa-info-circle text-info"></i>
                                         <span class="strong">信息:</span>
-                                        哈哈哈
+                                        专业技术服务和研发
                                     </div>
                                 </div>
                             </div>
@@ -308,7 +309,7 @@
                      data-reveal-duration="700"
                      data-reveal-distance="30px">
 
-                    <div class="h2 text-center pt no-margin text-white">观看我们的介绍视频</div>
+                    <div class="h2 text-center pt no-margin text-white">观看介绍视频</div>
                 </div>
 
                 <div class="col-xs-12 col-sm-4 col-md-2 xs-mb reveal"
@@ -317,8 +318,9 @@
                      data-reveal-scale="1.00"
                      data-reveal-distance="0">
 
-                    <a href="#" class="block link-white text-center mt-0p5"><i
-                            class="icon icon-inline icon-4x fa fa-fw fa-play-circle-o"></i></a>
+                    <a href="javascript:void(0)" id="videoBar" class="block link-white text-center mt-0p5">
+                        <i class="icon icon-inline icon-4x fa fa-fw fa-play-circle-o"></i>
+                    </a>
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-5 reveal"
@@ -584,14 +586,8 @@
                             </button>
                         </div>
                     </form>
-
-
                 </div>
-
-
             </div>
-
-
         </div>
     </section>
 
@@ -613,7 +609,24 @@
 <script src="/static/assets/js/index/general.js"></script>
 <!-- 轮播图js -->
 <script src="/static/assets/js/public/swiper.jquery.min.js"></script>
-
+<!-- If you'd like to support IE8 -->
+<!--[if lt IE9]>
+  	<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+<![endif]-->
+<script src="http://vjs.zencdn.net/6.2.0/video.js"></script>
+{#<script>#}
+{#    var player = videojs('my-player', function onPlayerReady() {#}
+{#        videojs.log('Your player is ready!');#}
+{##}
+{#        // In this context, `this` is the player that was created by Video.js.#}
+{#        this.play();#}
+{##}
+{#        // How about an event listener?#}
+{#        this.on('ended', function () {#}
+{#            videojs.log('Awww...over so soon?!');#}
+{#        });#}
+{#    });#}
+{#</script>#}
 <script>
     var mySwiper = new Swiper('.swiper-container', {
         autoplay: 3000,
@@ -622,15 +635,11 @@
         paginationClickable: true,
         spaceBetween: 0,
         loop: true,
-        {#        effect: 'fade',#}
-        {#        fade: {#}
-        {#            crossFade: false,#}
-        {#        },#}
         autoplayDisableOnInteraction: false,
         onSlideChangeStart: function (swiper) {
             // 每个文字都执行一遍animate还有图片
             {#            $('.home_bn').addClass('fadeInUp animated');#}
-            console.log(swiper.activeIndex)
+{#            console.log(swiper.activeIndex)#}
         }
     });
 
