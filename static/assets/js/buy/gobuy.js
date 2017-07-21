@@ -105,6 +105,75 @@ $(function(){
         calculatePrice();
     });
 
+    // 初始 商务型 3
+    $('.ChildType a:nth-child(4)').click(function(){
+        var number = parseInt($(this).text());
+        $('.ChildCpu a:nth-child(3)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildMem a:nth-child(4)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
+        $('.Form_cpu').val("2核");
+        $('.h_Form_cpu').val('2');
+        $('.Form_mem').val("4G");
+        $('.h_Form_mem').val("4");
+        calculatePrice();
+    });
+
+    // 入门型 1
+    $('.ChildType a:nth-child(2)').click(function(){
+        $('.ChildCpu a:nth-child(2)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildMem a:nth-child(2)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
+        $('.Form_cpu').val("1核");
+        $('.h_Form_cpu').val('1');
+        $('.Form_mem').val("1G");
+        $('.h_Form_mem').val("1");
+        calculatePrice();
+    });
+
+    // 标准型 2
+    $('.ChildType a:nth-child(3)').click(function(){
+        $('.ChildCpu a:nth-child(3)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildMem a:nth-child(3)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
+        $('.Form_cpu').val("2核");
+        $('.h_Form_cpu').val('2');
+        $('.Form_mem').val("2G");
+        $('.h_Form_mem').val("2");
+        calculatePrice();
+    });
+
+    // 舒适型 4
+    $('.ChildType a:nth-child(5)').click(function(){
+        $('.ChildCpu a:nth-child(4)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildMem a:nth-child(4)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
+        $('.Form_cpu').val("4核");
+        $('.h_Form_cpu').val('4');
+        $('.Form_mem').val("4G");
+        $('.h_Form_mem').val("4");
+        calculatePrice();
+    });
+
+    // 企业型 5
+    $('.ChildType a:nth-child(6)').click(function(){
+        $('.ChildCpu a:nth-child(4)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildMem a:nth-child(5)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
+        $('.Form_cpu').val("4核");
+        $('.h_Form_cpu').val('4');
+        $('.Form_mem').val("8G");
+        $('.h_Form_mem').val("8");
+        calculatePrice();
+    });
+
+    // 豪华型 6
+    $('.ChildType a:nth-child(7)').click(function(){
+        $('.ChildCpu a:nth-child(5)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildMem a:nth-child(6)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
+        $('.Form_cpu').val("8核");
+        $('.h_Form_cpu').val('8');
+        $('.Form_mem').val("16G");
+        $('.h_Form_mem').val("16");
+        calculatePrice();
+    });
+
+
+
     //  购买数量
     $('.buyNumber .jia').click(function () {
         //  获取购买数量
