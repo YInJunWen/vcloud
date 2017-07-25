@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/static/assets/components/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/components/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/static/assets/components/font-awesome/css/font-awesome.min.css">
+    <link href="/static/assets/css/public/video-js.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/assets/components/elegant-font/style.css">
     <link rel="stylesheet" href="/static/assets/components/owl-carousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="/static/assets/components/owl-carousel/assets/owl.theme.default.min.css">
@@ -27,7 +28,6 @@
     <link rel="stylesheet" href="/static/assets/css/index/animate.min.css">
     <link rel="stylesheet" href="/static/assets/css/public/swiper.min.css">
     <link rel="stylesheet" href="/static/assets/css/index/update.css">
-    <link href="http://vjs.zencdn.net/6.2.0/video-js.css" rel="stylesheet">
 </head>
 <body>
 
@@ -99,7 +99,7 @@
             </ul>
             <a href="/register/" target="_blank">免费注册</a>
             <a href="/login/" target="_blank" style="background: none">登录</a>
-            <a href="" target="_blank" style="background: none">控制台</a>
+            {#            <a href="" target="_blank" style="background: none">控制台</a>#}
         </div>
         <!-- 云主机 -->
         <div class="swiper-container" style="min-width: 1280px;">
@@ -151,19 +151,23 @@
                 <div class="certificate">
                     <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
                         <img src="/static/assets/img/27001_50x50.png" alt="" style="float: left;">
-                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">信息安全管理体系国际认证</p>
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            信息安全管理体系国际认证</p>
                     </a>
                     <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
                         <img src="/static/assets/img/AAA1_50x50.png" alt="" style="float: left;">
-                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">质量、服务、信誉AAA企业</p>
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            质量、服务、信誉AAA企业</p>
                     </a>
                     <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
                         <img src="/static/assets/img/AAA2_50x50.png" alt="" style="float: left;">
-                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">企业信用评价AAA级信用企业</p>
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            企业信用评价AAA级信用企业</p>
                     </a>
                     <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
                         <img src="/static/assets/img/eID_50x50.png" alt="" style="float: left;">
-                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">中国eID网络身份识别领军企业</p>
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            中国eID网络身份识别领军企业</p>
                     </a>
                 </div>
             </div>
@@ -331,7 +335,7 @@
                      data-reveal-scale="1.00"
                      data-reveal-distance="0">
 
-                    <a href="javascript:void(0)" id="videoBar" class="block link-white text-center mt-0p5">
+                    <a href="javascript:void(0)" id="videoBar" class="block link-white text-center mt-0p5 video_link">
                         <i class="icon icon-inline icon-4x fa fa-fw fa-play-circle-o"></i>
                     </a>
                 </div>
@@ -379,7 +383,7 @@
 
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
-                    <div class="icon-box-squared reveal">
+                    <div class="icon-box-squared">
 
                         <i class="icon fa fa-diamond"></i>
                         <div class="title">商业级数据潮</div>
@@ -392,7 +396,7 @@
 
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
-                    <div class="icon-box-squared reveal"
+                    <div class="icon-box-squared"
                          data-reveal-delay="300">
 
                         <i class="icon fa fa-tablet"></i>
@@ -407,7 +411,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
 
-                    <div class="icon-box-squared reveal"
+                    <div class="icon-box-squared"
                          data-reveal-delay="450">
 
                         <i class="icon fa fa-code"></i>
@@ -422,7 +426,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
 
-                    <div class="icon-box-squared reveal"
+                    <div class="icon-box-squared"
                          data-reveal-delay="600">
 
                         <i class="icon fa fa-coffee"></i>
@@ -465,7 +469,7 @@
 
                         <div class="col-xs-12 col-sm-4">
 
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend1.png" alt="">
                             </div>
 
@@ -476,7 +480,7 @@
                         <div class="col-xs-12 col-sm-4">
 
 
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend2.png" alt="">
                             </div>
 
@@ -486,7 +490,7 @@
                         <div class="col-xs-12 col-sm-4">
 
 
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend3.png" alt="">
                             </div>
 
@@ -496,7 +500,7 @@
                         <div class="col-xs-12 col-sm-4">
 
 
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend4.png" alt="">
                             </div>
 
@@ -505,7 +509,7 @@
 
                         <div class="col-xs-12 col-sm-4">
 
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend5.png" alt="">
                             </div>
 
@@ -515,7 +519,7 @@
                         <div class="col-xs-12 col-sm-4">
 
 
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend7.png" alt="">
                             </div>
 
@@ -570,7 +574,7 @@
 
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-7 reveal"
+                <div class="col-xs-12 col-sm-6 col-md-7"
                      data-reveal-scale=".97"
                      data-reveal-duration="500">
 
@@ -604,7 +608,8 @@
         </div>
     </section>
 
-
+    <span class="fa fa-close cha"></span>
+	<video id="my-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup="{}"></video>
 </main>
 
 <script src="/static/assets/js/index/jquery-2.2.0.min.js"></script>
@@ -624,54 +629,9 @@
 <script src="/static/assets/js/public/swiper.jquery.min.js"></script>
 <!-- If you'd like to support IE8 -->
 <!--[if lt IE9]>
-  	<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+  	<script src="/static/assets/js/public/videojs-ie8.min.js"></script>
 <![endif]-->
-<script src="http://vjs.zencdn.net/6.2.0/video.js"></script>
-{#<script>#}
-{#    var player = videojs('my-player', function onPlayerReady() {#}
-{#        videojs.log('Your player is ready!');#}
-{##}
-{#        // In this context, `this` is the player that was created by Video.js.#}
-{#        this.play();#}
-{##}
-{#        // How about an event listener?#}
-{#        this.on('ended', function () {#}
-{#            videojs.log('Awww...over so soon?!');#}
-{#        });#}
-{#    });#}
-{#</script>#}
-<script>
-    var mySwiper = new Swiper('.swiper-container', {
-        autoplay: 3000,
-        pagination: '.swiper-pagination',
-        slidesPerView: 1,
-        paginationClickable: true,
-        spaceBetween: 0,
-        loop: true,
-        autoplayDisableOnInteraction: false,
-        onSlideChangeStart: function (swiper) {
-            // 每个文字都执行一遍animate还有图片
-            {#            $('.home_bn').addClass('fadeInUp animated');#}
-{#            console.log(swiper.activeIndex)#}
-        }
-    });
-
-    // nav hover
-    $(function () {
-        $('.topbarWapper .common-topbar-nav-list li').hover(function () {
-            $('span', this).stop().css('height', '2px');
-            $('span', this).animate({
-                left: '0',
-                width: '100%',
-                right: '0'
-            }, 200);
-        }, function () {
-            $('span', this).stop().animate({
-                left: '50%',
-                width: '0'
-            }, 200);
-        });
-    });
-</script>
+<script src="//vjs.zencdn.net/5.19/video.min.js"></script>
+<script src="/static/assets/js/index/home.js"></script>
 </body>
 </html>

@@ -56,13 +56,13 @@ body {
 }
 
 /*地图wapper*/
-.mapWapper{
+.mapWapper {
     position: relative;
     top: 0;
     left: 0;
 }
 
-.mapWapper .point-area{
+.mapWapper .point-area {
     position: absolute;
     display: inline-block;
     width: 10px;
@@ -71,7 +71,7 @@ body {
     border-radius: 50%;
 }
 
-.mapWapper .point-area:after{
+.mapWapper .point-area:after {
     content: "";
     position: absolute;
     top: 0;
@@ -94,8 +94,8 @@ body {
 
     100% {
         opacity: 0;
-        -webkit-transform: scale(4);
-        transform: scale(4)
+        -webkit-transform: scale(6);
+        transform: scale(6)
     }
 }
 
@@ -108,12 +108,12 @@ body {
 
     100% {
         opacity: 0;
-        -webkit-transform: scale(4);
-        transform: scale(4)
+        -webkit-transform: scale(6);
+        transform: scale(6)
     }
 }
 
-.mapWapper .point-area p{
+.mapWapper .point-area p {
     position: absolute;
     top: -7px;
     font-size: 12px;
@@ -123,65 +123,99 @@ body {
 }
 
 /*昆山坐标*/
-.mapWapper .point-area:nth-child(2){
+.mapWapper .point-area:nth-child(2) {
     top: 453px;
     left: 875px;
 }
 
 /*南京坐标*/
-.mapWapper .point-area:nth-child(3){
+.mapWapper .point-area:nth-child(3) {
     top: 440px;
     left: 830px;
 }
 
 /*毫州坐标*/
-.mapWapper .point-area:nth-child(4){
+.mapWapper .point-area:nth-child(4) {
     top: 415px;
     left: 765px;
 }
 
 /*成都坐标*/
-.mapWapper .point-area:nth-child(5){
+.mapWapper .point-area:nth-child(5) {
     top: 465px;
     left: 620px;
 }
 
 /*苏州坐标*/
-.mapWapper .point-area:nth-child(6){
+.mapWapper .point-area:nth-child(6) {
     top: 453px;
     left: 865px;
 }
 
 /*连云港坐标*/
-.mapWapper .point-area:nth-child(7){
+.mapWapper .point-area:nth-child(7) {
     top: 405px;
     left: 843px;
 }
 
-.mapWapper .point-area:nth-child(2):after{
+.mapWapper .point-area:nth-child(2):after {
     animation-delay: 0.25s;
 }
-.mapWapper .point-area:nth-child(3):after{
+
+.mapWapper .point-area:nth-child(3):after {
     animation-delay: 0.5s;
 }
-.mapWapper .point-area:nth-child(4):after{
+
+.mapWapper .point-area:nth-child(4):after {
     animation-delay: 0.75s;
 }
-.mapWapper .point-area:nth-child(5):after{
+
+.mapWapper .point-area:nth-child(5):after {
     animation-delay: 1;
 }
-.mapWapper .point-area:nth-child(6):after{
+
+.mapWapper .point-area:nth-child(6):after {
     animation-delay: 1.25s;
 }
-.mapWapper .point-area:nth-child(7):after{
+
+.mapWapper .point-area:nth-child(7):after {
     animation-delay: 1.5s;
 }
 
-
-.container_myself{
+.container_myself {
     width: 1170px;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+}
+
+.cha {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 30px;
+    color: #fff;
+    z-index: 10000;
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    display: none;
+    cursor: pointer;
+}
+
+.vjs-big-play-button {
+    display: none !important;
+}
+
+.video-js {
+    width: 0;
+    height: 0;
+}
+
+#my-player {
+    position: fixed;
+    top: 0;
+    left: 0;
 }
