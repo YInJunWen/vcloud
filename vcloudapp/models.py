@@ -16,6 +16,7 @@ class UserInfo(models.Model):
     email = models.EmailField(verbose_name=u"邮箱")
     dept = models.CharField(max_length=4, default='cp', verbose_name=u"部门")
     reg_time = models.DateTimeField(auto_now_add=True)
+    power = models.CharField(max_length=1, default='0', verbose_name=u"职阶")
 
     class Meta:
         db_table = "userinfo"
@@ -49,7 +50,28 @@ class instance_Orders(models.Model):
     storage = models.CharField(max_length=30, default='sas')
     expired = models.IntegerField(default=30)
     buyNumber = models.IntegerField(default=1)
+    dept = models.CharField(max_length=4, verbose_name=u"部门")
 
     class Meta:
         db_table = 'instance_orders'
         verbose_name = u"创建实例"
+
+
+# # 部门主管表
+# class Department(models.Model):
+#     username = models.CharField(max_length=20, verbose_name=u"用户名", primary_key=True)
+#     dept = models.CharField(max_length=4, default='cp', verbose_name=u"部门")
+#
+#     class Meta:
+#         db_table = "department"
+#         verbose_name = u"主管权限"
+#
+#
+# # 总办表
+# class GeneralOffice(models.Model):
+#     username = models.CharField(max_length=20, verbose_name=u"用户名", primary_key=True)
+#     dept = models.CharField(max_length=4, default='cp', verbose_name=u"部门")
+#
+#     class Meta:
+#         db_table = "general_office"
+#         verbose_name = u"总办权限"

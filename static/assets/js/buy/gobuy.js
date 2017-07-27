@@ -237,37 +237,37 @@ $(function(){
     });
 
 
-    $('.ljgm').click(function(){
-        //  判断数据
-        var ins_name = $('.zjm').val();
-        if ((ins_name == '未填写') || (ins_name == '')){
-            alert('未填写主机名！');
-            $('.Host_Name').focus();
-            return;
-        }
-
-        var cpu = parseInt($('.Form_cpu').val());
-        var mem = parseInt($('.Form_mem').val());
-        var flux = parseInt($('.Form_flux').val());
-        if (flux == '0') {
-            alert('系统赠送50G系统盘！')
-        }
-        var disk = parseInt($('.Form_yp').val());
-        var diskType = $('.Form_storage').val();
-        var os = $('.Form_os').val();
-        if ((os == '--') || (os == '---请选择---')){
-            alert('未选择操作系统！');
-            return;
-        }
-        var expired = parseInt($('.Form_time').val());
-        var number = parseInt($('.Form_sl').val());
-        // console.log(mem);
-
-
-        //  button disabled 开启防止二次提交
-
-
-    });
+    // $('.ljgm').click(function(){
+    //     //  判断数据
+    //     var ins_name = $('.zjm').val();
+    //     if ((ins_name == '未填写') || (ins_name == '')){
+    //         alert('未填写主机名！');
+    //         $('.Host_Name').focus();
+    //         return;
+    //     }
+    //
+    //     var cpu = parseInt($('.Form_cpu').val());
+    //     var mem = parseInt($('.Form_mem').val());
+    //     var flux = parseInt($('.Form_flux').val());
+    //     if (flux == '0') {
+    //         alert('系统赠送50G系统盘！')
+    //     }
+    //     var disk = parseInt($('.Form_yp').val());
+    //     var diskType = $('.Form_storage').val();
+    //     var os = $('.Form_os').val();
+    //     if ((os == '--') || (os == '---请选择---')){
+    //         alert('未选择操作系统！');
+    //         return;
+    //     }
+    //     var expired = parseInt($('.Form_time').val());
+    //     var number = parseInt($('.Form_sl').val());
+    //     // console.log(mem);
+    //
+    //
+    //     //  button disabled 开启防止二次提交
+    //
+    //
+    // });
 
     //  scroll
 

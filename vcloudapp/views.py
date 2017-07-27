@@ -172,7 +172,11 @@ def order_finished(request):
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None)
     sameName = instance_Orders.objects.filter(instance_name=ins_name)
-    print sameName
+    # 获取所在部门
+    username = request.session.get('username')
+    if username:
+        dept = UserInfo.objects.get(username=username).dept
+    # print dept
     if sameName:
         # print '123'
         return render(request, 'create_instance.html', {'err_name': '此名称已存在'})
@@ -206,7 +210,8 @@ def chkcreate_instance(request):
     log_data.save()
     # 生成订单
     ins_data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
-                               storage=storage, expired=expired, buyNumber=buyNumber, created_user=created_user)
+                               storage=storage, expired=expired, buyNumber=buyNumber, created_user=created_user,
+                               dept=dept)
     ins_data.save()
     return HttpResponseRedirect('/overview/')
 
@@ -239,12 +244,26 @@ def accessLog(request):
     return JsonResponse({'data': list(data)})
 
 
+# 获取订单信息
 @csrf_exempt
 def accessIns(request):
     username = request.session.get('username')
-    data = instance_Orders.objects.filter(created_user=username).values('bandwidth', 'buyNumber', 'cpu', 'created_user',
-                                                                        'disk', 'expired', 'id', 'instance_name', 'mem',
-                                                                        'os', 'storage')
+    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    # 普通员工
+    if power == '0':
+        data = instance_Orders.objects.filter(created_user=username).values('bandwidth', 'buyNumber', 'cpu',
+                                                                            'created_user', 'disk', 'expired', 'id',
+                                                                            'instance_name', 'mem', 'os', 'storage')
+    # 部门领导
+    elif power == '1':
+        data = instance_Orders.objects.filter(dept=dept).values('bandwidth', 'buyNumber', 'cpu', 'created_user', 'disk',
+                                                                'expired', 'id', 'instance_name', 'mem', 'os',
+                                                                'storage')
+    # 总经办 云计算中心经理
+    else:
+        data = instance_Orders.objects.all().values('bandwidth', 'buyNumber', 'cpu', 'created_user', 'disk', 'expired',
+                                                    'id', 'instance_name', 'mem', 'os', 'storage')
     return JsonResponse({'data': list(data)})
 
 
@@ -313,7 +332,7 @@ def change_psw(request):
 
 # 测试
 def test1(request):
-        return render(request, 'test1.html')
+    return render(request, 'test1.html')
 
 
 @csrf_exempt
