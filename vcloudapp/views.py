@@ -75,8 +75,9 @@ def checkLogin(request):
     else:
         request.session['username'] = username
         request.session.set_expiry(20 * 60)
+        power = UserInfo.objects.get(username=username).power
         data.save()
-        return HttpResponseRedirect('/overview/')
+        return render(request, 'overview.html', context={"power": power})
 
 
 # 忘记密码跳转
@@ -89,7 +90,9 @@ def overview(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'overview.html')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    return render(request, 'overview.html', context={"power": power})
 
 
 # 云主机
@@ -97,7 +100,9 @@ def instances(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'instances.html')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    return render(request, 'instances.html', context={'power': power})
 
 
 # 云盘
@@ -105,7 +110,9 @@ def disk(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'disk.html')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    return render(request, 'disk.html', context={'power': power})
 
 
 # 快照
@@ -113,7 +120,9 @@ def snapshot(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'snapshot.html')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    return render(request, 'snapshot.html', context={"power": power})
 
 
 # 日志
@@ -121,7 +130,9 @@ def log(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'log.html')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    return render(request, 'log.html', context={"power": power})
 
 
 # 工单
@@ -129,7 +140,9 @@ def order(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'order.html')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    return render(request, 'order.html', context={'power': power})
 
 
 # 创建实例跳转
@@ -187,10 +200,11 @@ def chkcreate_instance(request):
     os = request.POST.get('os', None)
     storage = request.POST.get('storage', 'sas')
     expired = request.POST.get('expired', 1)
-    buyNumber = request.POST.get('buyNumber', 1)
+    buy_number = request.POST.get('buy_number', 1)
     created_user = request.session.get('username')
-    # nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
+    date = time.time()
+    apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
 
     # 选择操作系统
     if os == 'Win2008R2 64(纯净版)':
@@ -210,9 +224,12 @@ def chkcreate_instance(request):
     log_data.save()
     # 生成订单
     ins_data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
-                               storage=storage, expired=expired, buyNumber=buyNumber, created_user=created_user,
-                               dept=dept)
+                               storage=storage, expired=expired, buy_number=buy_number, created_user=created_user,
+                               dept=dept, apply_time=apply_time)
     ins_data.save()
+    # 生成工单
+    order_data = worksheet(add_time=apply_time, reason='申请云主机', username=created_user, state="部门审->总经办->云计算",dept=dept)
+    order_data.save()
     return HttpResponseRedirect('/overview/')
 
 
@@ -224,8 +241,8 @@ def calculatePrice(request):
     flux = int(request.POST.get('flux'))
     disk = int(request.POST.get('disk'))
     expired = int(request.POST.get('expired'))
-    buyNumber = int(request.POST.get('buyNumber'))
-    price = round((cpu * 28 + mem * 15 + flux * 10 + disk * 0.5) * expired * buyNumber, 2)
+    buy_number = int(request.POST.get('buy_number'))
+    price = round((cpu * 28 + mem * 15 + flux * 10 + disk * 0.5) * expired * buy_number, 2)
     return JsonResponse({'price': price})
 
 
@@ -239,7 +256,8 @@ def logout(request):
 @csrf_exempt
 def accessLog(request):
     username = request.session.get('username')
-    data = UserLog.objects.filter(username=username).values('actionObject', 'id', 'ip', 'logintime', 'operationType',
+    data = UserLog.objects.filter(username=username).order_by('-actionObject', '-id', '-ip', '-logintime', '-operationType',
+                                                            '-username').values('actionObject', 'id', 'ip', 'logintime', 'operationType',
                                                             'username')
     return JsonResponse({'data': list(data)})
 
@@ -252,18 +270,27 @@ def accessIns(request):
     dept = UserInfo.objects.get(username=username).dept
     # 普通员工
     if power == '0':
-        data = instance_Orders.objects.filter(created_user=username).values('bandwidth', 'buyNumber', 'cpu',
+        data = instance_Orders.objects.filter(created_user=username).values('bandwidth', 'buy_number', 'cpu',
                                                                             'created_user', 'disk', 'expired', 'id',
                                                                             'instance_name', 'mem', 'os', 'storage')
     # 部门领导
     elif power == '1':
-        data = instance_Orders.objects.filter(dept=dept).values('bandwidth', 'buyNumber', 'cpu', 'created_user', 'disk',
+        data = instance_Orders.objects.filter(dept=dept).values('bandwidth', 'buy_number', 'cpu', 'created_user', 'disk',
                                                                 'expired', 'id', 'instance_name', 'mem', 'os',
                                                                 'storage')
     # 总经办 云计算中心经理
     else:
-        data = instance_Orders.objects.all().values('bandwidth', 'buyNumber', 'cpu', 'created_user', 'disk', 'expired',
+        data = instance_Orders.objects.all().values('bandwidth', 'buy_number', 'cpu', 'created_user', 'disk', 'expired',
                                                     'id', 'instance_name', 'mem', 'os', 'storage')
+    return JsonResponse({'data': list(data)})
+
+
+# 获取order 工单
+@csrf_exempt
+def accessOrder(request):
+    username = request.session.get('username')
+    data = worksheet.objects.filter(username=username).values('id', 'add_time', 'reason',
+                                                                                  'username', 'state')
     return JsonResponse({'data': list(data)})
 
 
@@ -332,7 +359,9 @@ def change_psw(request):
 
 # 测试
 def test1(request):
-    return render(request, 'test1.html')
+    username = request.session.get('username')
+    a = UserInfo.objects.get(username=username).power
+    return render(request, 'test1.html', context={'a': a})
 
 
 @csrf_exempt

@@ -23,7 +23,7 @@ from vcloudapp.views import *
 
 urlpatterns = {
     # url(r'^admin/', admin.site.urls),
-    # url(r'^test1/$', test1, name='test1'),  # 测试
+    url(r'^test1/$', test1, name='test1'),  # 测试
     # url(r'^test2/$', test2, name='test2'),  # 测试
     url(r'^$', home, name='home'),  # 主页
     url(r'^login/$', userLogin, name='userLogin'),  # 登陆跳转
@@ -50,6 +50,16 @@ urlpatterns = {
     url(r'^accessLog/$', accessLog, name='accessLog'),  # 日志信息获取
     url(r'^accessIns/$', accessIns, name='accessIns'),  # 主机列表信息
     url(r'^change_psw/$', change_psw, name='change_psw'),  # 修改登陆密码
+    url(r'^accessOrder/$', accessOrder, name='accessOrder'),  # 工单列表
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
 }

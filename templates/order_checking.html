@@ -33,48 +33,24 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th width="10">
-                                    <input type="checkbox">
-                                </th>
+{#                                <th width="10">#}
+{#                                    <input type="checkbox">#}
+{#                                </th>#}
                                 <th style="text-align: center;" width="10%">工单号</th>
                                 <th style="text-align: center;" width="20%">时间</th>
                                 <th style="text-align: center;" width="40%">事由</th>
-                                <th style="text-align: center;">服务器</th>
                                 <th style="text-align: center;">申请人</th>
                                 <th style="text-align: center;">状态</th>
                                 <th style="text-align: center;">操作</th>
                             </tr>
                             </thead>
-{#                            {% if order_list %}#}
-                                <tbody>
-{#                                {% for i in order_list %}#}
-                                    <tr>
-                                        <td width="10">
-                                            <input type="checkbox">
-                                        </td>
-                                        <td style="text-align: center;" width="10%"><a class="order_id"
-                                                                                       href="/order_detail/?id={{ i.id }}&type={{ i.type }}">{{ i.id }}</a>
-                                        </td>
-                                        <td style="text-align: center;" width="20%">{{ i.created_at }} </td>
-                                        <td style="text-align: center;" width="40%">{{ i.reason }}</td>
-                                        <td style="text-align: center;">{{ i.server }}</td>
-                                        <td style="text-align: center;">{{ i.created_user }}</td>
-                                        <td style="text-align: center;">{{ i.status }}</td>
-                                        <td style="text-align: center;">
-{#                                            {% if i.type != 2 %}#}
-                                                <a href="javascript:void(0)" class="orderBtnOpen">撤销</a> |
-{#                                            {% endif %}#}
-                                            <a href="javascript:void(0)" class="order_deleteBtnOpen">删除</a>
-                                        </td>
-                                    </tr>
-{#                                {% endfor %}#}
-                                </tbody>
-                                </table>
-{#                            {% else %}#}
-                                <div class="noMessage">
-                                    <p>没有查询到符合条件的记录!</p>
-                                </div>
-{#                            {% endif %}#}
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <div class="noMessage">
+                            <p>没有查询到符合条件的记录!</p>
+                        </div>
                     </div>
                 </div>
 

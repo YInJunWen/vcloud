@@ -49,29 +49,28 @@ class instance_Orders(models.Model):
     os = models.CharField(max_length=30)
     storage = models.CharField(max_length=30, default='sas')
     expired = models.IntegerField(default=30)
-    buyNumber = models.IntegerField(default=1)
+    buy_number = models.IntegerField(default=1)
     dept = models.CharField(max_length=4, verbose_name=u"部门")
+    apply_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'instance_orders'
         verbose_name = u"创建实例"
 
 
-# # 部门主管表
-# class Department(models.Model):
-#     username = models.CharField(max_length=20, verbose_name=u"用户名", primary_key=True)
-#     dept = models.CharField(max_length=4, default='cp', verbose_name=u"部门")
-#
-#     class Meta:
-#         db_table = "department"
-#         verbose_name = u"主管权限"
-#
-#
-# # 总办表
-# class GeneralOffice(models.Model):
-#     username = models.CharField(max_length=20, verbose_name=u"用户名", primary_key=True)
-#     dept = models.CharField(max_length=4, default='cp', verbose_name=u"部门")
-#
-#     class Meta:
-#         db_table = "general_office"
-#         verbose_name = u"总办权限"
+# 工单表
+class worksheet(models.Model):
+    id = models.AutoField(primary_key=True)
+    add_time = models.DateTimeField(auto_now_add=True)
+    reason = models.CharField(max_length=255, default="申请云主机")
+    username = models.CharField(max_length=20)
+    state = models.CharField(max_length=20)
+    dept = models.CharField(max_length=4, verbose_name=u"部门")
+    Division_Manager = models.CharField(max_length=1, default=0)
+    General_Manager = models.CharField(max_length=1, default=0)
+    Cloud_Computing = models.CharField(max_length=1, default=0)
+    class Mete:
+        db_table = "worksheet"
+        verbose_name = u"工单审核"
+
+

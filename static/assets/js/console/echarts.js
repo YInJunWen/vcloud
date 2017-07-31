@@ -59,8 +59,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 5, name: '5核'},
-                    {value: 15, name: "CPU"}
+                    {value: 4, name: '4核'},
+                    {value: 16, name: "CPU"}
                 ],
                 itemStyle: {
                     emphasis: {
@@ -81,8 +81,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 5, name: '5G'},
-                    {value: 45, name: "ROM"}
+                    {value: 4, name: '4G'},
+                    {value: 32, name: "ROM"}
                 ],
                 itemStyle: {
                     emphasis: {
