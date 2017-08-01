@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import hashlib
 
 import datetime
+
+import uuid as uuid
 from django.db import models
 from django.db import connection, transaction
 
@@ -81,13 +83,13 @@ class UserInfo(models.Model):
     password = models.CharField(max_length=50)  # 密码
     email = models.EmailField()  # 邮箱
     locked = models.BooleanField(max_length=1, default=False)  # True锁定账号, 不允许登陆
-    privoleges = models.IntegerField(default=1)  # 0-公司管理员, 1-公司员工
+    power = models.IntegerField(default=1)  # 0-公司管理员, 1-公司员工
     role = models.IntegerField(default=1)  # 0-管理员，1-普通用户
-    dept = models.CharField(max_length=4, default='yjs')  # 部门 默认云计算
-    reg_ip = models.GenericIPAddressField(protocol='IPV4', max_length=15, default='0.0.0.0')  # 注册IP
+    dept = models.CharField(max_length=4, default='other')  # 部门 默认云计算
+    reg_ip = models.GenericIPAddressField(protocol='IPV4', max_length=15)  # 注册IP
     reg_time = models.DateTimeField(auto_now_add=True)  # 注册时间
-    login_count = models.IntegerField()  # 登陆次数
-    instances_count = models.IntegerField()  # 实例数量
+    login_count = models.IntegerField(default=0)  # 登陆次数
+    instances_count = models.IntegerField(default=0)  # 实例数量
     last_ip = models.CharField(max_length=15, default='0.0.0.0')  # 最后登录ip
     last_time = models.DateTimeField(auto_now_add=True)  # 最后登录时间 Now()
 
@@ -154,6 +156,7 @@ class Log(models.Model):
     log_user = models.CharField(max_length=20)  # 操作者
     log_detail = models.CharField(max_length=255, default="")  # 日志内容
     log_shown = models.BooleanField(default=True)  # true 显示   false 隐藏
+    log_ip = models.CharField(max_length=15, default='0.0.0.0')  # 登陆ip
 
     class Meta:
         db_table = "log"
@@ -176,7 +179,7 @@ class Instances(models.Model):
     delayed_at = models.DateTimeField()  # 到期未续后宽限时间
     belonged = models.CharField(max_length=20)  # 创建者 属于
     name = models.CharField(max_length=20)  # 实例名称
-    uuid = models.CharField(max_length=50)  # 实例uuid
+    uuid = models.UUIDField(default=uuid.uuid4)  # 实例uuid
     vcpus = models.IntegerField(default=1)
     memory = models.IntegerField(default=1)
     bandwidth = models.IntegerField()
@@ -192,7 +195,7 @@ class Instances(models.Model):
 # IP地址
 class IP(models.Model):
     pid = models.AutoField(primary_key=True)
-    uuid = models.CharField(max_length=50)  # 唯一识别码
+    uuid = models.UUIDField(default=uuid.uuid4)  # 唯一识别码
     mac_address = models.CharField(max_length=15, default='0000-0000-0000')  # 网卡地址
     ip_address = models.GenericIPAddressField(max_length=15, default='0.0.0.0')
     traffice_in = models.IntegerField(default=0)  # 流量进

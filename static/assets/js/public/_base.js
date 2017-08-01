@@ -27,11 +27,11 @@ $('#manageBar').click(function () {
 $('#logTable').DataTable({
     ajax: '/accessLog/',
     columns: [
-        {data: 'actionObject'},
-        {data: 'operationType'},
-        {data: 'username'},
-        {data: 'ip'},
-        {data: 'logintime'}
+        {data: 'log_user'},
+        {data: 'log_type'},
+        {data: 'log_detail'},
+        {data: 'log_ip'},
+        {data: 'log_opt'}
     ],
     "fnInitComplete": function () {
         if ($('#Logtbody tr').length > 1) {

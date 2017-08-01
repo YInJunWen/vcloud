@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 import random
 import time
-import hashlib
-# from datetime import date
-
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from .models import *
 
 
@@ -29,60 +25,14 @@ def register(request):
     return render(request, 'register.html')
 
 
-#  注册接口注册完跳login
-def userRegister(request):
-    username = request.POST.get('username', None).strip()
-    password = request.POST.get('password', None).strip()
-    email = request.POST.get('e_mail', None).strip()
-    dept = request.POST.get('dept', None).strip()
-    date = time.time()
-    reg_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
-    if len(username) < 6:
-        err_name = '用户名至少6个字符以上！'
-        return render(request, 'register.html', context={'err_name': err_name})
-    if username[0].isdigit() or not username[0].isalpha():
-        err_name = '用户名必须字母开始！'
-        return render(request, 'register.html', context={'err_name': err_name})
-    for i in username:
-        if not i.isalnum():
-            err_name = "用户名由字母和数字组成，且必须以字母开头!"
-            return render(request, 'register.html', context={'err_name': err_name})
-    if len(password) < 8:
-        err_name = "密码至少8位及以上，包含大小写字母数字及特殊字符！"
-        return render(request, 'register.html', context={'err_password': err_name})
-    if UserInfo.objects.filter(username__exact=username):
-        err_name = '用户名已存在'
-        return render(request, 'register.html', {'err_name': err_name})
-    md5_password = hashlib.md5(password).hexdigest().upper()
-    data = UserInfo(username=username, email=email, password=md5_password, dept=dept, reg_time=reg_time)
-    data.save()
-    return HttpResponseRedirect('/login/')
-
-
-def checkLogin(request):
-    username = request.POST.get('username', None).strip()
-    password = request.POST.get('password', None).strip()
-    date = time.time()
-    nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
-    ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
-    md5_password = hashlib.md5(password).hexdigest().upper()
-    loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
-
-    # 用户登陆 log记录
-    data = UserLog(username=username, actionObject='登录', operationType='信息', ip=ip, logintime=nowtime)
-    if not loginInfo:
-        return render(request, 'login.html', context={'err': '用户名或密码错误!'})
-    else:
-        request.session['username'] = username
-        request.session.set_expiry(20 * 60)
-        power = UserInfo.objects.get(username=username).power
-        data.save()
-        return render(request, 'overview.html', context={"power": power})
-
-
 # 忘记密码跳转
 def get_password(request):
     return render(request, 'repassword.html')
+
+
+# 中德感知
+def zdgz(request):
+    return render(request, 'zdgz.html')
 
 
 # overview
@@ -153,11 +103,6 @@ def create_instance(request):
     return render(request, 'create_instance.html')
 
 
-# 中德感知
-def zdgz(request):
-    return render(request, 'zdgz.html')
-
-
 # 创建工单
 def order_create(request):
     o = logined(request)
@@ -177,6 +122,61 @@ def order_finished(request):
     if not o:
         return HttpResponseRedirect('/login/')
     return render(request, 'order_finished.html')
+
+
+#  注册接口注册完跳login
+def userRegister(request):
+    username = request.POST.get('username', None).strip()
+    password = request.POST.get('password', None).strip()
+    email = request.POST.get('e_mail', None).strip()
+    dept = request.POST.get('dept', None).strip()
+    reg_ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
+    date = time.time()
+    reg_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    if len(username) < 6:
+        err_name = '用户名至少6个字符以上！'
+        return render(request, 'register.html', context={'err_name': err_name})
+    if username[0].isdigit() or not username[0].isalpha():
+        err_name = '用户名必须字母开始！'
+        return render(request, 'register.html', context={'err_name': err_name})
+    for i in username:
+        if not i.isalnum():
+            err_name = "用户名由字母和数字组成，且必须以字母开头!"
+            return render(request, 'register.html', context={'err_name': err_name})
+    if len(password) < 8:
+        err_name = "密码至少8位及以上，包含大小写字母数字及特殊字符！"
+        return render(request, 'register.html', context={'err_password': err_name})
+    if UserInfo.objects.filter(username__exact=username):
+        err_name = '用户名已存在'
+        return render(request, 'register.html', {'err_name': err_name})
+    md5_password = hashlib.md5(password).hexdigest().upper()
+    data = UserInfo(username=username, email=email, password=md5_password, dept=dept, reg_time=reg_time, reg_ip=reg_ip,
+                    last_ip=reg_ip)
+    data.save()
+    return HttpResponseRedirect('/login/')
+
+
+def checkLogin(request):
+    username = request.POST.get('username', None).strip()
+    password = request.POST.get('password', None).strip()
+    date = time.time()
+    nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
+    md5_password = hashlib.md5(password).hexdigest().upper()
+    loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
+    lock = UserInfo.objects.get(username=username).locked
+    # print lock
+    data = Log(log_type='登陆', log_opt=nowtime, log_user=username, log_ip=ip, log_detail="信息")  # 用户登陆 log记录
+    if lock:
+        return render(request, 'login.html', context={'err': '该用户已被锁定！'})
+    if not loginInfo:
+        return render(request, 'login.html', context={'err': '用户名或密码错误!'})
+    else:
+        request.session['username'] = username
+        request.session.set_expiry(20 * 60)
+        power = UserInfo.objects.get(username=username).power
+        data.save()
+        return render(request, 'overview.html', context={"power": power})
 
 
 # 创建实例接口
@@ -228,7 +228,7 @@ def chkcreate_instance(request):
                                dept=dept, apply_time=apply_time)
     ins_data.save()
     # 生成工单
-    order_data = worksheet(add_time=apply_time, reason='申请云主机', username=created_user, state="部门审->总经办->云计算",dept=dept)
+    order_data = worksheet(add_time=apply_time, reason='申请云主机', username=created_user, state="部门审->总经办->云计算", dept=dept)
     order_data.save()
     return HttpResponseRedirect('/overview/')
 
@@ -246,19 +246,13 @@ def calculatePrice(request):
     return JsonResponse({'price': price})
 
 
-# logout
-def logout(request):
-    del request.session['username']
-    return HttpResponseRedirect('/login/')
-
-
 # 获取日志信息
 @csrf_exempt
 def accessLog(request):
     username = request.session.get('username')
-    data = UserLog.objects.filter(username=username).order_by('-actionObject', '-id', '-ip', '-logintime', '-operationType',
-                                                            '-username').values('actionObject', 'id', 'ip', 'logintime', 'operationType',
-                                                            'username')
+    data = Log.objects.filter(log_user=username).order_by('-log_user', '-log_type', '-log_detail', '-log_ip',
+                                                              '-log_opt').values('log_user', 'log_type', 'log_detail', 'log_ip', 'log_opt')
+    print data
     return JsonResponse({'data': list(data)})
 
 
@@ -275,7 +269,8 @@ def accessIns(request):
                                                                             'instance_name', 'mem', 'os', 'storage')
     # 部门领导
     elif power == '1':
-        data = instance_Orders.objects.filter(dept=dept).values('bandwidth', 'buy_number', 'cpu', 'created_user', 'disk',
+        data = instance_Orders.objects.filter(dept=dept).values('bandwidth', 'buy_number', 'cpu', 'created_user',
+                                                                'disk',
                                                                 'expired', 'id', 'instance_name', 'mem', 'os',
                                                                 'storage')
     # 总经办 云计算中心经理
@@ -290,7 +285,7 @@ def accessIns(request):
 def accessOrder(request):
     username = request.session.get('username')
     data = worksheet.objects.filter(username=username).values('id', 'add_time', 'reason',
-                                                                                  'username', 'state')
+                                                              'username', 'state')
     return JsonResponse({'data': list(data)})
 
 
@@ -333,7 +328,7 @@ def send_email(request):
             return HttpResponse('Invalid header found.')
         return HttpResponseRedirect('/login/')
     else:
-        return HttpResponse('Make sure all fields are entered and valid.')
+        return HttpResponse('请确保所有字段都输入并有效')
 
 
 @csrf_exempt
@@ -355,6 +350,12 @@ def change_psw(request):
             return JsonResponse({'data': '1'})
     else:
         return JsonResponse({'data': '0'})
+
+
+# logout
+def logout(request):
+    del request.session['username']
+    return HttpResponseRedirect('/login/')
 
 
 # 测试
