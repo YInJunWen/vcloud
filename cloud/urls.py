@@ -22,9 +22,9 @@ from django.contrib import admin
 from vcloudapp.views import *
 
 urlpatterns = {
-    # url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^test1/$', test1, name='test1'),  # 测试
-    # url(r'^test2/$', test2, name='test2'),  # 测试
+    url(r'^test2/$', test2, name='test2'),  # 测试
     url(r'^$', home, name='home'),  # 主页
     url(r'^login/$', userLogin, name='userLogin'),  # 登陆跳转
     url(r'^register/$', register, name='register'),  # 注册跳转
@@ -39,18 +39,18 @@ urlpatterns = {
     url(r'^log/$', log, name='log'),  # 日志
     url(r'^order/$', order, name='order'),  # 工单
     url(r'^create_instance/$', create_instance, name='create_instance'),  # 创建实例跳转
-    # url(r'^chkcreate_instance/$', chkcreate_instance, name='chkcreate_instance'),  # 创建实例接口
+    url(r'^chkcreate_instance/$', chkcreate_instance, name='chkcreate_instance'),  # 创建实例接口
     url(r'^zdgz/$', zdgz, name='zdgz'),  # 感知系统
     url(r'^order_create/$', order_create, name='order_create'),  # 创建工单
     url(r'^order_checking/$', order_checking, name='order_checking'),  # 审核中
     url(r'^order_finished/$', order_finished, name='order_finished'),  # 已完成
-    # url(r'^calculatePrice/$', calculatePrice, name='calculatePrice'),  # 获取价格
+    url(r'^calculatePrice/$', calculatePrice, name='calculatePrice'),  # 获取价格
     url(r'^logout/$', logout, name='logout'),  # 退出登录
     url(r'^send_email/$', send_email, name='send_email'),  # 找回密码发送邮件
     url(r'^accessLog/$', accessLog, name='accessLog'),  # 日志信息获取
-    # url(r'^accessIns/$', accessIns, name='accessIns'),  # 主机列表信息
+    url(r'^accessIns/$', accessIns, name='accessIns'),  # 主机列表信息
     url(r'^change_psw/$', change_psw, name='change_psw'),  # 修改登陆密码
-    # url(r'^accessOrder/$', accessOrder, name='accessOrder'),  # 工单列表
+    url(r'^accessOrder/$', accessOrder, name='accessOrder'),  # 工单列表
     # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),

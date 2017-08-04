@@ -273,7 +273,7 @@ $(function(){
 
 
     var rsfc = function () {
-        if ($(window).scrollTop() > 100) {
+        if ($(window).scrollTop() > 210) {
             $(".gobuyFormWapper").addClass("fixed");
         } else {
             $(".gobuyFormWapper").removeClass("fixed");
@@ -296,6 +296,8 @@ function checkForm() {
     var ins_name = $('.zjm').val();
     var os = $('.Form_os').val();
     var disk = $('.h_Form_yp').val();
+    var login_password = $('.login_password').val();
+    var confirm_login_password = $('.confirm_login_password').val();
     if ((ins_name == '未填写') || (ins_name == '')){
         alert('未填写主机名！');
         $('.Host_Name').focus();
@@ -309,6 +311,15 @@ function checkForm() {
         alert('硬盘必须大于等于50G');
         return false;
     }
+    if ((login_password == "") || (confirm_login_password == "") || (confirm_login_password !== login_password)
+     || (login_password.length<8) || (login_password.length>20) || (confirm_login_password.length<8) || (confirm_login_password.length>20)){
+        $('.login_password').val("");
+        $('.confirm_login_password').val("");
+        $('.login_password').focus();
+        alert('密码格式错误或输出不一致！');
+        return false;
+    }
+    $('.h_password').val(login_password);
 }
 
 

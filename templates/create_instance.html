@@ -106,6 +106,7 @@
                     <div class="conf">
                         主机名：<input class="zjm" value="未填写" readonly>
                         <input type="hidden" name="instance_name" class="h_zjm" value="未填写">
+                        <input type="hidden" name="password" class="h_password" value="">
                     </div>
                     <div class="conf">
                         类　型：<input class="Form_lx" value="商务型" readonly name="">
@@ -131,7 +132,7 @@
                         <input type="hidden" class="h_Form_storage" value="SAS" name="storage">
                     </div>
                     <div class="conf">
-                        系　统：<input class="Form_os" value="--" readonly>
+                        系　统：<input class="Form_os" value="--" readonly style="width: 175px;">
                         <input type="hidden" class="h_Form_os" value="--" name="os">
                     </div>
                     <div class="conf">
@@ -204,12 +205,26 @@
                         <span>主机名：</span>
                     </div>
                     {% if err_name %}
-                        <input type="text" placeholder="名称已存在" class="Host_Name">
+                        <input type="text" placeholder="名称已存在" class="Host_Name" required>
                         <span style="color: #f00"> ( * 请重新输入 )</span>
                     {% else %}
-                        <input type="text" placeholder="请输入名称" class="Host_Name">
+                        <input type="text" placeholder="请输入名称" class="Host_Name" required>
                         <span style="color: #f00"> ( * 必填 )</span>
                     {% endif %}
+                </div>
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>登陆密码：</span>
+                    </div>
+                    <input type="password" placeholder="8-20位数字密码" class="login_password" minlength="8" maxlength="20" required>
+                    <span style="color: #f00"> ( * 必填 )</span>
+                </div>
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>确认密码：</span>
+                    </div>
+                    <input type="password" placeholder="请再输入一次" class="confirm_login_password" minlength="8" maxlength="20" required>
+                    <span style="color: #f00"> ( * 必填 )</span>
                 </div>
                 <div class="ChildSelection ChildBuyTime">
                     <div class="Choice clearfix">
@@ -235,13 +250,12 @@
             </div>
         </div>
     </div>
-</div>
 
-<script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
-{#<script src="/static/assets/js/buy/jquery-2.1.1.js"></script>#}
-<script src="/static/assets/js/buy/tipso.min.js"></script>
-<script src="/static/assets/js/buy/jquery-ui.js"></script>
-<script src="/static/assets/js/buy/jquery-ui-slider-pips.js"></script>
-<script src="/static/assets/js/buy/gobuy.js"></script>
+    <script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
+    {#<script src="/static/assets/js/buy/jquery-2.1.1.js"></script>#}
+    <script src="/static/assets/js/buy/tipso.min.js"></script>
+    <script src="/static/assets/js/buy/jquery-ui.js"></script>
+    <script src="/static/assets/js/buy/jquery-ui-slider-pips.js"></script>
+    <script src="/static/assets/js/buy/gobuy.js"></script>
 </body>
 </html>

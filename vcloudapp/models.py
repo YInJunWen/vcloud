@@ -117,7 +117,7 @@ class Order(models.Model):
     admin_pending = models.IntegerField(default=1)  # 总经办
     vcloud_pending = models.IntegerField(default=1)  # 云计算审核
     status = models.IntegerField(default=1)  # 0-已完成，1-审核中，2-已过期
-    order_id = models.IntegerField()  # 订单明细 根据order_detail.pid决定
+    uuid = models.UUIDField()  # 订单明细 uuid关联订单明细用
     paid = models.IntegerField(default=1)  # 支付确认 0-已支付 1-未支付
 
     class Meta:
@@ -127,11 +127,13 @@ class Order(models.Model):
 # 订单明细
 class OrderDetail(models.Model):
     pid = models.AutoField(primary_key=True)
+    uuid = models.UUIDField()
     vcpu = models.IntegerField(default=1)  # cpu
     memory = models.IntegerField(default=1)  # 内存
     bandwidth = models.IntegerField()
     os = models.IntegerField()  # os.pid
     disk = models.IntegerField(default=0)  # disk.pid
+    password = models.CharField(max_length=20)
     expire = models.IntegerField(default=30)  # 购买时长
 
     class Meta:
@@ -203,5 +205,27 @@ class IP(models.Model):
 
     class Meta:
         db_table = "ip"
+
+
+# 快照
+class Snapshot(models.Model):
+    pid = models.AutoField(primary_key=True)
+    display_name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    belonged = models.CharField(max_length=255)  # 实例
+    status = models.IntegerField(default=0)  # 0-正常 1-无效 2-删除
+
+    class Meta:
+        db_table = "snapshot"
+
+
+# 快照计数
+class SnapshotCount(models.Model):
+    pid = models.AutoField(primary_key=True)
+    instance_name = models.CharField(max_length=20)
+    snapshot_count = models.IntegerField(default=0)  # 实例快照数 最大3个 超过三个不能创建
+
+    class Meta:
+        db_table = "snapshot_count"
 
 

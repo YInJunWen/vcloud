@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import random
 import time
+import uuid
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -85,7 +86,7 @@ def log(request):
     return render(request, 'log.html', context={"power": power})
 
 
-# 工单
+# 订单
 def order(request):
     o = logined(request)
     if not o:
@@ -103,7 +104,7 @@ def create_instance(request):
     return render(request, 'create_instance.html')
 
 
-# 创建工单
+# 创建订单
 def order_create(request):
     o = logined(request)
     if not o:
@@ -166,7 +167,7 @@ def checkLogin(request):
     loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
     lock = UserInfo.objects.get(username=username).locked
     # print lock
-    data = Log(log_type='登陆', log_opt=nowtime, log_user=username, log_ip=ip, log_detail="信息")  # 用户登陆 log记录
+    data = Log(log_type=0, log_opt=nowtime, log_user=username, log_ip=ip, log_detail="信息")  # 用户登陆 log记录
     if lock:
         return render(request, 'login.html', context={'err': '该用户已被锁定！'})
     if not loginInfo:
@@ -184,11 +185,13 @@ def checkLogin(request):
 @csrf_exempt
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None)
-    sameName = instance_Orders.objects.filter(instance_name=ins_name)
-    # 获取所在部门
+    sameName = Instances.objects.filter(name=ins_name)
     username = request.session.get('username')
-    if username:
-        dept = UserInfo.objects.get(username=username).dept
+    # print username
+    # 获取所在部门
+    # username = request.session.get('username')
+    # if username:
+    #     dept = UserInfo.objects.get(username=username).dept
     # print dept
     if sameName:
         # print '123'
@@ -201,35 +204,47 @@ def chkcreate_instance(request):
     storage = request.POST.get('storage', 'sas')
     expired = request.POST.get('expired', 1)
     buy_number = request.POST.get('buy_number', 1)
-    created_user = request.session.get('username')
+    password = request.POST.get('password')  # 密码存在订单明细里面
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     date = time.time()
     apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
 
     # 选择操作系统
-    if os == 'Win2008R2 64(纯净版)':
-        os = "win2008R2"
+    if os == 'Win2008R2 64':
+        os = 0
     if os == 'Win2008R2 64(SQLServer)':
-        os = "win2008R2Sql2008R2"
-    if os == "Win2012R2 64(纯净版)":
-        os = "win2012R2"
+        os = 1
+    if os == "Win2012R2 64":
+        os = 2
     if os == "Win2012R2 64(SQLServer)":
-        os = "win2012R2Sql2012R2"
-    if os == "CentOS7.2纯净版":
-        os = "Cenots7.2"
-    if os == "CentOS7.2纯净版 + Lamp":
-        os = "Centos7.2_lamp"
+        os = 3
+    if os == "CentOS7.2":
+        os = 4
+    if os == "CentOS7.2 + Lamp":
+        os = 5
     # 生成操作日志
-    log_data = UserLog(username=created_user, actionObject='购买', operationType='申请云主机', ip=ip)
+    log_data = Log(log_type=1, log_opt=apply_time, log_user=username, log_detail="申请云主机", log_ip=ip)
     log_data.save()
+
     # 生成订单
-    ins_data = instance_Orders(instance_name=ins_name, mem=mem, cpu=cpu, disk=disk, bandwidth=bandwidth, os=os,
-                               storage=storage, expired=expired, buy_number=buy_number, created_user=created_user,
-                               dept=dept, apply_time=apply_time)
-    ins_data.save()
-    # 生成工单
-    order_data = worksheet(add_time=apply_time, reason='申请云主机', username=created_user, state="部门审->总经办->云计算", dept=dept)
-    order_data.save()
+    uuid_one = str(uuid.uuid4())  # 生成一个关联uuid
+    uuid_two = uuid_one.split('-')
+    uuid_one = ''.join(uuid_two)
+    print uuid_one
+
+    number = int(buy_number)
+    for i in range(number):
+        # 买几个生成几个主机
+        ins_data = Instances(create_at=apply_time, expired_at=apply_time, delayed_at=apply_time, belonged=username,
+                             name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
+        ins_data.save()
+        # 生成订单明细 少了一个网络选择
+        order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
+                                   password=password, expire=expired)
+        order_detail.save()
+        # 生成订单
+        # order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time)
+        # order_data.save()
     return HttpResponseRedirect('/overview/')
 
 
@@ -251,9 +266,23 @@ def calculatePrice(request):
 def accessLog(request):
     username = request.session.get('username')
     data = Log.objects.filter(log_user=username).order_by('-log_user', '-log_type', '-log_detail', '-log_ip',
-                                                              '-log_opt').values('log_user', 'log_type', 'log_detail', 'log_ip', 'log_opt')
-    print data
-    return JsonResponse({'data': list(data)})
+                                                          '-log_opt').values('log_user', 'log_type', 'log_detail',
+                                                                             'log_ip', 'log_opt')
+    # print data
+    u = []
+    for i in data:
+        if i['log_type'] == 0:
+            i['log_type'] = "登陆"
+        if i['log_type'] == 1:
+            i['log_type'] = "实例"
+        if i['log_type'] == 2:
+            i['log_type'] = "磁盘"
+        if i['log_type'] == 3:
+            i['log_type'] = "快照"
+        if i['log_type'] == 4:
+            i['log_type'] = "系统"
+        u.append(i)
+    return JsonResponse({'data': list(u)})
 
 
 # 获取订单信息
@@ -280,21 +309,13 @@ def accessIns(request):
     return JsonResponse({'data': list(data)})
 
 
-# 获取order 工单
+# 获取order 订单
 @csrf_exempt
 def accessOrder(request):
     username = request.session.get('username')
     data = worksheet.objects.filter(username=username).values('id', 'add_time', 'reason',
                                                               'username', 'state')
     return JsonResponse({'data': list(data)})
-
-
-# 判断是否登录
-def logined(request):
-    username = request.session.get('username')
-    if username:
-        return True
-    return False
 
 
 # 发送邮件
@@ -350,6 +371,14 @@ def change_psw(request):
             return JsonResponse({'data': '1'})
     else:
         return JsonResponse({'data': '0'})
+
+
+# 判断是否登录
+def logined(request):
+    username = request.session.get('username')
+    if username:
+        return True
+    return False
 
 
 # logout
