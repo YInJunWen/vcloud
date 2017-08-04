@@ -83,7 +83,7 @@ class UserInfo(models.Model):
     password = models.CharField(max_length=50)  # 密码
     email = models.EmailField()  # 邮箱
     locked = models.BooleanField(max_length=1, default=False)  # True锁定账号, 不允许登陆
-    power = models.IntegerField(default=1)  # 0-公司管理员, 1-公司员工
+    power = models.IntegerField(default=0)  # 0-员工，1-主管，2-总经办，3-云计算中心
     role = models.IntegerField(default=1)  # 0-管理员，1-普通用户
     dept = models.CharField(max_length=4, default='other')  # 部门 默认云计算
     reg_ip = models.GenericIPAddressField(protocol='IPV4', max_length=15)  # 注册IP
@@ -135,6 +135,7 @@ class OrderDetail(models.Model):
     disk = models.IntegerField(default=0)  # disk.pid
     password = models.CharField(max_length=20)
     expire = models.IntegerField(default=30)  # 购买时长
+    network = models.IntegerField(default=1)
 
     class Meta:
         db_table = "order_detail"
@@ -229,3 +230,15 @@ class SnapshotCount(models.Model):
         db_table = "snapshot_count"
 
 
+# 网络
+class Network(models.Model):
+    pid = models.AutoField(primary_key=True)
+    dis_playname = models.CharField(max_length=50)
+    net_name = models.CharField(max_length=20)
+    net_desc = models.CharField(max_length=20)
+
+    class Meta:
+        db_table = "network"
+
+
+#

@@ -174,7 +174,7 @@ def checkLogin(request):
         return render(request, 'login.html', context={'err': '用户名或密码错误!'})
     else:
         request.session['username'] = username
-        request.session.set_expiry(20 * 60)
+        request.session.set_expiry(20000 * 60)
         power = UserInfo.objects.get(username=username).power
         data.save()
         return render(request, 'overview.html', context={"power": power})
@@ -205,6 +205,7 @@ def chkcreate_instance(request):
     expired = request.POST.get('expired', 1)
     buy_number = request.POST.get('buy_number', 1)
     password = request.POST.get('password')  # 密码存在订单明细里面
+    network = request.POST.get('network')
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     date = time.time()
     apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
@@ -230,34 +231,52 @@ def chkcreate_instance(request):
     uuid_one = str(uuid.uuid4())  # 生成一个关联uuid
     uuid_two = uuid_one.split('-')
     uuid_one = ''.join(uuid_two)
-    print uuid_one
-
+    # print uuid_one
+    if network == "华东高防2区":
+        network = 1
+    if network == "华东高防2双线":
+        network = 2
+    if network == "广东高速高防":
+        network = 3
+    if network == "广东高防双线":
+        network = 4
+    if network == "华南高防2区":
+        network = 5
+    if network == "华南高防2双线":
+        network = 6
+    # 处理购买数量 生成对应条数数据
     number = int(buy_number)
     for i in range(number):
         # 买几个生成几个主机
         ins_data = Instances(create_at=apply_time, expired_at=apply_time, delayed_at=apply_time, belonged=username,
                              name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
         ins_data.save()
-        # 生成订单明细 少了一个网络选择
+        # 生成订单明细
         order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
-                                   password=password, expire=expired)
+                                   password=password, expire=expired, network=network)
         order_detail.save()
         # 生成订单
-        # order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time)
-        # order_data.save()
+        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one)
+        order_data.save()
     return HttpResponseRedirect('/overview/')
 
 
 # 请求价格接口
 @csrf_exempt
 def calculatePrice(request):
-    cpu = int(request.POST.get('cpu'))
-    mem = int(request.POST.get('mem'))
-    flux = int(request.POST.get('flux'))
-    disk = int(request.POST.get('disk'))
-    expired = int(request.POST.get('expired'))
-    buy_number = int(request.POST.get('buy_number'))
-    price = round((cpu * 28 + mem * 15 + flux * 10 + disk * 0.5) * expired * buy_number, 2)
+    cpu = str(request.POST.get('cpu', '2'))
+    _cpu = int(cpu)
+    mem = str(request.POST.get('mem', '4'))
+    _mem = int(mem)
+    flux = str(request.POST.get('flux', '1'))
+    _flux = int(flux)
+    disk = str(request.POST.get('disk', '50'))
+    _disk = int(disk)
+    expired = str(request.POST.get('expired', '1'))
+    _expired = int(expired)
+    buy_number = str(request.POST.get('buyNumber', '1'))
+    _buy_number = int(buy_number)
+    price = round((_cpu * 28 + _mem * 15 + _flux * 10 + _disk * 0.5) * _expired * _buy_number, 2)
     return JsonResponse({'price': price})
 
 
@@ -289,23 +308,7 @@ def accessLog(request):
 @csrf_exempt
 def accessIns(request):
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    dept = UserInfo.objects.get(username=username).dept
-    # 普通员工
-    if power == '0':
-        data = instance_Orders.objects.filter(created_user=username).values('bandwidth', 'buy_number', 'cpu',
-                                                                            'created_user', 'disk', 'expired', 'id',
-                                                                            'instance_name', 'mem', 'os', 'storage')
-    # 部门领导
-    elif power == '1':
-        data = instance_Orders.objects.filter(dept=dept).values('bandwidth', 'buy_number', 'cpu', 'created_user',
-                                                                'disk',
-                                                                'expired', 'id', 'instance_name', 'mem', 'os',
-                                                                'storage')
-    # 总经办 云计算中心经理
-    else:
-        data = instance_Orders.objects.all().values('bandwidth', 'buy_number', 'cpu', 'created_user', 'disk', 'expired',
-                                                    'id', 'instance_name', 'mem', 'os', 'storage')
+    data = Instances.objects.filter(belonged=username).values()
     return JsonResponse({'data': list(data)})
 
 
@@ -313,7 +316,7 @@ def accessIns(request):
 @csrf_exempt
 def accessOrder(request):
     username = request.session.get('username')
-    data = worksheet.objects.filter(username=username).values('id', 'add_time', 'reason',
+    data = Order.objects.filter(username=username).values('pid', 'created_at', 'reason',
                                                               'username', 'state')
     return JsonResponse({'data': list(data)})
 
