@@ -118,7 +118,7 @@ class Order(models.Model):
     vcloud_pending = models.IntegerField(default=1)  # 云计算审核
     status = models.IntegerField(default=1)  # 0-已完成，1-审核中，2-已过期
     uuid = models.UUIDField()  # 订单明细 uuid关联订单明细用
-    paid = models.IntegerField(default=1)  # 支付确认 0-已支付 1-未支付
+    payed = models.IntegerField(default=1)  # 支付确认 0-已支付 1-未支付
 
     class Meta:
         db_table = "order"
@@ -136,6 +136,8 @@ class OrderDetail(models.Model):
     password = models.CharField(max_length=20)
     expire = models.IntegerField(default=30)  # 购买时长
     network = models.IntegerField(default=1)
+    price = models.FloatField()
+    flavor = models.CharField(max_length=20)
 
     class Meta:
         db_table = "order_detail"
@@ -146,6 +148,7 @@ class OS(models.Model):
     pid = models.AutoField(primary_key=True)
     os_name = models.CharField(max_length=255)  # 后端显示系统名称
     os_friendname = models.CharField(max_length=255)  # 后端显示系统名
+    os_type = models.CharField(max_length=20)
 
     class Meta:
         db_table = "os"
@@ -182,7 +185,7 @@ class Instances(models.Model):
     delayed_at = models.DateTimeField()  # 到期未续后宽限时间
     belonged = models.CharField(max_length=20)  # 创建者 属于
     name = models.CharField(max_length=20)  # 实例名称
-    uuid = models.UUIDField(default=uuid.uuid4)  # 实例uuid
+    uuid = models.UUIDField(default=uuid.uuid4, max_length=36)  # 实例uuid
     vcpus = models.IntegerField(default=1)
     memory = models.IntegerField(default=1)
     bandwidth = models.IntegerField()
@@ -198,7 +201,7 @@ class Instances(models.Model):
 # IP地址
 class IP(models.Model):
     pid = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(default=uuid.uuid4)  # 唯一识别码
+    uuid = models.UUIDField(default=uuid.uuid4, max_length=36)  # 唯一识别码
     mac_address = models.CharField(max_length=15, default='0000-0000-0000')  # 网卡地址
     ip_address = models.GenericIPAddressField(max_length=15, default='0.0.0.0')
     traffice_in = models.IntegerField(default=0)  # 流量进
@@ -236,9 +239,21 @@ class Network(models.Model):
     dis_playname = models.CharField(max_length=50)
     net_name = models.CharField(max_length=20)
     net_desc = models.CharField(max_length=20)
+    uuid = models.UUIDField(uuid.uuid4, max_length=36)
 
     class Meta:
         db_table = "network"
+
+
+# 实力类型
+class InsFlavor(models.Model):
+    pid = models.AutoField(primary_key=True)
+    display_name = models.CharField(max_length=20)
+    flavor_name = models.CharField(max_length=20)
+    uuid = models.UUIDField(uuid.uuid4, max_length=36)
+
+    class Meta:
+        db_table = 'ins_flavor'
 
 
 #

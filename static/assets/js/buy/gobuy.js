@@ -302,6 +302,9 @@ function calculatePrice(){
         function(data){
             var price = parseInt(data.price);
             $('#price').text('￥'+ price);
-            $('#oldPrice').text('￥'+ price / 0.8)
+            $('#oldPrice').text('￥'+ price / 0.8);
+            $('.h_Form_price').val(price);
     })
 }
+
+$('.network a:first-child').addClass('a_class');

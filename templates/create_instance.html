@@ -72,13 +72,13 @@
                     <div class="Choice clearfix">
                         <span>线路：</span>
                     </div>
-                    <div style="width: 742px;float:left;">
-                        <a class="a_class">华东高防2区</a>
-                        <a>华东高防2双线</a>
-                        <a>广东高速高防</a>
-                        <a>广东高防双线</a>
-                        <a>华南高防2区</a>
-                        <a>华南高防2双线</a>
+                    <div style="width: 742px;float:left;" class="network">
+{#                        <a class="a_class">华东高防2区</a>#}
+                        {% if network %}
+                            {% for i in network %}
+                                <a href="javascript:void(0);" style="text-decoration: none;">{{ i.dis_playname }}</a>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="ChildSelection ChildCpu">
@@ -152,6 +152,7 @@
                     <div class="conf">
                         数　量：<input class="Form_sl" value="1台" readonly>
                         <input type="hidden" class="h_Form_sl" value="1" name="buy_number">
+                        <input type="hidden" class="h_Form_price" value="151" name="price">
                     </div>
                     <div class="conf">
                         费　用：<span class="" style="text-decoration:line-through;" id="oldPrice">￥188.75</span>
@@ -215,10 +216,10 @@
                         <span>主机名：</span>
                     </div>
                     {% if err_name %}
-                        <input type="text" placeholder="名称已存在" class="Host_Name" required>
+                        <input type="text" placeholder="名称已存在" class="Host_Name" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
                         <span style="color: #f00"> ( * 请重新输入 )</span>
                     {% else %}
-                        <input type="text" placeholder="请输入名称" class="Host_Name" required>
+                        <input type="text" placeholder="请输入名称" class="Host_Name" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
                         <span style="color: #f00"> ( * 必填 )</span>
                     {% endif %}
                 </div>

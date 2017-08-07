@@ -101,7 +101,12 @@ def create_instance(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    return render(request, 'create_instance.html')
+    network = Network.objects.values()
+    os = OS.objects.all()
+    # print os
+    for obj in os:
+        print obj.os_type
+    return render(request, 'create_instance.html', context={'network': list(network)})
 
 
 # 创建订单
@@ -229,8 +234,6 @@ def chkcreate_instance(request):
 
     # 生成订单
     uuid_one = str(uuid.uuid4())  # 生成一个关联uuid
-    uuid_two = uuid_one.split('-')
-    uuid_one = ''.join(uuid_two)
     # print uuid_one
     if network == "华东高防2区":
         network = 1
@@ -309,16 +312,46 @@ def accessLog(request):
 def accessIns(request):
     username = request.session.get('username')
     data = Instances.objects.filter(belonged=username).values()
-    return JsonResponse({'data': list(data)})
+    # print data
+    u = []
+    for i in data:
+        if i['status'] == 0:
+            i['status'] = 'running'
+        if i['status'] == 1:
+            i['status'] = 'stopped'
+        if i['os'] == 0:
+            i['os'] = 'Win2008R2_64'
+        if i['os'] == 1:
+            i['os'] = 'Win2008R2_64(SQLServer)'
+        if i['os'] == 2:
+            i['os'] = 'Win2008R2_64'
+        if i['os'] == 3:
+            i['os'] = 'Win2012R2_64(SQLServer)'
+        if i['os'] == 4:
+            i['os'] = 'CentOS7.2'
+        if i['os'] == 5:
+            i['os'] = 'CentOS7.2 + Lamp'
+        u.append(i)
+    print u
+    return JsonResponse({'data': list(u)})
 
 
 # 获取order 订单
 @csrf_exempt
 def accessOrder(request):
     username = request.session.get('username')
-    data = Order.objects.filter(username=username).values('pid', 'created_at', 'reason',
-                                                              'username', 'state')
-    return JsonResponse({'data': list(data)})
+    data = Order.objects.filter(created_user=username).values()
+    u = []
+    for i in data:
+        # 0 - 已完成，1 - 审核中，2 - 已过期
+        if i['status'] == 0:
+            i['status'] = "已完成"
+        if i['status'] == 1:
+            i['status'] = "审核中"
+        if i['status'] == 2:
+            i['status'] = "已过期"
+        u.append(i)
+    return JsonResponse({'data': list(u)})
 
 
 # 发送邮件
