@@ -64,7 +64,9 @@ $.ajax({
         $.each(data.data, function (key, value) {
             tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.status + '</td><td>' + '<a href="">撤销&nbsp;</a>' + '<a href="">&nbsp;删除</a>' + '</td></tr>';
             $('#orderTable').append(tbody);
-            $('.order_noMessage').hide();
+            if ($('#orderTable tr').length >= 1) {
+                $('.order_noMessage').hide();
+            }
         })
     }
 });
@@ -75,8 +77,23 @@ $.ajax({
         $.each(data.data, function (key, value) {
             tbody = '<tr><td style="text-align: center;">' + value.name + '</td><td style="text-align: center;text-indent: 30px;">255.255.255.255</td><td class="pz">详细配置<ul id="hideList"><li><h3>云主机类型详情:</h3><div class="table-wapper"><table><tbody><tr><th class="hideTh">CPU</th><td class="hideTd">' + value.vcpus + '核</td></tr><tr><th class="hideTh">内存</th><td class="hideTd">' + value.memory + 'GB</td></tr><tr><th class="hideTh">Disk</th><td class="hideTd">' + value.disk + 'GB</td></tr><tr><th class="hideTh">带宽</th><td class="hideTd">' + value.bandwidth + 'MB</td></tr><tr><th class="hideTh">系统</th><td class="hideTd">' + value.os + '</td></tr></tbody></table></div></li></ul></td><td>1 MB</td><td>1</td>' + '<td>' + value.status + '</td>' + '<td style="text-align:center"><select name="" class="console_select" onchange="yzj_Change(this.options[this.options.selectedIndex].value)"><option value="0">--------</option><option value="1">开机</option><option value="2">关机</option><option value="3">重启</option><option value="4">修改密码</option><option value="5">快照</option></select></td></tr>';
             $('#yDisk-body').append(tbody);
-            if ($('#yDisk-body tr').length > 1) {
+            if ($('#yDisk-body tr').length >= 1) {
                 $('.ins_noMessage').hide();
+            }
+        })
+    }
+});
+
+//  管理吐数据
+$.ajax({
+    url: '/approval/',
+    success: function (data) {
+        // console.log(data.data);
+        $.each(data.data, function (key, value) {
+            tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td>' + '<a href="">通过&nbsp;</a>' + '<a href="">&nbsp;拒绝</a>' + '</td></tr>';
+            $('.yChecking-body').append(tbody);
+            if ($('.yChecking-body tr').length >= 1) {
+                $('.orderCk_noMessage').hide();
             }
         })
     }

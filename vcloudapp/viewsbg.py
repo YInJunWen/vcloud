@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import random
-import time
-
 import uuid
+import MySQLdb
+import time
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -104,10 +105,9 @@ def create_instance(request):
         return HttpResponseRedirect('/login/')
     network = Network.objects.values()
     os = OS.objects.all()
-    # a = {}
-    # a['windows'] = ['arr1','arr2']
-    # a['linux'] = ['arr1','arr2']
-    # print a
+    # print os
+    for obj in os:
+        print obj.os_type
     return render(request, 'create_instance.html', context={'network': list(network)})
 
 
@@ -121,43 +121,7 @@ def order_create(request):
 
 # 审核中
 def order_checking(request):
-    o = logined(request)
-    if not o:
-        return HttpResponseRedirect('/login/')
-    # 判断是否是管理员权限 防止复制链接进入管理审批界面
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == "":  # 如果没有权限 返回报错页面
-        return HttpResponseRedirect('/error/')
     return render(request, 'order_checking.html')
-
-
-# 审核中的接口吐数据
-def approval(request):
-    # 工单号 时间 事由 申请人 状态 操作
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    dept = UserInfo.objects.get(username=username).dept
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == 1:
-        data = Order.objects.filter(dept=dept).values()
-        u = []
-        for i in data:
-            if i['status'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 1:
-                i['status'] = "审核中"
-            if i['status'] == 2:
-                i['status'] = "已过期"
-            u.append(i)
-        return JsonResponse({'data': list(u)})
-    elif power > 1:
-        data = Order.objects.values()
-        return JsonResponse({'data': list(data)})
-    return HttpResponseRedirect('/error/')
 
 
 # 已完成
@@ -165,13 +129,6 @@ def order_finished(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    # 判断是否是管理员权限 防止复制链接进入管理审批界面
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == "":
-        return HttpResponseRedirect('/error/')
     return render(request, 'order_finished.html')
 
 
@@ -235,13 +192,10 @@ def checkLogin(request):
 @csrf_exempt
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None)
-    sameName = Instances.objects.filter(name=ins_name)
-    # 获取所在部门
-    username = request.session.get('username')
-    if username:
-        dept = UserInfo.objects.get(username=username).dept
-    if sameName:
+    same_name = Instances.objects.filter(name=ins_name)
+    if same_name:
         return render(request, 'create_instance.html', {'err_name': '此名称已存在'})
+    username = request.session.get('username')
     cpu = request.POST.get('cpu', 2)
     mem = request.POST.get('mem', 4)
     disk = request.POST.get('disk', 50)
@@ -253,50 +207,39 @@ def chkcreate_instance(request):
     password = request.POST.get('password')  # 密码存在订单明细里面
     network = request.POST.get('network')
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
-    price = request.POST.get('price', 151)
-    price = float(price)
-    date = time.time()
-    apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    price = request.POST.get('price', '0')
 
-    # 选择操作系统
-    if os == 'Win2008R2 64':
-        os = 0
-    if os == 'Win2008R2 64(SQLServer)':
-        os = 1
-    if os == "Win2012R2 64":
-        os = 2
-    if os == "Win2012R2 64(SQLServer)":
-        os = 3
-    if os == "CentOS7.2":
-        os = 4
-    if os == "CentOS7.2 + Lamp":
-        os = 5
-    # 生成操作日志
-    log_data = Log(log_type=1, log_opt=apply_time, log_user=username, log_detail="申请云主机", log_ip=ip)
-    log_data.save()
+    # 默认订单有效期为3天, 超时， 此订单无效
+    created_at = datetime.datetime.now()
+    order_expired_at = created_at + timedelte(days=3)
+    uuid = uuid.uuid4
+    # 获取flavor
+    flovar = get_flavor(cpu, mem)
+    if flavor == "0":
+        return 'error'
 
-    # 生成订单
-    uuid_one = str(uuid.uuid4())  # 生成一个关联uuid
-    # print uuid_one
-    if network == "VLan11":
-        network = 'vlan11'
-    if network == "VxLan1":
-        network = 'vxlan'
-    # 处理购买数量 生成对应条数数据
-    number = int(buy_number)
-    for i in range(number):
-        # 买几个生成几个主机
-        ins_data = Instances(create_at=apply_time, expired_at=apply_time, delayed_at=apply_time, belonged=username,
-                             name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
-        ins_data.save()
-        # 生成订单明细
-        order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
-                                   password=password, expire=expired, network=network, price=price)
-        order_detail.save()
-        # 生成订单
-        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one, dept=dept)
-        order_data.save()
+    # 生成明细
+    u = OrderDetail()
+    u.uuid = uuid
+    u.vcpu = cpu
+    u.memory = mem
+    u.bandwidth = bandwidth
+    u.os = os
+    u.disk = disk
+    u.network = network
+    u.flavor = flavor
+    u.password = password
+    u.expired_at = created_at + timedelta(days=expired * 30)
+    u.price = price
+    u.save()
     return HttpResponseRedirect('/overview/')
+    # 生产订单
+    u = Order()
+    u.created_at = created_at
+    u.created_user = username
+    u.expired_at = order_expired_at
+    u.uuid = uuid
+    u.save()
 
 
 # 请求价格接口
@@ -367,7 +310,7 @@ def accessIns(request):
         if i['os'] == 5:
             i['os'] = 'CentOS7.2 + Lamp'
         u.append(i)
-    # print u
+    print u
     return JsonResponse({'data': list(u)})
 
 
@@ -378,9 +321,6 @@ def accessOrder(request):
     data = Order.objects.filter(created_user=username).values()
     u = []
     for i in data:
-        # 判断三级审批
-        if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
-            i['status'] = 0
         # 0 - 已完成，1 - 审核中，2 - 已过期
         if i['status'] == 0:
             i['status'] = "已完成"
@@ -398,7 +338,7 @@ def send_email(request):
     username = request.POST.get('username', None)
     # from_email = request.POST.get('from_email', None)
     check_mail = UserInfo.objects.filter(username__exact=username)
-    # print check_mail
+    print check_mail
     if check_mail:
         email = UserInfo.objects.get(username=username).email
         try:
@@ -408,7 +348,7 @@ def send_email(request):
             #  第四个是 给谁发送可多人
             email_title = '密码重置通知!'
             email_password = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
-            # print email_password
+            print email_password
             email_message = '您的密码已初始化为： ' + email_password + ", 可登录后在控制台页面修改新密码！"
             email_sendPerson = 'no-reply@vdin.net'
             email_recPerson = email
@@ -461,7 +401,23 @@ def logout(request):
     return HttpResponseRedirect('/login/')
 
 
-# 测试
+# calc flavor
+def get_flavor(vcpu, mem):
+    dbhost = '10.1.1.21'
+    dbuser = 'vcloud'
+    dbpass = 'vdin1234'
+    dbname = 'nova_api'
+    conn = MySQLdb.connect(dbhost, dbuser, dbpass, dbname)
+    cur = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    memory = memory * 1024
+    sql - 'select name from flavors where vcpus=%s and memory_mb=%d' % (vcpu, mem)
+    cur.execute(sql)
+    u = cur.fetchall()
+    if u:
+        return u[0]['name']
+    return '0'  # 测试
+
+
 def test1(request):
     username = request.session.get('username')
     a = UserInfo.objects.get(username=username).power

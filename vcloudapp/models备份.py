@@ -119,7 +119,6 @@ class Order(models.Model):
     status = models.IntegerField(default=1)  # 0-已完成，1-审核中，2-已过期
     uuid = models.UUIDField()  # 订单明细 uuid关联订单明细用
     payed = models.IntegerField(default=1)  # 支付确认 0-已支付 1-未支付
-    dept = models.CharField(max_length=20)
 
     class Meta:
         db_table = "order"
@@ -136,8 +135,8 @@ class OrderDetail(models.Model):
     disk = models.IntegerField(default=0)  # disk.pid
     password = models.CharField(max_length=20)
     expire = models.IntegerField(default=30)  # 购买时长
-    network = models.CharField(max_length=20)
-    price = models.FloatField(default=0)
+    network = models.IntegerField(default=1)
+    price = models.FloatField()
     flavor = models.CharField(max_length=20)
 
     class Meta:

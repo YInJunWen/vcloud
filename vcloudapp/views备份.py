@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 import random
 import time
-
 import uuid
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
@@ -104,10 +103,9 @@ def create_instance(request):
         return HttpResponseRedirect('/login/')
     network = Network.objects.values()
     os = OS.objects.all()
-    # a = {}
-    # a['windows'] = ['arr1','arr2']
-    # a['linux'] = ['arr1','arr2']
-    # print a
+    # print os
+    for obj in os:
+        print obj.os_type
     return render(request, 'create_instance.html', context={'network': list(network)})
 
 
@@ -121,43 +119,7 @@ def order_create(request):
 
 # 审核中
 def order_checking(request):
-    o = logined(request)
-    if not o:
-        return HttpResponseRedirect('/login/')
-    # 判断是否是管理员权限 防止复制链接进入管理审批界面
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == "":  # 如果没有权限 返回报错页面
-        return HttpResponseRedirect('/error/')
     return render(request, 'order_checking.html')
-
-
-# 审核中的接口吐数据
-def approval(request):
-    # 工单号 时间 事由 申请人 状态 操作
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    dept = UserInfo.objects.get(username=username).dept
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == 1:
-        data = Order.objects.filter(dept=dept).values()
-        u = []
-        for i in data:
-            if i['status'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 1:
-                i['status'] = "审核中"
-            if i['status'] == 2:
-                i['status'] = "已过期"
-            u.append(i)
-        return JsonResponse({'data': list(u)})
-    elif power > 1:
-        data = Order.objects.values()
-        return JsonResponse({'data': list(data)})
-    return HttpResponseRedirect('/error/')
 
 
 # 已完成
@@ -165,13 +127,6 @@ def order_finished(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
-    # 判断是否是管理员权限 防止复制链接进入管理审批界面
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == "":
-        return HttpResponseRedirect('/error/')
     return render(request, 'order_finished.html')
 
 
@@ -236,11 +191,15 @@ def checkLogin(request):
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None)
     sameName = Instances.objects.filter(name=ins_name)
-    # 获取所在部门
     username = request.session.get('username')
-    if username:
-        dept = UserInfo.objects.get(username=username).dept
+    # print username
+    # 获取所在部门
+    # username = request.session.get('username')
+    # if username:
+    #     dept = UserInfo.objects.get(username=username).dept
+    # print dept
     if sameName:
+        # print '123'
         return render(request, 'create_instance.html', {'err_name': '此名称已存在'})
     cpu = request.POST.get('cpu', 2)
     mem = request.POST.get('mem', 4)
@@ -253,8 +212,6 @@ def chkcreate_instance(request):
     password = request.POST.get('password')  # 密码存在订单明细里面
     network = request.POST.get('network')
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
-    price = request.POST.get('price', 151)
-    price = float(price)
     date = time.time()
     apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
 
@@ -278,10 +235,18 @@ def chkcreate_instance(request):
     # 生成订单
     uuid_one = str(uuid.uuid4())  # 生成一个关联uuid
     # print uuid_one
-    if network == "VLan11":
-        network = 'vlan11'
-    if network == "VxLan1":
-        network = 'vxlan'
+    if network == "华东高防2区":
+        network = 1
+    if network == "华东高防2双线":
+        network = 2
+    if network == "广东高速高防":
+        network = 3
+    if network == "广东高防双线":
+        network = 4
+    if network == "华南高防2区":
+        network = 5
+    if network == "华南高防2双线":
+        network = 6
     # 处理购买数量 生成对应条数数据
     number = int(buy_number)
     for i in range(number):
@@ -291,10 +256,10 @@ def chkcreate_instance(request):
         ins_data.save()
         # 生成订单明细
         order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
-                                   password=password, expire=expired, network=network, price=price)
+                                   password=password, expire=expired, network=network)
         order_detail.save()
         # 生成订单
-        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one, dept=dept)
+        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one)
         order_data.save()
     return HttpResponseRedirect('/overview/')
 
@@ -367,7 +332,7 @@ def accessIns(request):
         if i['os'] == 5:
             i['os'] = 'CentOS7.2 + Lamp'
         u.append(i)
-    # print u
+    print u
     return JsonResponse({'data': list(u)})
 
 
@@ -378,9 +343,6 @@ def accessOrder(request):
     data = Order.objects.filter(created_user=username).values()
     u = []
     for i in data:
-        # 判断三级审批
-        if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
-            i['status'] = 0
         # 0 - 已完成，1 - 审核中，2 - 已过期
         if i['status'] == 0:
             i['status'] = "已完成"
@@ -398,7 +360,7 @@ def send_email(request):
     username = request.POST.get('username', None)
     # from_email = request.POST.get('from_email', None)
     check_mail = UserInfo.objects.filter(username__exact=username)
-    # print check_mail
+    print check_mail
     if check_mail:
         email = UserInfo.objects.get(username=username).email
         try:
@@ -408,7 +370,7 @@ def send_email(request):
             #  第四个是 给谁发送可多人
             email_title = '密码重置通知!'
             email_password = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
-            # print email_password
+            print email_password
             email_message = '您的密码已初始化为： ' + email_password + ", 可登录后在控制台页面修改新密码！"
             email_sendPerson = 'no-reply@vdin.net'
             email_recPerson = email
