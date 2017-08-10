@@ -62,7 +62,7 @@ $.ajax({
     url: '/accessOrder/',
     success: function (data) {
         $.each(data.data, function (key, value) {
-            tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.status + '</td><td>' + '<a href="">撤销&nbsp;</a>' + '<a href="">&nbsp;删除</a>' + '</td></tr>';
+            tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.status + '</td><td>' + '<a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a>' + '<a href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>' + '</td></tr>';
             $('#orderTable').append(tbody);
             if ($('#orderTable tr').length >= 1) {
                 $('.order_noMessage').hide();
@@ -90,7 +90,7 @@ $.ajax({
     success: function (data) {
         // console.log(data.data);
         $.each(data.data, function (key, value) {
-            tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td>' + '<a href="">通过&nbsp;</a>' + '<a href="">&nbsp;拒绝</a>' + '</td></tr>';
+            tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td>' + '<a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a>' + '<a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a>' + '</td></tr>';
             $('.yChecking-body').append(tbody);
             if ($('.yChecking-body tr').length >= 1) {
                 $('.orderCk_noMessage').hide();
@@ -149,3 +149,31 @@ $('.closeBtnBar').click(function () {
     $('.nosame,.mistake').hide();
     $('#old_psw, #new_psw, #confirm_psw').val('');
 });
+
+
+function Approval(obj) {
+    var id = obj.parentNode.parentNode.firstChild.innerHTML;
+    var td_inner = obj.parentNode.previousSibling.innerHTML;
+    // if (td_inner === "已通过") {
+    //     return;
+    // }
+    console.log(1);
+    // $.ajax({
+    //     url: '/approval/',
+    //     method: "POST",
+    //     type: "json",
+    //     data: {
+    //         'id': id
+    //     },
+    //     success: function (data) {
+    //         // console.log(data.data);
+    //         $.each(data.data, function (key, value) {
+    //             tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td>' + '<a href="javascript:void(0)">同意&nbsp;</a>' + '<a href="javascript:void(0)">&nbsp;拒绝</a>' + '</td></tr>';
+    //             $('.yChecking-body').empty().append(tbody);
+    //             if ($('.yChecking-body tr').length >= 1) {
+    //                 $('.orderCk_noMessage').hide();
+    //             }
+    //         })
+    //     }
+    // });
+}
