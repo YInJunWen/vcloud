@@ -195,18 +195,24 @@
             <h3>更改登陆密码</h3>
             <form action="/change_psw/" method="post" class="change_psw_form" onsubmit="return checkPassWord()">
                 <label for="old_psw">
-                    请输入旧密码： <input style="width: 230px;text-indent: 8px;" type="password" name="old_psw" id="old_psw" minlength="8" maxlength="20"
-                                  placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required>
+                    请输入旧密码： <input style="width: 230px;text-indent: 8px;" type="password" name="old_psw" id="old_psw"
+                                   minlength="8" maxlength="20"
+                                   placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                   autofocus required>
                     <span style="color: #f00;display: none;" class="mistake">密码错误！</span>
                 </label>
                 <label for="new_psw">
-                    请输入新密码： <input style="width: 230px;text-indent: 8px;" type="password" name="new_psw" id="new_psw" minlength="8" maxlength="20"
-                                  placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
+                    请输入新密码： <input style="width: 230px;text-indent: 8px;" type="password" name="new_psw" id="new_psw"
+                                   minlength="8" maxlength="20"
+                                   placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                   required>
                     <span style="color: #f00;display: none;" class="nosame">密码格式有误！</span>
                 </label>
                 <label for="confirm_psw">
-                    请确认新密码： <input style="width: 230px;text-indent: 8px;" type="password" name="confirm_psw" id="confirm_psw" minlength="8" maxlength="20"
-                                  placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
+                    请确认新密码： <input style="width: 230px;text-indent: 8px;" type="password" name="confirm_psw"
+                                   id="confirm_psw" minlength="8" maxlength="20"
+                                   placeholder="不能为中文或特殊字符且大于8位" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                   required>
                 </label>
                 <div class="checkBar">
                     <button class="btn btn-primary change_psw_ok">确定</button>

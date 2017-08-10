@@ -127,10 +127,59 @@ def order_checking(request):
     # 判断是否是管理员权限 防止复制链接进入管理审批界面
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
     if power == 0:
         return HttpResponseRedirect('/overview/')
     elif power == "":  # 如果没有权限 返回报错页面
         return HttpResponseRedirect('/error/')
+    elif power == 1:
+        data = Order.objects.filter(dept=dept).values()
+        u = []
+        for i in data:
+            if i['dept_pending'] == 0:
+                i['status'] = 0
+            if i['dept_pending'] == 1:
+                i['status'] = 1
+            if i['status'] == 0:
+                i['status'] = "已通过"
+            if i['status'] == 1:
+                i['status'] = "审核中"
+            if i['status'] == 2:
+                i['status'] = "已过期"
+            u.append(i)
+        return render(request, 'order_checking.html', context={'approval': list(u)})
+    elif power == 2:
+        data = Order.objects.values()
+        u = []
+        for i in data:
+            if i['admin_pending'] == 0:
+                i['status'] = 0
+            if i['admin_pending'] == 1:
+                i['status'] = 1
+            if i['status'] == 0:
+                i['status'] = "已通过"
+            if i['status'] == 1:
+                i['status'] = "审核中"
+            if i['status'] == 2:
+                i['status'] = "已过期"
+            u.append(i)
+        return render(request, 'order_checking.html', context={'approval': list(u)})
+    elif power == 3:
+        data = Order.objects.filter(dept=dept).values()
+        u = []
+        for i in data:
+            if i['vcloud_pending'] == 0:
+                i['status'] = 0
+            if i['vcloud_pending'] == 1:
+                i['status'] = 1
+            if i['status'] == 0:
+                i['status'] = "已通过"
+            if i['status'] == 1:
+                i['status'] = "审核中"
+            if i['status'] == 2:
+                i['status'] = "已过期"
+            u.append(i)
+        return render(request, 'order_checking.html', context={'approval': list(u)})
     return render(request, 'order_checking.html')
 
 
@@ -138,7 +187,8 @@ def order_checking(request):
 @csrf_exempt
 def approval(request):
     # 工单号 时间 事由 申请人 状态 操作
-    pid = request.POST.get('id')
+    pid = request.POST.get('_id')
+    print pid
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
     dept = UserInfo.objects.get(username=username).dept
@@ -160,42 +210,16 @@ def approval(request):
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
-        return JsonResponse({'data': list(u)})
+        return render(request, 'order_checking.html', context={"approval": list(u)})
+        # return render(request, 'order_checking.html', context={'approval': list(u)})
     elif power == 2:
         Order.objects.filter(pid=pid).update(admin_pending=0)
-        data = Order.objects.values()
-        u = []
-        for i in data:
-            if i['admin_pending'] == 0:
-                i['status'] = 0
-            if i['admin_pending'] == 1:
-                i['status'] = 1
-            if i['status'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 1:
-                i['status'] = "审核中"
-            if i['status'] == 2:
-                i['status'] = "已过期"
-            u.append(i)
-        return JsonResponse({'data': list(data)})
+    #     return render(request, 'order_checking.html')
     elif power == 3:
         Order.objects.filter(pid=pid).update(vcloud_pending=0)
-        data = Order.objects.values()
-        u = []
-        for i in data:
-            if i['vcloud_pending'] == 0:
-                i['status'] = 0
-            if i['vcloud_pending'] == 1:
-                i['status'] = 1
-            if i['status'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 1:
-                i['status'] = "审核中"
-            if i['status'] == 2:
-                i['status'] = "已过期"
-            u.append(i)
-        return JsonResponse({'data': list(data)})
-    return HttpResponseRedirect('/error/')
+        # return render(request, 'order_checking.html')
+    # return render(request, 'order_checking.html')
+        return HttpResponseRedirect('/error/')
 
 
 # 已完成

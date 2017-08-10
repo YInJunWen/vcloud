@@ -45,23 +45,32 @@
                             </tr>
                             </thead>
                             <tbody class="yChecking-body">
-                            <tr>
-                                <td style="text-indent: 0;text-align: center;">value.pid</td>
-                                <td style="text-indent: 100px;">value.created_at</td>
-                                <td>创建云主机</td>
-                                <td>value.created_user</td>
-                                <td>value.status</td>
-                                <td><a href="javascript:void(0)">同意&nbsp;</a><a href="javascript:void(0)">&nbsp;拒绝</a>
-                                </td>
-                            </tr>
+                            {% if approval %}
+                                {% for i in approval %}
+                                    <tr>
+                                        <td style="text-indent: 0;text-align: center;">{{ i.pid }}</td>
+                                        <td style="text-indent: 100px;">{{ i.created_at }}</td>
+                                        <td>创建云主机</td>
+                                        <td>{{ i.created_user }}</td>
+                                        <td>{{ i.status }}</td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a>
+                                            <a href="javascript:void(0)">&nbsp;拒绝</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
                             </tbody>
                         </table>
+                    {% if approval %}
+                        <div class="orderCk_noMessage"></div>
+                    {% else %}
                         <div class="orderCk_noMessage">
                             <p>没有查询到符合条件的记录!</p>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
-
             </div>
         </div>
     </div>
