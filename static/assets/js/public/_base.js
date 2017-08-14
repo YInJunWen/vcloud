@@ -3,7 +3,7 @@
  */
 
 /*====================django ajax ======*/
-jQuery(document).ajaxSend(function(event, xhr, settings) {
+jQuery(document).ajaxSend(function (event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -19,6 +19,7 @@ jQuery(document).ajaxSend(function(event, xhr, settings) {
         }
         return cookieValue;
     }
+
     function sameOrigin(url) {
         // url could be relative or scheme relative or absolute
         var host = document.location.host; // host + port
@@ -31,6 +32,7 @@ jQuery(document).ajaxSend(function(event, xhr, settings) {
             // or any other URL that isn't scheme relative or absolute i.e relative.
             !(/^(\/\/|http:|https:).*/.test(url));
     }
+
     function safeMethod(method) {
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
@@ -128,14 +130,14 @@ $.ajax({
 // $.ajax({
 //     url: '/approval/',
 //     success: function (data) {
-        // console.log(data.data);
-        // $.each(data.data, function (key, value) {
-        //     tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td>' + '<a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a>' + '<a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a>' + '</td></tr>';
-        //     $('.yChecking-body').append(tbody);
-        //     if ($('.yChecking-body tr').length >= 1) {
-        //         $('.orderCk_noMessage').hide();
-        //     }
-        // })
+// console.log(data.data);
+// $.each(data.data, function (key, value) {
+//     tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td>' + '<a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a>' + '<a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a>' + '</td></tr>';
+//     $('.yChecking-body').append(tbody);
+//     if ($('.yChecking-body tr').length >= 1) {
+//         $('.orderCk_noMessage').hide();
+//     }
+// })
 //     }
 // });
 
@@ -191,6 +193,16 @@ $('.closeBtnBar').click(function () {
 });
 
 function Approval(obj) {
-    var id = obj.parentNode.parentNode.childNodes[1].innerHTML;
-    $.post('/approval/',{'_id': id});
+    // console.log($(obj).parent().parent().children().get(0).innerHTML);
+    var id = $(obj).parent().parent().children().get(0).innerHTML;
+    $.post('/approval/', {'_id': id}, function (data) {
+        console.log(data.data[0]);
+        $('.yChecking-body').empty();
+        $.each(data.data, function (key, value) {
+            // console.log(value);
+            var data = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)">&nbsp;拒绝</a></td></tr>';
+            // console.log(1);
+            $('.yChecking-body').append(data)
+        });
+    });
 }
