@@ -76,13 +76,30 @@
                             </tr>
                             </thead>
                             <tbody id="orderTable">
+                                {% if order %}
+                                    {% for value in order %}
+                                        <tr>
+                                            <td style="text-indent: 0;text-align: center;">{{ value.pid }}</td>
+                                            <td style="text-indent: 100px;">{{ value.created_at }}</td>
+                                            <td>创建云主机</td>
+                                            <td>{{ value.status }}</td>
+                                            <td>
+                                                <a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                             </tbody>
                         </table>
-
-                        <div class="noMessage order_noMessage">
-                            <p>没有查询到符合条件的记录!</p>
-                        </div>
-
+                        {% if order %}
+                            <div class="noMessage order_noMessage" style="display: none;">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                        {% else %}
+                            <div class="noMessage order_noMessage" style="display: block;">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 

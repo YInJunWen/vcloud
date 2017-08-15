@@ -96,7 +96,21 @@ def order(request):
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
-    return render(request, 'order.html', context={'power': power})
+    data = Order.objects.filter(created_user=username).values()
+    u = []
+    for i in data:
+        # 判断三级审批
+        if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
+            i['status'] = 0
+        # 0 - 已完成，1 - 审核中，2 - 已过期
+        if i['status'] == 0:
+            i['status'] = "已完成"
+        if i['status'] == 1:
+            i['status'] = "审核中"
+        if i['status'] == 2:
+            i['status'] = "已过期"
+        u.append(i)
+    return render(request, 'order.html', context={'power': power, 'order': list(u)})
 
 
 # 创建实例跳转
@@ -519,24 +533,24 @@ def accessIns(request):
 
 
 # 获取order 订单
-@csrf_exempt
-def accessOrder(request):
-    username = request.session.get('username')
-    data = Order.objects.filter(created_user=username).values()
-    u = []
-    for i in data:
-        # 判断三级审批
-        if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
-            i['status'] = 0
-        # 0 - 已完成，1 - 审核中，2 - 已过期
-        if i['status'] == 0:
-            i['status'] = "已完成"
-        if i['status'] == 1:
-            i['status'] = "审核中"
-        if i['status'] == 2:
-            i['status'] = "已过期"
-        u.append(i)
-    return JsonResponse({'data': list(u)})
+# @csrf_exempt
+# def accessOrder(request):
+#     username = request.session.get('username')
+#     data = Order.objects.filter(created_user=username).values()
+#     u = []
+#     for i in data:
+#         # 判断三级审批
+#         if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
+#             i['status'] = 0
+#         # 0 - 已完成，1 - 审核中，2 - 已过期
+#         if i['status'] == 0:
+#             i['status'] = "已完成"
+#         if i['status'] == 1:
+#             i['status'] = "审核中"
+#         if i['status'] == 2:
+#             i['status'] = "已过期"
+#         u.append(i)
+#     return JsonResponse({'data': list(u)})
 
 
 # 发送邮件
