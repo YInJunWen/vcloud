@@ -137,10 +137,6 @@ def order_checking(request):
                 i['status'] = "已通过"
             if i['dept_pending'] == 1:
                 i['status'] = "审核中"
-            # if i['status'] == 0:
-            #     i['status'] = "已通过"
-            # if i['status'] == 1:
-            #     i['status'] = "审核中"
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
@@ -188,23 +184,37 @@ def order_checking(request):
 def approval(request):
     # 工单号 时间 事由 申请人 状态 操作
     pid = request.POST.get('_id')
-    # print pid
+    _status = request.POST.get('_status')
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
     data = ""
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == 1:
-        Order.objects.filter(pid=pid).update(dept_pending=0)
-        data = Order.objects.exclude(dept_pending=0).values()
-    elif power == 2:
-        Order.objects.exclude(admin_pending=0).filter(pid=pid).update(admin_pending=0)
-        data = Order.objects.values()
-    elif power == 3:
-        Order.objects.exclude(vcloud_pending=0).filter(pid=pid).update(vcloud_pending=0)
-        data = Order.objects.values()
-    # data = Order.objects.values()
     u = []
+    if _status == 'y':
+        # 同意 继续
+        if power == 0:
+            return HttpResponseRedirect('/overview/')
+        elif power == 1:
+            Order.objects.filter(pid=pid).update(dept_pending=0)
+            data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
+        elif power == 2:
+            Order.objects.filter(pid=pid).update(admin_pending=0)
+            data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
+        elif power == 3:
+            Order.objects.filter(pid=pid).update(vcloud_pending=0)
+            data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
+    else:
+        # 否定 直接过期
+        if power == 0:
+            return HttpResponseRedirect('/overview/')
+        elif power == 1:
+            Order.objects.filter(pid=pid).update(status=2)
+            data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
+        elif power == 2:
+            Order.objects.filter(pid=pid).update(status=2)
+            data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
+        elif power == 3:
+            Order.objects.filter(pid=pid).update(status=2)
+            data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
     for i in data:
         i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
         if i['dept_pending'] == 0:

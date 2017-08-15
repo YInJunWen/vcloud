@@ -193,16 +193,21 @@ $('.closeBtnBar').click(function () {
 });
 
 function Approval(obj) {
-    // console.log($(obj).parent().parent().children().get(0).innerHTML);
+    var status = $(obj).text();
+    if (status === '同意'){
+        status = 'y';
+    } else {
+      status = 'n'
+    }
     var id = $(obj).parent().parent().children().get(0).innerHTML;
-    $.post('/approval/', {'_id': id}, function (data) {
-        console.log(data.data[0]);
+    $.post('/approval/', {'_id': id, '_status': status}, function (data) {
         $('.yChecking-body').empty();
         $.each(data.data, function (key, value) {
-            // console.log(value);
-            var data = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)">&nbsp;拒绝</a></td></tr>';
-            // console.log(1);
-            $('.yChecking-body').append(data)
+            var data = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td></tr>';
+            $('.yChecking-body').append(data);
         });
+        if ($('.yChecking-body tr').length < 1) {
+            $('.orderCk_noMessage').show();
+        }
     });
 }

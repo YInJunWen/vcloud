@@ -53,16 +53,18 @@
                                         <td>创建云主机</td>
                                         <td>{{ i.created_user }}</td>
                                         <td>{{ i.status }}</td>
-                                        <td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)">&nbsp;拒绝</a></td>
+                                        <td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td>
                                     </tr>
                                 {% endfor %}
                             {% endif %}
                             </tbody>
                         </table>
                     {% if approval %}
-                        <div class="orderCk_noMessage"></div>
+                        <div class="orderCk_noMessage" style="display: none;">
+                            <p>没有查询到符合条件的记录!</p>
+                        </div>
                     {% else %}
-                        <div class="orderCk_noMessage">
+                        <div class="orderCk_noMessage" style="display: block;">
                             <p>没有查询到符合条件的记录!</p>
                         </div>
                     </div>
