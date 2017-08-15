@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from datetime import datetime
+from django.db.models import Q
 from .models import *
 
 
@@ -129,7 +130,8 @@ def order_checking(request):
     elif power == "":  # 如果没有权限 返回报错页面
         return HttpResponseRedirect('/error/')
     elif power == 1:
-        data = Order.objects.exclude(dept_pending=0).filter(dept=dept).values()
+        # Order.objects.filter(dept=dept).exclude(dept_pending=0)
+        data = Order.objects.exclude(dept_pending=0).exclude(status=2).filter(dept=dept).values()
         u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
@@ -142,34 +144,26 @@ def order_checking(request):
             u.append(i)
         return render(request, 'order_checking.html', context={'approval': list(u)})
     elif power == 2:
-        data = Order.objects.values()
+        data = Order.objects.exclude(admin_pending=0).exclude(status=2).values()
         u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['admin_pending'] == 0:
-                i['status'] = 0
-            if i['admin_pending'] == 1:
-                i['status'] = 1
-            if i['status'] == 0:
                 i['status'] = "已通过"
-            if i['status'] == 1:
+            if i['admin_pending'] == 1:
                 i['status'] = "审核中"
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
         return render(request, 'order_checking.html', context={'approval': list(u)})
     elif power == 3:
-        data = Order.objects.filter(dept=dept).values()
+        data = Order.objects.exclude(vcloud_pending=0).exclude(status=2).values()
         u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['vcloud_pending'] == 0:
-                i['status'] = 0
-            if i['vcloud_pending'] == 1:
-                i['status'] = 1
-            if i['status'] == 0:
                 i['status'] = "已通过"
-            if i['status'] == 1:
+            if i['vcloud_pending'] == 1:
                 i['status'] = "审核中"
             if i['status'] == 2:
                 i['status'] = "已过期"
@@ -240,11 +234,92 @@ def order_finished(request):
     # 判断是否是管理员权限 防止复制链接进入管理审批界面
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
     if power == 0:
         return HttpResponseRedirect('/overview/')
-    elif power == "":
+    elif power == "":  # 如果没有权限 返回报错页面
         return HttpResponseRedirect('/error/')
+    elif power == 1:
+        data = Order.objects.filter(Q(status=2) | Q(dept_pending=0)).filter(dept=dept).values()
+        u = []
+        for i in data:
+            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
+            if i['dept_pending'] == 0:
+                i['status'] = "已通过"
+            if i['status'] == 2:
+                i['status'] = "拒绝/过期"
+            u.append(i)
+        return render(request, 'order_finished.html', context={'finish': list(u)})
+    elif power == 2:
+        data = Order.objects.filter(Q(status=2) | Q(admin_pending=0)).values()
+        u = []
+        for i in data:
+            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
+            if i['admin_pending'] == 0:
+                i['status'] = "已通过"
+            if i['status'] == 2:
+                i['status'] = "拒绝/过期"
+            u.append(i)
+        return render(request, 'order_finished.html', context={'finish': list(u)})
+    elif power == 3:
+        data = Order.objects.filter(Q(status=2) | Q(vcloud_pending=0)).values()
+        u = []
+        for i in data:
+            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
+            if i['vcloud_pending'] == 0:
+                i['status'] = "已通过"
+            if i['status'] == 2:
+                i['status'] = "拒绝/过期"
+            u.append(i)
+        return render(request, 'order_finished.html', context={'finish': list(u)})
     return render(request, 'order_finished.html')
+
+
+def finished(request):
+    pid = request.POST.get('_id')
+    _status = request.POST.get('_status')
+    username = request.session.get('username')
+    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    data = ""
+    u = []
+    if _status == 'back':
+        # 撤销继续
+        if power == 0:
+            return HttpResponseRedirect('/overview/')
+        elif power == 1:
+            Order.objects.filter(pid=pid).update(dept_pending=1, status=1)
+            data = Order.objects.filter(dept=dept).exclude(dept_pending=1).values()
+        elif power == 2:
+            Order.objects.filter(pid=pid).update(admin_pending=1, status=1)
+            data = Order.objects.exclude(status=2).exclude(admin_pending=1).values()
+        elif power == 3:
+            Order.objects.filter(pid=pid).update(vcloud_pending=1, status=1)
+            data = Order.objects.exclude(status=2).exclude(vcloud_pending=1).values()
+    else:
+        # 否定 直接过期
+        return
+        # if power == 0:
+        #     return HttpResponseRedirect('/overview/')
+        # elif power == 1:
+        #     Order.objects.filter(pid=pid).update(status=2)
+        #     data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
+        # elif power == 2:
+        #     Order.objects.filter(pid=pid).update(status=2)
+        #     data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
+        # elif power == 3:
+        #     Order.objects.filter(pid=pid).update(status=2)
+        #     data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
+    for i in data:
+        i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
+        if i['dept_pending'] == 0:
+            i['status'] = "已通过"
+        if i['dept_pending'] == 1:
+            i['status'] = "审核中"
+        if i['status'] == 2:
+            i['status'] = "过期"
+        u.append(i)
+    return JsonResponse({'data': list(u)})
 
 
 #  注册接口注册完跳login
