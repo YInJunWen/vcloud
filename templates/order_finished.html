@@ -61,6 +61,21 @@
                             {% endif %}
                             </tbody>
                         </table>
+                        <div class="pagination" style="text-align: center;display: block;">
+                                <span class="step-links">
+                                    {% if finish.has_previous %}
+                                        <a href="?page={{ finish.previous_page_number }}">上一页</a>
+                                    {% endif %}
+
+                                    <span class="current">
+                                        当前第 {{ finish.number }} 页, 共 {{ finish.paginator.num_pages }} 页
+                                    </span>
+
+                                    {% if finish.has_next %}
+                                        <a href="?page={{ finish.next_page_number }}">下一页</a>
+                                    {% endif %}
+                                </span>
+                        </div>
                         {% if finish %}
                             <div class="orderFs_noMessage" style="display: none;">
                                 <p>没有查询到符合条件的记录!</p>

@@ -64,9 +64,9 @@
                         <table class="table">
                             <thead>
                             <tr>
-{#                                <th width="10">#}
-{#                                    <input type="checkbox">#}
-{#                                </th>#}
+                                {#                                <th width="10">#}
+                                {#                                    <input type="checkbox">#}
+                                {#                                </th>#}
                                 <th style="text-align: center;" width="10%">工单号</th>
                                 <th style="text-align: center;" width="20%">时间</th>
                                 <th style="text-align: center;" width="40%">事由</th>
@@ -76,21 +76,37 @@
                             </tr>
                             </thead>
                             <tbody id="orderTable">
-                                {% if order %}
-                                    {% for value in order %}
-                                        <tr>
-                                            <td style="text-indent: 0;text-align: center;">{{ value.pid }}</td>
-                                            <td style="text-indent: 100px;">{{ value.created_at }}</td>
-                                            <td>创建云主机</td>
-                                            <td>{{ value.status }}</td>
-                                            <td>
-                                                <a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endif %}
+                            {% if order %}
+                                {% for value in order %}
+                                    <tr>
+                                        <td style="text-indent: 0;text-align: center;">{{ value.pid }}</td>
+                                        <td style="text-indent: 100px;">{{ value.created_at }}</td>
+                                        <td>创建云主机</td>
+                                        <td>{{ value.status }}</td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a><a
+                                                href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
                             </tbody>
                         </table>
+                        <div class="pagination" style="text-align: center;display: block;">
+                                <span class="step-links">
+                                    {% if order.has_previous %}
+                                        <a href="?page={{ order.previous_page_number }}">上一页</a>
+                                    {% endif %}
+
+                                    <span class="current">
+                                        当前第 {{ order.number }} 页, 共 {{ order.paginator.num_pages }} 页
+                                    </span>
+
+                                    {% if order.has_next %}
+                                        <a href="?page={{ order.next_page_number }}">下一页</a>
+                                    {% endif %}
+                                </span>
+                        </div>
                         {% if order %}
                             <div class="noMessage order_noMessage" style="display: none;">
                                 <p>没有查询到符合条件的记录!</p>

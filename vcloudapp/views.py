@@ -5,6 +5,7 @@ import time
 
 import uuid
 from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError
@@ -57,7 +58,6 @@ def instances(request):
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
     data = Instances.objects.filter(belonged=username).values()
-    print data
     u = []
     for i in data:
         if i['status'] == 0:
@@ -77,8 +77,16 @@ def instances(request):
         if i['os'] == 5:
             i['os'] = 'CentOS7.2 + Lamp'
         u.append(i)
-    # print u
-    return render(request, 'instances.html', context={'power': power, 'instancesData': list(u)})
+    limit = 10  # 每页显示的记录数
+    paginator = Paginator(u, limit)
+    page = request.GET.get('page')  # 获取页码
+    try:
+        topics = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        topics = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
+    return render(request, 'instances.html', context={'power': power, 'instancesData': topics})
 
 
 # 云盘
@@ -132,7 +140,16 @@ def order(request):
         if i['status'] == 2:
             i['status'] = "已过期"
         u.append(i)
-    return render(request, 'order.html', context={'power': power, 'order': list(u)})
+    limit = 10  # 每页显示的记录数
+    paginator = Paginator(u, limit)
+    page = request.GET.get('page')  # 获取页码
+    try:
+        topics = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        topics = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
+    return render(request, 'order.html', context={'power': power, 'order': topics})
 
 
 # 创建实例跳转
@@ -168,6 +185,7 @@ def order_checking(request):
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
     dept = UserInfo.objects.get(username=username).dept
+    u = []
     if power == 0:
         return HttpResponseRedirect('/overview/')
     elif power == "":  # 如果没有权限 返回报错页面
@@ -175,7 +193,6 @@ def order_checking(request):
     elif power == 1:
         # Order.objects.filter(dept=dept).exclude(dept_pending=0)
         data = Order.objects.exclude(dept_pending=0).exclude(status=2).filter(dept=dept).values()
-        u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['dept_pending'] == 0:
@@ -185,10 +202,8 @@ def order_checking(request):
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
-        return render(request, 'order_checking.html', context={'approval': list(u)})
     elif power == 2:
         data = Order.objects.exclude(admin_pending=0).exclude(status=2).values()
-        u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['admin_pending'] == 0:
@@ -198,10 +213,8 @@ def order_checking(request):
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
-        return render(request, 'order_checking.html', context={'approval': list(u)})
     elif power == 3:
         data = Order.objects.exclude(vcloud_pending=0).exclude(status=2).values()
-        u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['vcloud_pending'] == 0:
@@ -211,9 +224,18 @@ def order_checking(request):
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
-        print u
-        return render(request, 'order_checking.html', context={'approval': list(u)})
-    return render(request, 'order_checking.html')
+        # print u
+    # print u
+    limit = 10  # 每页显示的记录数
+    paginator = Paginator(u, limit)
+    page = request.GET.get('page')  # 获取页码
+    try:
+        topics = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        topics = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
+    return render(request, 'order_checking.html', context={'approval': topics})
 
 
 # 审核中的接口吐数据
@@ -278,13 +300,13 @@ def order_finished(request):
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
     dept = UserInfo.objects.get(username=username).dept
+    u = []
     if power == 0:
         return HttpResponseRedirect('/overview/')
     elif power == "":  # 如果没有权限 返回报错页面
         return HttpResponseRedirect('/error/')
     elif power == 1:
         data = Order.objects.filter(Q(status=2) | Q(dept_pending=0)).filter(dept=dept).values()
-        u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['dept_pending'] == 0:
@@ -292,10 +314,8 @@ def order_finished(request):
             if i['status'] == 2:
                 i['status'] = "拒绝/过期"
             u.append(i)
-        return render(request, 'order_finished.html', context={'finish': list(u)})
     elif power == 2:
         data = Order.objects.filter(Q(status=2) | Q(admin_pending=0)).values()
-        u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['admin_pending'] == 0:
@@ -303,10 +323,8 @@ def order_finished(request):
             if i['status'] == 2:
                 i['status'] = "拒绝/过期"
             u.append(i)
-        return render(request, 'order_finished.html', context={'finish': list(u)})
     elif power == 3:
         data = Order.objects.filter(Q(status=2) | Q(vcloud_pending=0)).values()
-        u = []
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
             if i['vcloud_pending'] == 0:
@@ -314,8 +332,16 @@ def order_finished(request):
             if i['status'] == 2:
                 i['status'] = "拒绝/过期"
             u.append(i)
-        return render(request, 'order_finished.html', context={'finish': list(u)})
-    return render(request, 'order_finished.html')
+    limit = 10  # 每页显示的记录数
+    paginator = Paginator(u, limit)
+    page = request.GET.get('page')  # 获取页码
+    try:
+        topics = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        topics = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
+    return render(request, 'order_finished.html', context={'finish': topics})
 
 
 def finished(request):

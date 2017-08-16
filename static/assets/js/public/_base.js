@@ -170,15 +170,18 @@ function Approval(obj) {
     }
     var id = $(obj).parent().parent().children().get(0).innerText;
     // console.log(id);
-    $.post('/approval/', {'_id': id, '_status': status}, function (data) {
-        $('.yChecking-body').empty();
-        $.each(data.data, function (key, value) {
-            var data = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td></tr>';
-            $('.yChecking-body').append(data);
-        });
-        if ($('.yChecking-body tr').length < 1) {
-            $('.orderCk_noMessage').show();
-        }
+    // $.post('/approval/', {'_id': id, '_status': status}, function (data) {
+    //     $('.yChecking-body').empty();
+    //     $.each(data.data, function (key, value) {
+    //         var data = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td></tr>';
+    //         $('.yChecking-body').append(data);
+    //     });
+    //     if ($('.yChecking-body tr').length < 1) {
+    //         $('.orderCk_noMessage').show();
+    //     }
+    // });
+    $.post('/approval/', {'_id': id, '_status': status}, function(){
+        window.location.reload();
     });
 }
 
@@ -191,15 +194,18 @@ function Finished(obj) {
     }
     var id = $(obj).parent().parent().children().get(0).innerText;
     // console.log(id);
-    $.post('/finished/', {'_id': id, '_status': status}, function (data) {
-        console.log('123');
-        $('.yFinished-body').empty();
-        $.each(data.data, function (key, value) {
-            var data = '<tr><td style="text-indent: 0;text-align: center;width: 10%;">' + value.pid + '</td><td style="text-align: center; text-indent: 0px; width: 20%;">' + value.created_at + '</td><td style="text-align: center;width: 40%;"> ' + undefined + '</td><td style="text-align: center;">' + undefined + '</td><td style="text-align: center;">' + value.status + '</td><td style="text-align: center;"><a href="javascript:void(0)" onclick="Finished(this)">撤销&nbsp;</a><a href="javascript:void(0)" onclick="Finished(this)">&nbsp;删除</a></td></tr>';
-            $('.yFinished-body').append(data);
-        });
-        if ($('.yFinished-body tr').length < 1) {
-            $('.orderFs_noMessage').show();
-        }
+    // $.post('/finished/', {'_id': id, '_status': status}, function (data) {
+    //     console.log('123');
+    //     $('.yFinished-body').empty();
+    //     $.each(data.data, function (key, value) {
+    //         var data = '<tr><td style="text-indent: 0;text-align: center;width: 10%;">' + value.pid + '</td><td style="text-align: center; text-indent: 0px; width: 20%;">' + value.created_at + '</td><td style="text-align: center;width: 40%;"> ' + undefined + '</td><td style="text-align: center;">' + undefined + '</td><td style="text-align: center;">' + value.status + '</td><td style="text-align: center;"><a href="javascript:void(0)" onclick="Finished(this)">撤销&nbsp;</a><a href="javascript:void(0)" onclick="Finished(this)">&nbsp;删除</a></td></tr>';
+    //         $('.yFinished-body').append(data);
+    //     });
+    //     if ($('.yFinished-body tr').length < 1) {
+    //         $('.orderFs_noMessage').show();
+    //     }
+    // });
+    $.post('/finished/', {'_id': id, '_status': status}, function(){
+        window.location.reload();
     });
 }

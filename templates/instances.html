@@ -49,69 +49,84 @@
                                 </thead>
                                 <tbody id="yDisk-body">
                                 {% if instancesData %}
-                                {% for value in instancesData %}
-                                <tr>
-                                    <td style="text-align: center;">{{ value.name }}</td>
-                                    <td style="text-align: center;text-indent: 30px;">255.255.255.255</td>
-                                    <td class="pz">详细配置
-                                        <ul id="hideList">
-                                            <li><h3>云主机类型详情:</h3>
-                                                <div class="table-wapper">
-                                                    <table>
-                                                        <tbody>
-                                                        <tr>
-                                                            <th class="hideTh">CPU</th>
-                                                            <td class="hideTd">{{ value.vcpus }}核</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="hideTh">内存</th>
-                                                            <td class="hideTd">{{ value.memory }}GB</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="hideTh">Disk</th>
-                                                            <td class="hideTd">{{ value.disk }}GB</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="hideTh">带宽</th>
-                                                            <td class="hideTd">{{ value.bandwidth }}MB</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="hideTh">系统</th>
-                                                            <td class="hideTd">{{ value.os }}</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td>1 MB</td>
-                                    <td>1</td>
-                                    <td>{{ value.status }}</td>
-                                    <td style="text-align:center">
-                                        <select name="" class="console_select"
-                                                onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
-                                            <option value="0">--------</option>
-                                            <option value="1">开机</option>
-                                            <option value="2">关机</option>
-                                            <option value="3">重启</option>
-                                            <option value="4">修改密码</option>
-                                            <option value="5">快照</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                {% endfor %}
+                                    {% for value in instancesData %}
+                                        <tr>
+                                            <td style="text-align: center;">{{ value.name }}</td>
+                                            <td style="text-align: center;text-indent: 30px;">255.255.255.255</td>
+                                            <td class="pz">详细配置
+                                                <ul id="hideList">
+                                                    <li><h3>云主机类型详情:</h3>
+                                                        <div class="table-wapper">
+                                                            <table>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <th class="hideTh">CPU</th>
+                                                                    <td class="hideTd">{{ value.vcpus }}核</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">内存</th>
+                                                                    <td class="hideTd">{{ value.memory }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">Disk</th>
+                                                                    <td class="hideTd">{{ value.disk }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">带宽</th>
+                                                                    <td class="hideTd">{{ value.bandwidth }}MB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">系统</th>
+                                                                    <td class="hideTd">{{ value.os }}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td>1 MB</td>
+                                            <td>1</td>
+                                            <td>{{ value.status }}</td>
+                                            <td style="text-align:center">
+                                                <select name="" class="console_select"
+                                                        onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
+                                                    <option value="0">--------</option>
+                                                    <option value="1">开机</option>
+                                                    <option value="2">关机</option>
+                                                    <option value="3">重启</option>
+                                                    <option value="4">修改密码</option>
+                                                    <option value="5">快照</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 {% endif %}
                                 </tbody>
                             </table>
+                            <div class="pagination" style="text-align: center;display: block;">
+                                <span class="step-links">
+                                    {% if instancesData.has_previous %}
+                                        <a href="?page={{ instancesData.previous_page_number }}">上一页</a>
+                                    {% endif %}
+
+                                    <span class="current">
+                                        当前第 {{ instancesData.number }} 页, 共 {{ instancesData.paginator.num_pages }} 页
+                                    </span>
+
+                                    {% if instancesData.has_next %}
+                                        <a href="?page={{ instancesData.next_page_number }}">下一页</a>
+                                    {% endif %}
+                                </span>
+                            </div>
                             {% if instancesData %}
-                            <div class="noMessage ins_noMessage" style="display: none;">
-                                <p>没有查询到符合条件的记录!</p>
-                            </div>
+                                <div class="noMessage ins_noMessage" style="display: none;">
+                                    <p>没有查询到符合条件的记录!</p>
+                                </div>
                             {% else %}
-                            <div class="noMessage ins_noMessage" style="display:block;">
-                                <p>没有查询到符合条件的记录!</p>
-                            </div>
+                                <div class="noMessage ins_noMessage" style="display:block;">
+                                    <p>没有查询到符合条件的记录!</p>
+                                </div>
                             {% endif %}
                         </div>
                     </div>
