@@ -56,7 +56,29 @@ def instances(request):
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
-    return render(request, 'instances.html', context={'power': power})
+    data = Instances.objects.filter(belonged=username).values()
+    print data
+    u = []
+    for i in data:
+        if i['status'] == 0:
+            i['status'] = 'running'
+        if i['status'] == 1:
+            i['status'] = 'stopped'
+        if i['os'] == 0:
+            i['os'] = 'Win2008R2_64'
+        if i['os'] == 1:
+            i['os'] = 'Win2008R2_64(SQLServer)'
+        if i['os'] == 2:
+            i['os'] = 'Win2008R2_64'
+        if i['os'] == 3:
+            i['os'] = 'Win2012R2_64(SQLServer)'
+        if i['os'] == 4:
+            i['os'] = 'CentOS7.2'
+        if i['os'] == 5:
+            i['os'] = 'CentOS7.2 + Lamp'
+        u.append(i)
+    # print u
+    return render(request, 'instances.html', context={'power': power, 'instancesData': list(u)})
 
 
 # 云盘
@@ -504,32 +526,32 @@ def accessLog(request):
 
 
 # 获取订单信息
-@csrf_exempt
-def accessIns(request):
-    username = request.session.get('username')
-    data = Instances.objects.filter(belonged=username).values()
-    # print data
-    u = []
-    for i in data:
-        if i['status'] == 0:
-            i['status'] = 'running'
-        if i['status'] == 1:
-            i['status'] = 'stopped'
-        if i['os'] == 0:
-            i['os'] = 'Win2008R2_64'
-        if i['os'] == 1:
-            i['os'] = 'Win2008R2_64(SQLServer)'
-        if i['os'] == 2:
-            i['os'] = 'Win2008R2_64'
-        if i['os'] == 3:
-            i['os'] = 'Win2012R2_64(SQLServer)'
-        if i['os'] == 4:
-            i['os'] = 'CentOS7.2'
-        if i['os'] == 5:
-            i['os'] = 'CentOS7.2 + Lamp'
-        u.append(i)
-    # print u
-    return JsonResponse({'data': list(u)})
+# @csrf_exempt
+# def accessIns(request):
+#     username = request.session.get('username')
+#     data = Instances.objects.filter(belonged=username).values()
+#     # print data
+#     u = []
+#     for i in data:
+#         if i['status'] == 0:
+#             i['status'] = 'running'
+#         if i['status'] == 1:
+#             i['status'] = 'stopped'
+#         if i['os'] == 0:
+#             i['os'] = 'Win2008R2_64'
+#         if i['os'] == 1:
+#             i['os'] = 'Win2008R2_64(SQLServer)'
+#         if i['os'] == 2:
+#             i['os'] = 'Win2008R2_64'
+#         if i['os'] == 3:
+#             i['os'] = 'Win2012R2_64(SQLServer)'
+#         if i['os'] == 4:
+#             i['os'] = 'CentOS7.2'
+#         if i['os'] == 5:
+#             i['os'] = 'CentOS7.2 + Lamp'
+#         u.append(i)
+#     # print u
+#     return JsonResponse({'data': list(u)})
 
 
 # 获取order 订单
