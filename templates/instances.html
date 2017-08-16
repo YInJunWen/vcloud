@@ -104,21 +104,25 @@
                                 {% endif %}
                                 </tbody>
                             </table>
-                            <div class="pagination" style="text-align: center;display: block;">
-                                <span class="step-links">
-                                    {% if instancesData.has_previous %}
-                                        <a href="?page={{ instancesData.previous_page_number }}">上一页</a>
-                                    {% endif %}
+                            {% if instancesData %}
+                                <div class="pagination" style="text-align: center;display: block;">
+                                    <span class="step-links">
+                                        {% if instancesData.has_previous %}
+                                            <a href="?page={{ instancesData.previous_page_number }}">上一页</a>
+                                        {% endif %}
 
-                                    <span class="current">
-                                        当前第 {{ instancesData.number }} 页, 共 {{ instancesData.paginator.num_pages }} 页
+                                        <span class="current">
+                                            当前第 {{ instancesData.number }} 页, 共 {{ instancesData.paginator.num_pages }} 页
+                                        </span>
+
+                                        {% if instancesData.has_next %}
+                                            <a href="?page={{ instancesData.next_page_number }}">下一页</a>
+                                        {% endif %}
                                     </span>
-
-                                    {% if instancesData.has_next %}
-                                        <a href="?page={{ instancesData.next_page_number }}">下一页</a>
-                                    {% endif %}
-                                </span>
-                            </div>
+                                </div>
+                            {% else %}
+                                <div></div>
+                            {% endif %}
                             {% if instancesData %}
                                 <div class="noMessage ins_noMessage" style="display: none;">
                                     <p>没有查询到符合条件的记录!</p>
