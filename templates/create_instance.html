@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="/static/assets/css/buy/gobuy.css">
 </head>
 <body>
+{#{% if data %}#}
+{#    {{ data }}<br>#}
+{#    {% for i in data %}#}
+{#        {{ i.windows }}<br>#}
+{#        {{ i.linux }}#}
+{#    {% endfor %}#}
+{#{% endif %}#}
 <div class="gobuyCenter">
     <div class="container">
         <div class="mod0">
@@ -73,7 +80,7 @@
                         <span>线路：</span>
                     </div>
                     <div style="width: 742px;float:left;" class="network">
-{#                        <a class="a_class">华东高防2区</a>#}
+                        {#                        <a class="a_class">华东高防2区</a>#}
                         {% if network %}
                             {% for i in network %}
                                 <a href="javascript:void(0);" style="text-decoration: none;">{{ i.dis_playname }}</a>
@@ -216,10 +223,12 @@
                         <span>主机名：</span>
                     </div>
                     {% if err_name %}
-                        <input type="text" placeholder="名称已存在" class="Host_Name" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
+                        <input type="text" placeholder="名称已存在" class="Host_Name"
+                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
                         <span style="color: #f00"> ( * 请重新输入 )</span>
                     {% else %}
-                        <input type="text" placeholder="请输入名称" class="Host_Name" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
+                        <input type="text" placeholder="请输入名称" class="Host_Name"
+                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
                         <span style="color: #f00"> ( * 必填 )</span>
                     {% endif %}
                 </div>
@@ -227,14 +236,16 @@
                     <div class="Choice clearfix">
                         <span>登陆密码：</span>
                     </div>
-                    <input type="password" placeholder="8-20位数字密码" class="login_password" minlength="8" maxlength="20" required>
+                    <input type="password" placeholder="8-20位数字密码" class="login_password" minlength="8" maxlength="20"
+                           required>
                     <span style="color: #f00"> ( * 必填 )</span>
                 </div>
                 <div class="ChildSelection">
                     <div class="Choice clearfix">
                         <span>确认密码：</span>
                     </div>
-                    <input type="password" placeholder="请再输入一次" class="confirm_login_password" minlength="8" maxlength="20" required>
+                    <input type="password" placeholder="请再输入一次" class="confirm_login_password" minlength="8"
+                           maxlength="20" required>
                     <span style="color: #f00"> ( * 必填 )</span>
                 </div>
                 <div class="ChildSelection ChildBuyTime">
@@ -261,12 +272,11 @@
             </div>
         </div>
     </div>
-
-    <script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
-    {#<script src="/static/assets/js/buy/jquery-2.1.1.js"></script>#}
-    <script src="/static/assets/js/buy/tipso.min.js"></script>
-    <script src="/static/assets/js/buy/jquery-ui.js"></script>
-    <script src="/static/assets/js/buy/jquery-ui-slider-pips.js"></script>
-    <script src="/static/assets/js/buy/gobuy.js"></script>
+</div>
 </body>
+<script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
+<script src="/static/assets/js/buy/tipso.min.js"></script>
+<script src="/static/assets/js/buy/jquery-ui.js"></script>
+<script src="/static/assets/js/buy/jquery-ui-slider-pips.js"></script>
+<script src="/static/assets/js/buy/gobuy.js"></script>
 </html>

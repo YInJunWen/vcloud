@@ -141,7 +141,14 @@ def create_instance(request):
     if not o:
         return HttpResponseRedirect('/login/')
     network = Network.objects.values()
-    return render(request, 'create_instance.html', context={'network': list(network)})
+    # print list(network)
+    obj = {}
+    arr = []
+    obj['windows'] = ['win1', 'win2', 'win3']
+    obj['linux'] = ['lin1', 'lin2', 'lin3']
+    arr.append(obj)
+    # print dir(list(arr))
+    return render(request, 'create_instance.html', context={'network': list(network), 'data': list(arr)})
 
 
 # 创建订单
