@@ -23,7 +23,8 @@
                 <ol>
                     <li style="clear: both;">
                         <label for="username">用户名</label>
-                        <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
+                        <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username"
+                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
                        {% if err_name %}
                             <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_name }}</span>
                         {% endif %}

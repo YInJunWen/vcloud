@@ -1,37 +1,41 @@
 {% extends "_base.html" %}
 
 {% block main_show %}
-<div class="main-body-wapper">
-    <div id="management">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="page-header">
-                    <h1>概况</h1>
-                </div>
-                <h3>上限摘要</h3>
-                <ul>
-                    <li id="pre1" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
-                    <li id="pre2" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
-                    <li id="pre3" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
-                    <li id="pre4" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
-                    <li id="pre5" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
-                </ul>
-                <div class="page-header" style="clear: both;">
-                    <h3>使用情况摘要</h3>
-                    <p style="text-align: left;">选择一段时间来查询其用量:</p>
-                    <form action="" method="post">
-                        <div class="input-daterange input-group" id="datepicker" data-provide="datepicker" style="width: auto;float: left;clear:both;">
-                            <label for="">&nbsp;&nbsp;开始:&nbsp;&nbsp;</label>
-                            <input type="text" class="input-sm form-control" style="width: 220px;float: none;" name="start" required />
-                            <label for="">&nbsp;&nbsp;结束:&nbsp;&nbsp;</label>
-                            <input type="text" class="input-sm form-control" style="width: 220px;float: none;" name="end" required />
-                        </div>
-                        <span>  </span><input type="submit" class="btn btn-primary" style="height: 32px;" />
-                    </form>
-                    <p style="text-align: left;">运行中的云主机: 2 启用的内存: 5GB 周期内VCPU-小时数: 159.61 周期内磁盘GB-小时数: 1276.86 周期内内存-小时数 163437.86</p>
+    <div class="main-body-wapper">
+        <div id="management">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="page-header">
+                        <h1>概况</h1>
+                    </div>
+                    <h3>上限摘要</h3>
+                    <ul>
+                        <li id="pre1" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
+                        <li id="pre2" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
+                        <li id="pre3" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
+                        <li id="pre4" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
+                        <li id="pre5" class="col-lg-2 col-md-4 col-sm-4 col-xs-6"></li>
+                    </ul>
+                    <div class="page-header" style="clear: both;">
+                        <h3>使用情况摘要</h3>
+                        <p style="text-align: left;">选择一段时间来查询其用量:</p>
+                        <form action="" method="post">
+                            <div class="input-daterange input-group" id="datepicker" data-provide="datepicker"
+                                 style="width: auto;float: left;clear:both;">
+                                <label for="">&nbsp;&nbsp;开始:&nbsp;&nbsp;</label>
+                                <input type="text" class="input-sm form-control" style="width: 220px;float: none;"
+                                       name="start" required/>
+                                <label for="">&nbsp;&nbsp;结束:&nbsp;&nbsp;</label>
+                                <input type="text" class="input-sm form-control" style="width: 220px;float: none;"
+                                       name="end" required/>
+                            </div>
+                            <span>  </span><input type="submit" class="btn btn-primary" style="height: 32px;"/>
+                        </form>
+                        <p style="text-align: left;">运行中的云主机: 2 启用的内存: 5GB 周期内VCPU-小时数: 159.61 周期内磁盘GB-小时数: 1276.86
+                            周期内内存-小时数 163437.86</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
