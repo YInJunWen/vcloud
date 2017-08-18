@@ -243,11 +243,11 @@
                         }
                         console.log(textStatus + '：' + XMLHttpRequest.readyState + '-' + msg);
                     }
-                })
+                });
                 return parms;
             })();
         }
-    }
+    };
 
     $.extend({
         pageError: function (type) {
@@ -270,7 +270,7 @@
                     console.log('default error');
             }
         }
-    })
+    });
 
     $.fn.extend({
         zPager: function (method) {
@@ -287,7 +287,7 @@
                 $.pageError(1);
             }
         }
-    })
+    });
 
     $.fn.zPager.defaults = {
         totalData: 10, //数据总条数
@@ -309,4 +309,4 @@
         htmlBox: '' //ajax数据写入容器
     }
 
-})(jQuery)
+})(jQuery);

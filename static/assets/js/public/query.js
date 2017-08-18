@@ -179,7 +179,7 @@
 		},
 		setHash: function(obj) {
 			var str = '';
-			obj = $.extend(this.getHash(), obj)
+			obj = $.extend(this.getHash(), obj);
 			var arr = [];
 			for (var v in obj) {
 				if(obj[v]!=''){

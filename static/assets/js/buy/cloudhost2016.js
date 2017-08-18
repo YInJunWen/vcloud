@@ -669,7 +669,7 @@ var cloudhost = {
             // 更新当前配置
             self.updateView();
 
-        })
+        });
         $("#J_buyCountDom").on('blur', function() {
             var val = $(this).val();
             if (/^\d+$/.test(val)) {
@@ -948,8 +948,7 @@ var cloudhost = {
             } else {
                 fn.call($);
             }
-        };
-
+        }
         // 绑定表单radio选中事件
         function dochkebs() {
             $("input[name='chkebs']:radio").click(function() {
@@ -1350,7 +1349,7 @@ var cloudhost = {
             DD_belatedPNG.fix('.handle');
         }
     }
-}
+};
 
 $(function() {
     cloudhost.init();

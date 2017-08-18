@@ -246,4 +246,4 @@ function dataPage(data) {
 
 $('#manageBar').mouseenter(function () {
     $('.manage_hidden').slideDown('500');
-})
+});

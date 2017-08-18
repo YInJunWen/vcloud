@@ -98,9 +98,9 @@
 			var _tar;
 			var isMarq = effect=="leftMarquee" || effect=="topMarquee"?true:false;
 
-			var doStartFun=function(){ if ( $.isFunction( opts.startFun) ){ opts.startFun( index,navObjSize,slider,$(opts.titCell, slider),conBox,tarObj,prevBtn,nextBtn ) } }
-			var doEndFun=function(){ if ( $.isFunction( opts.endFun ) ){ opts.endFun( index,navObjSize,slider,$(opts.titCell, slider),conBox,tarObj,prevBtn,nextBtn ) } }
-			var resetOn=function(){ navObj.removeClass(titOn); if( defaultPlay ) navObj.eq(defaultIndex).addClass(titOn)  }
+			var doStartFun=function(){ if ( $.isFunction( opts.startFun) ){ opts.startFun( index,navObjSize,slider,$(opts.titCell, slider),conBox,tarObj,prevBtn,nextBtn ) } };
+			var doEndFun=function(){ if ( $.isFunction( opts.endFun ) ){ opts.endFun( index,navObjSize,slider,$(opts.titCell, slider),conBox,tarObj,prevBtn,nextBtn ) } };
+			var resetOn=function(){ navObj.removeClass(titOn); if( defaultPlay ) navObj.eq(defaultIndex).addClass(titOn)  };
 
 
 
@@ -174,7 +174,7 @@
 				var cloneEle = function(){ 
 					for( var i=0; i<vis ; i++ ){ _chr.eq(i).clone().addClass("clone").appendTo(conBox); } 
 					for( var i=0; i<cloneNum ; i++ ){ _chr.eq(conBoxSize-i-1).clone().addClass("clone").prependTo(conBox); }
-				}
+				};
 				
 				switch(effect)
 				{
@@ -199,7 +199,7 @@
 				var _tempCs= ind*scroll; 
 				if( ind==navObjSize ){ _tempCs=conBoxSize; }else if( ind==-1 && conBoxSize%scroll!=0){ _tempCs=-conBoxSize%scroll; }
 				return _tempCs;
-			}
+			};
 
 			//切换加载
 			var doSwitchLoad=function(objs){ 
@@ -220,7 +220,7 @@
 									}
 								})
 							}
-					}
+					};
 
 					switch(effect)
 					{
@@ -241,7 +241,7 @@
 							changeImg( mNum );
 							break;
 					}
-			}//doSwitchLoad end
+			};//doSwitchLoad end
 
 
 			//效果函数
@@ -357,16 +357,16 @@
 			}
 			
 			///自动播放函数
-			var setInter = function(time){ inter=setInterval(function(){  opp?index--:index++; doPlay() }, !!time?time:interTime);  }
-			var setMarInter = function(time){ inter = setInterval(doPlay, !!time?time:interTime);  }
+			var setInter = function(time){ inter=setInterval(function(){  opp?index--:index++; doPlay() }, !!time?time:interTime);  };
+			var setMarInter = function(time){ inter = setInterval(doPlay, !!time?time:interTime);  };
 			// 处理mouseOverStop
-			var resetInter = function(){ if( !mouseOverStop ){clearInterval(inter); setInter() } }
+			var resetInter = function(){ if( !mouseOverStop ){clearInterval(inter); setInter() } };
 			// 前后按钮触发
-			var nextTrigger = function(){ if ( pnLoop || index!=navObjSize-1 ){ index++; doPlay(); if(!isMarq)resetInter(); } }
-			var prevTrigger = function(){ if ( pnLoop || index!=0 ){ index--; doPlay(); if(!isMarq)resetInter(); } }
+			var nextTrigger = function(){ if ( pnLoop || index!=navObjSize-1 ){ index++; doPlay(); if(!isMarq)resetInter(); } };
+			var prevTrigger = function(){ if ( pnLoop || index!=0 ){ index--; doPlay(); if(!isMarq)resetInter(); } };
 			//处理playState
-			var playStateFun = function(){ clearInterval(inter); isMarq?setMarInter():setInter(); playState.removeClass("pauseState") }
-			var pauseStateFun = function(){ clearInterval(inter);playState.addClass("pauseState"); }
+			var playStateFun = function(){ clearInterval(inter); isMarq?setMarInter():setInter(); playState.removeClass("pauseState") };
+			var pauseStateFun = function(){ clearInterval(inter);playState.addClass("pauseState"); };
 
 			//自动播放
 			if (autoPlay) {
@@ -396,8 +396,8 @@
 				if (pnLoop)
 				{	
 					var st;
-					var marDown = function(){ st=setTimeout(function(){ clearInterval(inter); setMarInter( interTime/10^0 ) },150) }
-					var marUp = function(){ clearTimeout(st); clearInterval(inter); setMarInter() }
+					var marDown = function(){ st=setTimeout(function(){ clearInterval(inter); setMarInter( interTime/10^0 ) },150) };
+					var marUp = function(){ clearTimeout(st); clearInterval(inter); setMarInter() };
 					nextBtn.mousedown(marDown); nextBtn.mouseup(marUp);
 					prevBtn.mousedown(marDown); prevBtn.mouseup(marUp);
 				}
