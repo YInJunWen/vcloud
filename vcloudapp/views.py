@@ -365,9 +365,9 @@ def finished(request):
         elif power == 3:
             Order.objects.filter(pid=pid).update(vcloud_pending=1, status=1)
             data = Order.objects.exclude(status=2).exclude(vcloud_pending=1).values()
-    else:
-        # 否定 直接过期
-        return
+    # else:
+    #     # 否定 直接过期
+    #     return
         # if power == 0:
         #     return HttpResponseRedirect('/overview/')
         # elif power == 1:
