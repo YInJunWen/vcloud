@@ -24,21 +24,40 @@ $(function () {
     // 硬盘滑块
     $(".slider_Disk")
         .slider({
+            min: 0,
             max: 1000,
-            values: [50]
+            step: 100
         })
+
         .slider("pips", {
-            step: 100,
             rest: "label",
-            labels: {first: "0", last: "1000"}
+            step: 2
         })
-        // .slider("float")
+
+        .slider("float")
         .on("slidechange", function (e, num) {
             console.log(num.value);
             $('.Form_yp').val(num.value + "GB");
             $('.h_Form_yp').val(num.value);
             calculatePrice();
         });
+    // $(".slider_Disk")
+    //     .slider({
+    //         max: 1000,
+    //         values: [50]
+    //     })
+    //     .slider("pips", {
+    //         step: 100,
+    //         rest: "label",
+    //         labels: {first: "0", last: "1000"}
+    //     })
+    //     // .slider("float")
+    //     .on("slidechange", function (e, num) {
+    //         console.log(num.value);
+    //         $('.Form_yp').val(num.value + "GB");
+    //         $('.h_Form_yp').val(num.value);
+    //         calculatePrice();
+    //     });
 
     // 带宽滑块
     $(".slider_Flux")
@@ -117,8 +136,8 @@ $(function () {
         $('.h_Form_cpu').val('2');
         $('.Form_mem').val("4G");
         $('.h_Form_mem').val("4");
-        $('.ChildMem a:nth-child(4)').show();
-        $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
+        $('.ChildMem a:nth-child(4), .ChildMem a:nth-child(3)').show();
+        $('.ChildMem a:nth-child(2), .ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
         calculatePrice();
     });
 
@@ -130,6 +149,8 @@ $(function () {
         $('.h_Form_cpu').val('1');
         $('.Form_mem').val("1G");
         $('.h_Form_mem').val("1");
+        $('.ChildMem a:nth-child(2), .ChildMem a:nth-child(3)').show();
+        $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
         calculatePrice();
     });
 
@@ -141,8 +162,8 @@ $(function () {
         $('.h_Form_cpu').val('2');
         $('.Form_mem').val("2G");
         $('.h_Form_mem').val("2");
-        $('.ChildMem a:nth-child(4)').show();
-        $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
+        $('.ChildMem a:nth-child(4), .ChildMem a:nth-child(3)').show();
+        $('.ChildMem a:nth-child(2), .ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
         calculatePrice();
     });
 
@@ -154,6 +175,7 @@ $(function () {
         $('.h_Form_cpu').val('4');
         $('.Form_mem').val("4G");
         $('.h_Form_mem').val("4");
+        $('.ChildMem a:nth-child(3)').hide();
         $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').show();
         calculatePrice();
     });
@@ -172,7 +194,7 @@ $(function () {
 
     // 豪华型 6
     $('.ChildType a:nth-child(7)').click(function () {
-        $('.ChildCpu a:nth-child(5)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
+        $('.ChildCpu a:nth-child(4)').addClass('a_class').siblings('.ChildCpu a').removeClass('a_class');
         $('.ChildMem a:nth-child(6)').addClass('a_class').siblings('.ChildMem a').removeClass('a_class');
         $('.Form_cpu').val("8核");
         $('.h_Form_cpu').val('8');
@@ -182,19 +204,27 @@ $(function () {
         calculatePrice();
     });
 
-    // cpu 对应点击
+    //  cpu 对应点击
+    //  1核心
     $('.ChildCpu a:nth-child(2)').click(function () {
+        $('.ChildMem a:nth-child(2), .ChildMem a:nth-child(3)').show();
         $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
     });
 
+    //  2核心
     $('.ChildCpu a:nth-child(3)').click(function () {
-        $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
+        $('.ChildMem a:nth-child(3)').show();
+        $('.ChildMem a:nth-child(2), .ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').hide();
     });
 
+    //  4核心
     $('.ChildCpu a:nth-child(4)').click(function () {
+        // console.log(1);
+        $('.ChildMem a:nth-child(2), .ChildMem a:nth-child(3)').hide();
         $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').show();
     });
 
+    //  8核心
     $('.ChildCpu a:nth-child(5)').click(function () {
         $('.ChildMem a:nth-child(5), .ChildMem a:nth-child(6)').show();
     });

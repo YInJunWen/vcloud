@@ -224,7 +224,7 @@ def order_checking(request):
             if i['status'] == 2:
                 i['status'] = "已过期"
             u.append(i)
-        # print u
+            # print u
     # print u
     limit = 10  # 每页显示的记录数
     paginator = Paginator(u, limit)
@@ -365,20 +365,20 @@ def finished(request):
         elif power == 3:
             Order.objects.filter(pid=pid).update(vcloud_pending=1, status=1)
             data = Order.objects.exclude(status=2).exclude(vcloud_pending=1).values()
-    # else:
-    #     # 否定 直接过期
-    #     return
-        # if power == 0:
-        #     return HttpResponseRedirect('/overview/')
-        # elif power == 1:
-        #     Order.objects.filter(pid=pid).update(status=2)
-        #     data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
-        # elif power == 2:
-        #     Order.objects.filter(pid=pid).update(status=2)
-        #     data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
-        # elif power == 3:
-        #     Order.objects.filter(pid=pid).update(status=2)
-        #     data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
+            # else:
+            #     # 否定 直接过期
+            #     return
+            # if power == 0:
+            #     return HttpResponseRedirect('/overview/')
+            # elif power == 1:
+            #     Order.objects.filter(pid=pid).update(status=2)
+            #     data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
+            # elif power == 2:
+            #     Order.objects.filter(pid=pid).update(status=2)
+            #     data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
+            # elif power == 3:
+            #     Order.objects.filter(pid=pid).update(status=2)
+            #     data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
     for i in data:
         i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
         if i['dept_pending'] == 0:
@@ -500,6 +500,7 @@ def chkcreate_instance(request):
         network = 'vxlan'
     # 处理购买数量 生成对应条数数据
     number = int(buy_number)
+    flavor = get_flavor(cpu, mem)
     for i in range(number):
         # 买几个生成几个主机
         ins_data = Instances(create_at=apply_time, expired_at=apply_time, delayed_at=apply_time, belonged=username,
@@ -507,12 +508,34 @@ def chkcreate_instance(request):
         ins_data.save()
         # 生成订单明细
         order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
-                                   password=password, expire=expired, network=network, price=price)
+                                   password=password, expire=expired, network=network, price=price, flavor=flavor)
         order_detail.save()
         # 生成订单
-        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one, dept=dept)
+        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one,
+                           dept=dept)
         order_data.save()
     return HttpResponseRedirect('/overview/')
+
+
+def get_flavor(vcpu, mem):
+    flavor = 'Large-01'
+    if vcpu == 1 and mem == 1:
+        flavor = 'Mini-Linux'
+    if vcpu == 1 and mem == 2:
+        flavor = 'Small-Linux'
+    if vcpu == 1 and mem == 4:
+        flavor = 'Small'
+    if vcpu == 2 and mem == 2:
+        flavor = 'Medium-01'
+    if vcpu == 2 and mem == 4:
+        flavor = 'Medium-02'
+    if vcpu == 4 and mem == 4:
+        flavor = 'Large-01'
+    if vcpu == 4 and mem == 8:
+        flavor = 'Large-02'
+    if vcpu == 4 and mem == 16:
+        flavor = "Huge-01"
+    return flavor
 
 
 # 请求价格接口

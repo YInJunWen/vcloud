@@ -120,6 +120,7 @@ class Order(models.Model):
     uuid = models.UUIDField()  # 订单明细 uuid关联订单明细用
     payed = models.IntegerField(default=1)  # 支付确认 0-已支付 1-未支付
     dept = models.CharField(max_length=20)
+    # visibility = models.BooleanField(default=0)  # 0-不可见
 
     class Meta:
         db_table = "order"
@@ -240,7 +241,7 @@ class Network(models.Model):
     dis_playname = models.CharField(max_length=50)
     net_name = models.CharField(max_length=20)
     net_desc = models.CharField(max_length=20)
-    uuid = models.UUIDField(uuid.uuid4, max_length=36)
+    # uuid = models.UUIDField(uuid.uuid4, max_length=36)
 
     class Meta:
         db_table = "network"
