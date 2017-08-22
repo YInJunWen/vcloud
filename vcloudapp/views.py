@@ -427,8 +427,7 @@ def userRegister(request):
 def checkLogin(request):
     username = request.POST.get('username', None).strip()
     password = request.POST.get('password', None).strip()
-    date = time.time()
-    nowtime = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%I:%S")
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     md5_password = hashlib.md5(password).hexdigest().upper()
     loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
@@ -441,6 +440,9 @@ def checkLogin(request):
         return render(request, 'login.html', context={'err': '用户名或密码错误!'})
     else:
         request.session['username'] = username
+        date = time.time()
+        login_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
+        request.session['now_time'] = login_time
         request.session.set_expiry(20 * 60)
         power = UserInfo.objects.get(username=username).power
         data.save()
@@ -567,6 +569,7 @@ def calculatePrice(request):
 
 # 获取日志信息
 @csrf_exempt
+# @JSON(format="yyyy-MM-dd HH:mm:ss")
 def accessLog(request):
     username = request.session.get('username')
     data = Log.objects.filter(log_user=username).order_by('-log_user', '-log_type', '-log_detail', '-log_ip',
@@ -586,6 +589,7 @@ def accessLog(request):
         if i['log_type'] == 4:
             i['log_type'] = "系统"
         u.append(i)
+    print list(u)
     return JsonResponse({'data': list(u)})
 
 

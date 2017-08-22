@@ -106,7 +106,12 @@
                                 </a>
                             </div>
                             <p>本次登录时间 :</p>
-                            <p id="NowTime">{{ logtime }}</p>
+
+                            {% for key,value in request.session.items %}
+                                {% ifequal 'now_time' key %}
+                                    <p id="NowTime">{{ value }}</p>
+                                {% endifequal %}
+                            {% endfor %}
                             <!--<a href="">退出管理控制台</a>-->
                         </div>
                     </li>
