@@ -24,7 +24,7 @@ $(function () {
     // 硬盘滑块
     $(".slider_Disk")
         .slider({
-            min: 0,
+            min: 50,
             max: 1000,
             step: 100
         })

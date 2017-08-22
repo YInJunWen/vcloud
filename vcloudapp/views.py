@@ -12,6 +12,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from datetime import datetime
 from django.db.models import Q
+from django.utils.timezone import now, timedelta
 from .models import *
 
 
@@ -440,7 +441,7 @@ def checkLogin(request):
         return render(request, 'login.html', context={'err': '用户名或密码错误!'})
     else:
         request.session['username'] = username
-        request.session.set_expiry(20000 * 60)
+        request.session.set_expiry(20 * 60)
         power = UserInfo.objects.get(username=username).power
         data.save()
         return render(request, 'overview.html', context={"power": power})
@@ -474,6 +475,12 @@ def chkcreate_instance(request):
     date = time.time()
     apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
 
+    date_order = now() + timedelta(days=3)  # 生成订单失效时间
+    buy_days = int(expired) * 30
+    # print buy_days
+    date_expire = now() + timedelta(days=buy_days)
+    # print date_expire
+
     # 选择操作系统
     if os == 'Win2008R2 64':
         os = 0
@@ -501,9 +508,10 @@ def chkcreate_instance(request):
     # 处理购买数量 生成对应条数数据
     number = int(buy_number)
     flavor = get_flavor(cpu, mem)
+
     for i in range(number):
         # 买几个生成几个主机
-        ins_data = Instances(create_at=apply_time, expired_at=apply_time, delayed_at=apply_time, belonged=username,
+        ins_data = Instances(create_at=apply_time, expired_at=date_expire, delayed_at=apply_time, belonged=username,
                              name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
         ins_data.save()
         # 生成订单明细
@@ -511,7 +519,7 @@ def chkcreate_instance(request):
                                    password=password, expire=expired, network=network, price=price, flavor=flavor)
         order_detail.save()
         # 生成订单
-        order_data = Order(created_at=apply_time, created_user=username, expired_at=apply_time, uuid=uuid_one,
+        order_data = Order(created_at=apply_time, created_user=username, expired_at=date_order, uuid=uuid_one,
                            dept=dept)
         order_data.save()
     return HttpResponseRedirect('/overview/')
@@ -702,9 +710,12 @@ def logout(request):
 
 # 测试
 def test1(request):
-    username = request.session.get('username')
-    a = UserInfo.objects.get(username=username).power
-    return render(request, 'test1.html', context={'a': a})
+    # username = request.session.get('username')
+    # a = UserInfo.objects.get(username=username).power
+    data = now() + timedelta(days=1)
+    # data = datetime.now()
+    print str(data + timedelta(days=1))
+    return render(request, 'test1.html', context={'data': data})
 
 
 @csrf_exempt

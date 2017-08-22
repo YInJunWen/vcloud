@@ -92,6 +92,7 @@
                             {% endif %}
                             </tbody>
                         </table>
+                    {% if order %}
                         <div class="pagination" style="text-align: center;display: block;">
                                 <span class="step-links">
                                     {% if order.has_previous %}
@@ -107,7 +108,7 @@
                                     {% endif %}
                                 </span>
                         </div>
-                        {% if order %}
+
                             <div class="noMessage order_noMessage" style="display: none;">
                                 <p>没有查询到符合条件的记录!</p>
                             </div>

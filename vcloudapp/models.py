@@ -112,7 +112,7 @@ class Order(models.Model):
     pid = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)  # 创建日期
     created_user = models.CharField(max_length=20)  # 创建人
-    expired_at = models.DateTimeField(auto_now_add=True)  # 此订单有效日期, 超过则失效
+    expired_at = models.DateTimeField()  # 此订单有效日期, 超过则失效
     dept_pending = models.IntegerField(default=1)  # 部门审核 0-已审核 1-未审核
     admin_pending = models.IntegerField(default=1)  # 总经办
     vcloud_pending = models.IntegerField(default=1)  # 云计算审核
