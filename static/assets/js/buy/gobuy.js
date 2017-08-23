@@ -9,18 +9,6 @@ $(function () {
         background: '#b2d8ff'
     });
 
-    // 滑块
-    // $('.single-slider').jRange({
-    //     from: 0,
-    //     to: 500,
-    //     step: 1,
-    //     scale: ['0','100G','200G','300G','400G','500G'],
-    //     format: '%s',
-    //     width: 636,
-    //     showLabels: true,
-    //     showScale: true
-    // });
-
     // 硬盘滑块
     $(".slider_Disk")
         .slider({
@@ -41,23 +29,6 @@ $(function () {
             $('.h_Form_yp').val(num.value);
             calculatePrice();
         });
-    // $(".slider_Disk")
-    //     .slider({
-    //         max: 1000,
-    //         values: [50]
-    //     })
-    //     .slider("pips", {
-    //         step: 100,
-    //         rest: "label",
-    //         labels: {first: "0", last: "1000"}
-    //     })
-    //     // .slider("float")
-    //     .on("slidechange", function (e, num) {
-    //         console.log(num.value);
-    //         $('.Form_yp').val(num.value + "GB");
-    //         $('.h_Form_yp').val(num.value);
-    //         calculatePrice();
-    //     });
 
     // 带宽滑块
     $(".slider_Flux")
@@ -82,13 +53,17 @@ $(function () {
     // 二级联动
     var currentShowCity = 0;
     $('#os_Name').change(function () {
-        $('#os_Name option').each(function (i, o) {
+        $('#os_Name option').each(function (i) {
             if ($(this).attr('selected')) {
                 $('.os_Option').hide();
                 $('.os_Option').eq(i).show();
                 currentShowCity = i;
             }
-        })
+        });
+        //  this 是这个option的父元素
+        $('.os_Option').children('option:selected').removeAttr('selected');
+        $('.Form_os').val('--');
+        $('.h_Form_os').val('--');
     });
     $('#os_Name').change();
 
