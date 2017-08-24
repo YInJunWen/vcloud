@@ -61,16 +61,17 @@ def instances(request):
     data = Instances.objects.filter(belonged=username).values()
     # 获取现在的时间与订单期限对比
     now_time = now()
-    Filter_Data = data.filter(expired_at__gte=now_time)
-    if not Filter_Data:
-        for i in data:
-            i['status'] = 'expire'
+    Filter_Data = Instances.objects.filter(belonged=username).filter(expired_at__lte=now_time)
+    if Filter_Data:
+        Filter_Data.update(status=2)
     u = []
     for i in data:
         if i['status'] == 0:
             i['status'] = 'running'
         if i['status'] == 1:
             i['status'] = 'stopped'
+        if i['status'] == 2:
+            i['status'] = 'expire'
         if i['os'] == 0:
             i['os'] = 'Win2008R2_64'
         if i['os'] == 1:
