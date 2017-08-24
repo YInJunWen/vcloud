@@ -756,13 +756,13 @@ line-height: 34px;
   background: #dff0d8;
 }
 
-#management table tbody td:nth-child(1),
-#shiliView table tbody td:nth-child(1),
-#yunpanView table tbody td:nth-child(1),
-#kuaizhaoView table tbody td:nth-child(1),
-#logView table tbody td:nth-child(1),
-#manageView table tbody td:nth-child(1),
-#orderView table tbody td:nth-child(1){
+/*#management table tbody td:nth-child(1),*/
+/*#shiliView table tbody td:nth-child(1),*/
+/*#yunpanView table tbody td:nth-child(1),*/
+/*#kuaizhaoView table tbody td:nth-child(1),*/
+#logView table tbody td:nth-child(1){
+/*#manageView table tbody td:nth-child(1),*/
+/*#orderView table tbody td:nth-child(1){*/
   text-indent:22px;
 }
 
@@ -826,4 +826,9 @@ line-height: 34px;
 #manageView table tbody td:nth-child(7),
 #orderView table tbody td:nth-child(7){
   text-align: center;
+}
+
+
+body .text_indent{
+  text-indent: 0 !important;
 }
