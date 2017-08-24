@@ -87,17 +87,30 @@
                                             </td>
                                             <td>no_function</td>
                                             <td>{{ value.expired_at }}</td>
+
                                             <td>{{ value.status }}</td>
                                             <td style="text-align:center">
-                                                <select name="" class="console_select"
-                                                        onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
-                                                    <option value="0">--------</option>
-                                                    <option value="1">开机</option>
-                                                    <option value="2">关机</option>
-                                                    <option value="3">重启</option>
-                                                    <option value="4">修改密码</option>
-                                                    <option value="5">快照</option>
-                                                </select>
+                                                {% if value.status == 'expire' %}
+                                                    <select disabled="disabled" name="" class="console_select"
+                                                            onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
+                                                        <option value="0">--------</option>
+                                                        <option value="1">开机</option>
+                                                        <option value="2">关机</option>
+                                                        <option value="3">重启</option>
+                                                        <option value="4">修改密码</option>
+                                                        <option value="5">快照</option>
+                                                    </select>
+                                                {% else %}
+                                                    <select name="" class="console_select"
+                                                            onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
+                                                        <option value="0">--------</option>
+                                                        <option value="1">开机</option>
+                                                        <option value="2">关机</option>
+                                                        <option value="3">重启</option>
+                                                        <option value="4">修改密码</option>
+                                                        <option value="5">快照</option>
+                                                    </select>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

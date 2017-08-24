@@ -59,6 +59,12 @@ def instances(request):
     username = request.session.get('username')
     power = UserInfo.objects.get(username=username).power
     data = Instances.objects.filter(belonged=username).values()
+    # 获取现在的时间与订单期限对比
+    now_time = now()
+    Filter_Data = data.filter(expired_at__gte=now_time)
+    if not Filter_Data:
+        for i in data:
+            i['status'] = 'expire'
     u = []
     for i in data:
         if i['status'] == 0:
@@ -714,12 +720,14 @@ def logout(request):
 
 # 测试
 def test1(request):
-    # username = request.session.get('username')
-    # a = UserInfo.objects.get(username=username).power
-    data = now() + timedelta(days=1)
-    # data = datetime.now()
-    print str(data + timedelta(days=1))
-    return render(request, 'test1.html', context={'data': data})
+    username = request.session.get('username')
+    data = Instances.objects.filter(belonged=username)
+    now_time = now()
+    data1 = data.filter(expired_at__gte=now_time).values()
+    if data1:
+        return render(request, 'test1.html', context={'data': '未过期'})
+    else:
+        return render(request, 'test1.html', context={'data': '已过期'})
 
 
 @csrf_exempt
