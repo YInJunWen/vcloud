@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 import random
 import time
-
+import commands
 import uuid
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -373,20 +373,6 @@ def finished(request):
         elif power == 3:
             Order.objects.filter(pid=pid).update(vcloud_pending=1, status=1)
             data = Order.objects.exclude(status=2).exclude(vcloud_pending=1).values()
-            # else:
-            #     # 否定 直接过期
-            #     return
-            # if power == 0:
-            #     return HttpResponseRedirect('/overview/')
-            # elif power == 1:
-            #     Order.objects.filter(pid=pid).update(status=2)
-            #     data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
-            # elif power == 2:
-            #     Order.objects.filter(pid=pid).update(status=2)
-            #     data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
-            # elif power == 3:
-            #     Order.objects.filter(pid=pid).update(status=2)
-            #     data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
     for i in data:
         i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
         if i['dept_pending'] == 0:
@@ -492,17 +478,19 @@ def chkcreate_instance(request):
 
     # 选择操作系统
     if os == 'Win2008R2 64':
-        os = 0
-    if os == 'Win2008R2 64(SQLServer)':
         os = 1
-    if os == "Win2012R2 64":
+        cmd_os = 'win2k8r2-v3'
+    if os == 'Win2008R2 64(SQLServer)':
         os = 2
-    if os == "Win2012R2 64(SQLServer)":
+    if os == "Win2012R2 64":
         os = 3
-    if os == "CentOS7.2":
+    if os == "Win2012R2 64(SQLServer)":
         os = 4
-    if os == "CentOS7.2 + Lamp":
+    if os == "CentOS7.2":
         os = 5
+        cmd_os = 'centos7-v2'
+    if os == "CentOS7.2 + Lamp":
+        os = 6
     # 生成操作日志
     log_data = Log(log_type=1, log_opt=apply_time, log_user=username, log_detail="申请云主机", log_ip=ip)
     log_data.save()
@@ -531,6 +519,8 @@ def chkcreate_instance(request):
         order_data = Order(created_at=apply_time, created_user=username, expired_at=date_order, uuid=uuid_one,
                            dept=dept)
         order_data.save()
+    # 创建虚机命令
+    create_virtual(password, flavor, cmd_os, network, ins_name)
     return HttpResponseRedirect('/overview/')
 
 
@@ -600,56 +590,6 @@ def accessLog(request):
     return JsonResponse({'data': list(u)})
 
 
-# 获取订单信息
-# @csrf_exempt
-# def accessIns(request):
-#     username = request.session.get('username')
-#     data = Instances.objects.filter(belonged=username).values()
-#     # print data
-#     u = []
-#     for i in data:
-#         if i['status'] == 0:
-#             i['status'] = 'running'
-#         if i['status'] == 1:
-#             i['status'] = 'stopped'
-#         if i['os'] == 0:
-#             i['os'] = 'Win2008R2_64'
-#         if i['os'] == 1:
-#             i['os'] = 'Win2008R2_64(SQLServer)'
-#         if i['os'] == 2:
-#             i['os'] = 'Win2008R2_64'
-#         if i['os'] == 3:
-#             i['os'] = 'Win2012R2_64(SQLServer)'
-#         if i['os'] == 4:
-#             i['os'] = 'CentOS7.2'
-#         if i['os'] == 5:
-#             i['os'] = 'CentOS7.2 + Lamp'
-#         u.append(i)
-#     # print u
-#     return JsonResponse({'data': list(u)})
-
-
-# 获取order 订单
-# @csrf_exempt
-# def accessOrder(request):
-#     username = request.session.get('username')
-#     data = Order.objects.filter(created_user=username).values()
-#     u = []
-#     for i in data:
-#         # 判断三级审批
-#         if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
-#             i['status'] = 0
-#         # 0 - 已完成，1 - 审核中，2 - 已过期
-#         if i['status'] == 0:
-#             i['status'] = "已完成"
-#         if i['status'] == 1:
-#             i['status'] = "审核中"
-#         if i['status'] == 2:
-#             i['status'] = "已过期"
-#         u.append(i)
-#     return JsonResponse({'data': list(u)})
-
-
 # 发送邮件
 @csrf_exempt
 def send_email(request):
@@ -717,6 +657,17 @@ def logined(request):
 def logout(request):
     del request.session['username']
     return HttpResponseRedirect('/login/')
+
+
+def create_virtual(password, flavor, os_name, net_name, ins_name):
+    # Linux
+    lin_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta password=%s --flavor %s --image %s --nic net-name=%s %s' % (
+    password, flavor, os_name, net_name, ins_name)
+    print commands.getstatusoutput(lin_CMD)
+    # windows
+    # win_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta admin_pass=%s --flavor %s --image %s --nic net-name=%s %s' % (
+    # password, flavor, os_name, net_name, ins_name)
+    # print commands.getstatusoutput(win_CMD)
 
 
 # 测试
