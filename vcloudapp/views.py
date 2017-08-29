@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import random
 import time
 import commands
-import uuid
+# import uuid
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, JsonResponse
@@ -662,12 +662,18 @@ def logout(request):
 def create_virtual(password, flavor, os_name, net_name, ins_name):
     # Linux
     lin_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta password=%s --flavor %s --image %s --nic net-name=%s %s' % (
-    password, flavor, os_name, net_name, ins_name)
-    print commands.getstatusoutput(lin_CMD)
-    # windows
-    # win_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta admin_pass=%s --flavor %s --image %s --nic net-name=%s %s' % (
-    # password, flavor, os_name, net_name, ins_name)
-    # print commands.getstatusoutput(win_CMD)
+        password, flavor, os_name, net_name, ins_name)
+    (status, output) = commands.getstatusoutput(lin_CMD)
+    print output
+    if status == 0:
+        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX success!"
+    else:
+        print 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO failed!'
+
+        # windows
+        # win_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta admin_pass=%s --flavor %s --image %s --nic net-name=%s %s' % (
+        # password, flavor, os_name, net_name, ins_name)
+        # print commands.getstatusoutput(win_CMD)
 
 
 # 测试

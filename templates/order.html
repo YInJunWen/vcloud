@@ -67,9 +67,10 @@
                                 {#                                <th width="10">#}
                                 {#                                    <input type="checkbox">#}
                                 {#                                </th>#}
-                                <th style="text-align: center;" width="10%">工单号</th>
-                                <th style="text-align: center;" width="20%">时间</th>
-                                <th style="text-align: center;" width="40%">事由</th>
+                                <th style="text-align: center;" width="15%">工单号</th>
+                                <th style="text-align: center;" width="20%">订单创建时间</th>
+                                <th style="text-align: center;" width="20%">订单过期时间</th>
+                                <th style="text-align: center;" width="25%">事由</th>
                                 {#                                <th style="text-align: center;">服务器</th>#}
                                 <th style="text-align: center;">状态</th>
 {#                                <th style="text-align: center;">操作</th>#}
@@ -81,8 +82,10 @@
                                     <tr>
                                         <td style="text-indent: 0;text-align: center;">{{ value.pid }}</td>
                                         <td style="text-indent: 100px;">{{ value.created_at }}</td>
+                                        <td>{{ value.expired_at }}</td>
                                         <td>创建云主机</td>
                                         <td>{{ value.status }}</td>
+{#                                        <td>{{ value.status }}</td>#}
 {#                                        <td>#}
 {#                                            <a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a><a#}
 {#                                                href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>#}
