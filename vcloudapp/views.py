@@ -436,7 +436,7 @@ def checkLogin(request):
         date = time.time()
         login_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
         request.session['now_time'] = login_time
-        request.session.set_expiry(20 * 60)
+        request.session.set_expiry(20000 * 60)
         power = UserInfo.objects.get(username=username).power
         data.save()
         return render(request, 'overview.html', context={"power": power})
@@ -659,6 +659,18 @@ def logout(request):
     return HttpResponseRedirect('/login/')
 
 
+# 获取是否有权限
+def get_power(username, dept):
+    _username = str(username)
+    data = Power.objects.filter(dept_name=dept).values()
+    _data = list(data)[0]['dept_admin']
+    dept_adminlist = _data.split(',')
+    if _username in dept_adminlist:
+        return 'true'
+    else:
+        return 'false'
+
+
 def create_virtual(password, flavor, os_name, net_name, ins_name):
     # Linux
     lin_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta password=%s --flavor %s --image %s --nic net-name=%s %s' % (
@@ -679,13 +691,19 @@ def create_virtual(password, flavor, os_name, net_name, ins_name):
 # 测试
 def test1(request):
     username = request.session.get('username')
-    data = Instances.objects.filter(belonged=username)
-    now_time = now()
-    data1 = data.filter(expired_at__gte=now_time).values()
-    if data1:
-        return render(request, 'test1.html', context={'data': '未过期'})
+    _username = str(username)
+    print type(_username)
+    dept = UserInfo.objects.get(username=username).dept
+    data = Power.objects.filter(dept_name=dept).values()
+    _data = list(data)[0]['dept_admin']
+    dept_adminlist = _data.split(',')
+    if _username in dept_adminlist:
+        return render(request, 'test1.html', context={'data': 'true'})
     else:
-        return render(request, 'test1.html', context={'data': '已过期'})
+        return render(request, 'test1.html', context={'data': 'false'})
+    # if username in dept_adminList:
+    #     return render(request, 'test1.html', context={'data': '存在'})
+    # return render(request, 'test1.html', context={'data': '不存在'})
 
 
 @csrf_exempt
