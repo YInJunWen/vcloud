@@ -47,7 +47,8 @@ def overview(request):
     if not o:
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    power = get_power(username, dept)
     return render(request, 'overview.html', context={"power": power})
 
 
@@ -57,7 +58,8 @@ def instances(request):
     if not o:
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    power = get_power(username, dept)
     data = Instances.objects.filter(belonged=username).values()
     # 获取现在的时间与订单期限对比
     now_time = now()
@@ -103,7 +105,8 @@ def disk(request):
     if not o:
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    power = get_power(username, dept)
     return render(request, 'disk.html', context={'power': power})
 
 
@@ -113,7 +116,8 @@ def snapshot(request):
     if not o:
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    power = get_power(username, dept)
     return render(request, 'snapshot.html', context={"power": power})
 
 
@@ -123,7 +127,8 @@ def log(request):
     if not o:
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    power = get_power(username, dept)
     return render(request, 'log.html', context={"power": power})
 
 
@@ -133,7 +138,8 @@ def order(request):
     if not o:
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
+    dept = UserInfo.objects.get(username=username).dept
+    power = get_power(username, dept)
     data = Order.objects.filter(created_user=username).values()
     u = []
     for i in data:
@@ -191,6 +197,9 @@ def order_checking(request):
         return HttpResponseRedirect('/login/')
     # 判断是否是管理员权限 防止复制链接进入管理审批界面
     username = request.session.get('username')
+    # username = request.session.get('username')
+    # dept = UserInfo.objects.get(username=username).dept
+    # power = get_power(username, dept)
     power = UserInfo.objects.get(username=username).power
     dept = UserInfo.objects.get(username=username).dept
     u = []
@@ -437,7 +446,8 @@ def checkLogin(request):
         login_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
         request.session['now_time'] = login_time
         request.session.set_expiry(20000 * 60)
-        power = UserInfo.objects.get(username=username).power
+        dept = UserInfo.objects.get(username=username).dept
+        power = get_power(username, dept)
         data.save()
         return render(request, 'overview.html', context={"power": power})
 
