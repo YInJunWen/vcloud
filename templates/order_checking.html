@@ -53,8 +53,12 @@
                                         <td>创建云主机</td>
                                         <td>{{ i.created_user }}</td>
                                         <td>{{ i.status }}</td>
+                                        {% if dept != 'zjb' %}
                                         <td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a
                                                 href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                             {% endif %}
