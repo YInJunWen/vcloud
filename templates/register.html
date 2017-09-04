@@ -8,110 +8,162 @@
     <title>中德宏泰 - 用户注册</title>
     <link href="/static/assets/css/public/user.css" rel="stylesheet">
 </head>
-    <body>
-        <div class="content">
-            <ul class="top">
-                <li class="title">| 帐号注册</li>
-                <li id="right">
-                    <span>我已注册，现在就</span>
-                    <span>
+<body>
+<div class="content">
+    <ul class="top">
+        <li class="title">| 帐号注册</li>
+        <li id="right">
+            <span>我已注册，现在就</span>
+            <span>
                     <a href="/login/">登录</a></span>
-                </li>
-                <div class="clear"></div>
-            </ul>
-            <form class="regform" method="post" action="/userRegister/" name="register" onsubmit="return Rt_check();">
-                <ol>
-                    <li style="clear: both;">
-                        <label for="username">用户名</label>
-                        <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username"
-                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
-                       {% if err_name %}
-                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_name }}</span>
-                        {% endif %}
-                    </li>
-                    <li style="clear: both;">
-                        <label for="password">密码</label>
-                        <input type="password" name="password" id="password" maxlength="20" placeholder="不能为中文或特殊字符" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
-                        <span style="color: #f90; display: none;text-indent: -70px;" id="pass_span">两次密码不相同,请重新输入!</span>
-                    </li>
-                    <li style="clear: both;">
-                        <label for="repassword">确认密码</label>
-                        <input type="password" name="repassword" id="repassword" maxlength="20" placeholder="不能为中文或特殊字符" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
-                        {% if err_password %}
-                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_password }}</span>
-                        {% endif %}
-                    </li>
-                    <li style="clear: both;">
-                        <label for="mail">Email</label>
-                        <input type="email" name="e_mail" placeholder="用于找回密码" id="mail" required/></li>
-                    <li style="clear: both;">
-                        <label for="budget">部门</label>
-                        <select id="budget" name="dept">
-                            <option value="change_list" selected="selected">请选择所在部门</option>
-                            <option value="cw">财务部</option>
-                            <option value="cg">采购部</option>
-                            <option value="cp">产品部</option>
-                            <option value="xz">行政人事部</option>
-                            <option value="oem">OEM</option>
-                            <option value="kf">客服部</option>
-                            <option value="sc">市场部</option>
-                            <option value="xs">销售部</option>
-                            <option value="yjs">云计算中心</option>
-                            <option value="zjb">总经办</option>
-                            <option value="yf">成都研发</option>
-                            <option value="tf">成都通发</option>
-                            <option value="ksb">昆山办</option>
-                            <option value="szb">苏州办</option>
-                            <option value="lygb">连云港办</option>
-                            <option value="ahb">安徽办</option>
-                            <option value="lxb">利辛办</option>
-                        </select>
-                        {% if dept %}
-                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{dept}}</span>
-                        {% endif %}
-                    </li>
-                    <li class="w-agreeBox" style="clear: both;">
-                        <label for="">&nbsp;</label>
-                        <input type="checkbox" id="agreeBox" name="" checked="checked" required/>
-                        <a href="" target="_blank">阅读并接受《中德宏泰云计算服务条款》</a></li>
-                    <li class="w-fSubmit" style="clear: both;">
-                        <input id="fSubmit" name="" type="submit" value="注册"></li>
-                    <li style="text-indent: 118px;"><a href="/">返回首页</a></li>
-                </ol>
-                {% csrf_token %}
-            </form>
-        </div>
-    </body>
-    <script>
-        var agreeBox = document.getElementById('agreeBox');
-        var fSubmit = document.getElementById('fSubmit');
-        agreeBox.onclick = function() {
-            if (agreeBox.checked == false) {
-                fSubmit.disabled = "disabled";
-                fSubmit.style.background = "#c5c5c5";
-            } else {
-                fSubmit.disabled = "";
-                fSubmit.style.background = "#3cf";
-            }
-        };
+        </li>
+        <div class="clear"></div>
+    </ul>
+    <form class="regform" method="post" action="/userRegister/" name="register" onsubmit="return Rt_check();">
+        <ol>
+            <li style="clear: both;">
+                <label for="username">用户名</label>
+                <input type="text" name="username" maxlength="20" placeholder="不能为中文或特殊字符" id="username"
+                       onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" autofocus required/>
+                {% if err_name %}
+                    <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_name }}</span>
+                {% endif %}
+            </li>
+            <li style="clear: both;">
+                <label for="password">密码</label>
+                <input type="password" name="password" id="password" maxlength="20" placeholder="不能为中文或特殊字符"
+                       onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
+                <span style="color: #f90; display: none;text-indent: -70px;" id="pass_span">两次密码不相同,请重新输入!</span>
+            </li>
+            <li style="clear: both;">
+                <label for="repassword">确认密码</label>
+                <input type="password" name="repassword" id="repassword" maxlength="20" placeholder="不能为中文或特殊字符"
+                       onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required/>
+                {% if err_password %}
+                    <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{ err_password }}</span>
+                {% endif %}
+            </li>
+            <li style="clear: both;">
+                <label for="mail">Email</label>
+                <input type="email" name="e_mail" placeholder="用于找回密码" id="mail" required/>
+            </li>
+            <li style="clear: both;">
+                <label for="">&nbsp;</label>
+                <input type="text" oninput="if(value.length>8)value=value.slice(0,8)" style="width: 220px;float: left;" placeholder="请输入验证码"><input type="button" id="reg_code" value="获取验证码">
+            </li>
+            <li style="clear: both;">
+                <label for="">身份证</label>
+                <input type="number" oninput="if(value.length>18)value=value.slice(0,18)" name="" placeholder="请输入有效身份证"
+                       id="" required/>
+            </li>
+            <li style="clear: both;">
+                <label for="">联系电话</label>
+                <input type="number" oninput="if(value.length>11)value=value.slice(0,11)" name=""
+                       placeholder="请输入有效联系电话" id="" required/>
+            </li>
+            {#                    <li style="clear: both;">#}
+            {#                        <label for="budget">部门</label>#}
+            {#                        <select id="budget" name="dept">#}
+            {#                            <option value="change_list" selected="selected">请选择所在部门</option>#}
+            {#                            <option value="cw">财务部</option>#}
+            {#                            <option value="cg">采购部</option>#}
+            {#                            <option value="cp">产品部</option>#}
+            {#                            <option value="xz">行政人事部</option>#}
+            {#                            <option value="oem">OEM</option>#}
+            {#                            <option value="kf">客服部</option>#}
+            {#                            <option value="sc">市场部</option>#}
+            {#                            <option value="xs">销售部</option>#}
+            {#                            <option value="yjs">云计算中心</option>#}
+            {#                            <option value="zjb">总经办</option>#}
+            {#                            <option value="yf">成都研发</option>#}
+            {#                            <option value="tf">成都通发</option>#}
+            {#                            <option value="ksb">昆山办</option>#}
+            {#                            <option value="szb">苏州办</option>#}
+            {#                            <option value="lygb">连云港办</option>#}
+            {#                            <option value="ahb">安徽办</option>#}
+            {#                            <option value="lxb">利辛办</option>#}
+            {#                        </select>#}
+            {#                        {% if dept %}#}
+            {#                            <span style="position:relative; left: 135px;color: #f90;display: block;text-align: left;">{{dept}}</span>#}
+            {#                        {% endif %}#}
+            {#                    </li>#}
+            <li class="w-agreeBox" style="clear: both;">
+                <label for="">&nbsp;</label>
+                <input type="checkbox" id="agreeBox" name="" checked="checked" required/>
+                <a href="" target="_blank">阅读并接受《中德宏泰云计算服务条款》</a></li>
+            <li class="w-fSubmit" style="clear: both;">
+                <input id="fSubmit" name="" type="submit" value="注册"></li>
+            <li style="text-indent: 118px;"><a href="/">返回首页</a></li>
+        </ol>
+        {% csrf_token %}
+    </form>
+</div>
+</body>
+<script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
+<script src="/static/assets/js/public/jquery.mailAutoComplete-3.1.js"></script>
+<script>
+    var agreeBox = $$('agreeBox');
+    var fSubmit = $$('fSubmit');
+    agreeBox.onclick = function () {
+        if (agreeBox.checked == false) {
+            fSubmit.disabled = "disabled";
+            fSubmit.style.background = "#c5c5c5";
+        } else {
+            fSubmit.disabled = "";
+            fSubmit.style.background = "#3cf";
+        }
+    };
 
-        function Rt_check() {
-            var password = document.getElementById('password');
-            var repassword = document.getElementById('repassword');
-            var pass_span = document.getElementById('pass_span');
-            var budget = document.getElementById('budget');
-            console.log(budget.value);
-            if (password.value == repassword.value) {
-                return true;
-            }
-            if (budget.value = 'change_list') {
-                alert('1');
-            }
+    function Rt_check() {
+        var pass_span = $$('pass_span');
+        if ($$('password').value !== $$('repassword').value) {
             pass_span.style.display = "block";
             password.value = "";
             repassword.value = "";
             password.focus();
             return false;
         }
-    </script>
+        return true;
+    }
+
+    // 注册获取验证码按钮 reg_code
+    $$('reg_code').onclick = function () {
+        // 判断邮箱有没有输入
+        if ($$('mail').value === '')
+            alert('请填写邮箱地址！');
+        else if ($$('mail').value !== "")
+            var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+            var check = reg.test($$('mail').value);
+            if (!check) {
+                alert("邮箱格式不正确, 请重新输入！");
+                return false;
+            }
+        // 都验证通过后
+        count_down(this);
+        // 验证通过 发送验证码
+        $.post('/test2/',{'email': $('#mail').val()});
+    };
+
+    $("#mail").mailAutoComplete();
+
+    var count = 60;
+    function count_down(o) {
+        if (count === 0) {
+            o.removeAttribute("disabled");
+            o.value = "获取验证码";
+            count = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value = "重新发送(" + count + ")";
+            count--;
+            setTimeout(function () {
+                count_down(o)
+            }, 1000)
+        }
+    }
+
+    function $$(a) {
+        return document.getElementById(a);
+    }
+</script>
 </html>

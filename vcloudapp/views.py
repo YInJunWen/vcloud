@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 import random
 import time
 import commands
+
+import re
+
 # import uuid
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -368,26 +371,29 @@ def userRegister(request):
     username = request.POST.get('username', None).strip()
     password = request.POST.get('password', None).strip()
     email = request.POST.get('e_mail', None).strip()
-    dept = request.POST.get('dept', None).strip()
+    dept = request.POST.get('dept', 'other')
     reg_ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     date = time.time()
     reg_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    # 错误信息
+    error = [
+        '用户名至少6个字符以上！',
+        '用户名必须字母开始！',
+        "用户名由字母和数字组成，且必须以字母开头!",
+        "密码至少8位及以上，包含大小写字母数字及特殊字符！",
+        '用户名已存在',
+    ]
     if len(username) < 6:
-        err_name = '用户名至少6个字符以上！'
-        return render(request, 'register.html', context={'err_name': err_name})
+        return render(request, 'register.html', context={'err_name': error[0]})
     if username[0].isdigit() or not username[0].isalpha():
-        err_name = '用户名必须字母开始！'
-        return render(request, 'register.html', context={'err_name': err_name})
+        return render(request, 'register.html', context={'err_name': error[1]})
     for i in username:
         if not i.isalnum():
-            err_name = "用户名由字母和数字组成，且必须以字母开头!"
-            return render(request, 'register.html', context={'err_name': err_name})
+            return render(request, 'register.html', context={'err_name': error[2]})
     if len(password) < 8:
-        err_name = "密码至少8位及以上，包含大小写字母数字及特殊字符！"
-        return render(request, 'register.html', context={'err_password': err_name})
+        return render(request, 'register.html', context={'err_password': error[3]})
     if UserInfo.objects.filter(username__exact=username):
-        err_name = '用户名已存在'
-        return render(request, 'register.html', {'err_name': err_name})
+        return render(request, 'register.html', {'err_name': error[4]})
     md5_password = hashlib.md5(password).hexdigest().upper()
     data = UserInfo(username=username, email=email, password=md5_password, dept=dept, reg_time=reg_time, reg_ip=reg_ip,
                     last_ip=reg_ip)
@@ -395,6 +401,7 @@ def userRegister(request):
     return HttpResponseRedirect('/login/')
 
 
+# 验证登录
 def checkLogin(request):
     username = request.POST.get('username', None).strip()
     password = request.POST.get('password', None).strip()
@@ -503,6 +510,7 @@ def chkcreate_instance(request):
     return HttpResponseRedirect('/overview/')
 
 
+# 获取分配资源
 def get_flavor(vcpu, mem):
     flavor = 'Large-01'
     if vcpu == 1 and mem == 1:
@@ -551,7 +559,6 @@ def accessLog(request):
     data = Log.objects.filter(log_user=username).order_by('-log_user', '-log_type', '-log_detail', '-log_ip',
                                                           '-log_opt').values('log_user', 'log_type', 'log_detail',
                                                                              'log_ip', 'log_opt')
-    # print data
     u = []
     for i in data:
         if i['log_type'] == 0:
@@ -569,13 +576,11 @@ def accessLog(request):
     return JsonResponse({'data': list(u)})
 
 
-# 发送邮件
+# 发送更改密码邮件
 @csrf_exempt
 def send_email(request):
     username = request.POST.get('username', None)
-    # from_email = request.POST.get('from_email', None)
     check_mail = UserInfo.objects.filter(username__exact=username)
-    # print check_mail
     if check_mail:
         email = UserInfo.objects.get(username=username).email
         try:
@@ -601,6 +606,12 @@ def send_email(request):
         return HttpResponseRedirect('/login/')
     else:
         return HttpResponse('请确保所有字段都输入并有效')
+
+
+# def check_code(request):
+#     email = request.POST.get('email')
+#     print email
+#     return
 
 
 @csrf_exempt
@@ -653,6 +664,7 @@ def get_power(username):
     return 'false'
 
 
+# 创建虚机的命令
 def create_virtual(password, flavor, os_name, net_name, ins_name):
     # Linux
     lin_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta password=%s --flavor %s --image %s --nic net-name=%s %s' % (
@@ -670,30 +682,98 @@ def create_virtual(password, flavor, os_name, net_name, ins_name):
         # print commands.getstatusoutput(win_CMD)
 
 
-# 测试
-def test1(request):
-    username = request.session.get('username')
-    _username = str(username)
-    dept = UserInfo.objects.get(username=username).dept
-    data = Power.objects.values('dept_admin')
-    arr = list(data)
-    u = []
-    for i in arr:
-        a = i['dept_admin'].split(',')
-        u.extend(a)
-    print u
-    _data = list(data)[0]['dept_admin']
-    dept_adminlist = _data.split(',')
-    if _username in dept_adminlist:
-        return render(request, 'test1.html', context={'data': 'true'})
+# 身份证号码验证
+def check_id_card(idcard):
+    Errors = ['验证通过!', '身份证号码位数不对!', '身份证号码出生日期超出范围或含有非法字符!', '身份证号码校验错误!', '身份证地区非法!']
+    area = {"11": "北京", "12": "天津", "13": "河北", "14": "山西", "15": "内蒙古", "21": "辽宁", "22": "吉林", "23": "黑龙江",
+            "31": "上海", "32": "江苏", "33": "浙江", "34": "安徽", "35": "福建", "36": "江西", "37": "山东", "41": "河南", "42": "湖北",
+            "43": "湖南", "44": "广东", "45": "广西", "46": "海南", "50": "重庆", "51": "四川", "52": "贵州", "53": "云南", "54": "西藏",
+            "61": "陕西", "62": "甘肃", "63": "青海", "64": "宁夏", "65": "新疆", "71": "台湾", "81": "香港", "82": "澳门", "91": "国外"}
+    idcard = str(idcard)
+    idcard = idcard.strip()
+    idcard_list = list(idcard)
+
+    # 地区校验
+    area_id = str(idcard[0:2])
+    if area_id not in area:
+        return 'no pass'
+
+    # 15位身份号码检测
+    if len(idcard) == 15:
+        if (int(idcard[6:8]) + 1900) % 4 == 0 or ((int(idcard[6:8]) + 1900) % 100 == 0 and (int(idcard[6:8]) + 1900) % 4 == 0):
+            ereg = re.compile(
+                '[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}$')  # //测试出生日期的合法性
+        else:
+            ereg = re.compile(
+                '[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}$')  # //测试出生日期的合法性
+        if (re.match(ereg, idcard)):
+            return 'pass'
+        else:
+            return 'no pass'
+    # 18位身份号码检测
+    elif len(idcard) == 18:
+        # 出生日期的合法性检查
+        # 闰年月日:((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))
+        # 平年月日:((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))
+        if int(idcard[6:10]) % 4 == 0 or (int(idcard[6:10]) % 100 == 0 and int(idcard[6:10]) % 4 == 0):
+            ereg = re.compile(
+                '[1-9][0-9]{5}19[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}[0-9Xx]$')  # //闰年出生日期的合法性正则表达式
+        else:
+            ereg = re.compile(
+                '[1-9][0-9]{5}19[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}[0-9Xx]$')  # //平年出生日期的合法性正则表达式
+        # //测试出生日期的合法性
+        if re.match(ereg, idcard):
+            # //计算校验位
+            S = (int(idcard_list[0]) + int(idcard_list[10])) * 7 + (int(idcard_list[1]) + int(idcard_list[11])) * 9 +(int(idcard_list[2]) + int(idcard_list[12])) * 10 + (int(idcard_list[3]) + int(idcard_list[13])) * 5 +(int(idcard_list[4]) + int(idcard_list[14])) * 8 + (int(idcard_list[5]) + int(idcard_list[15])) * 4 + (int(idcard_list[6]) + int(idcard_list[16])) * 2 + int(idcard_list[7]) * 1 + int(idcard_list[8]) * 6 + int(idcard_list[9]) * 3
+            Y = S % 11
+            M = "F"
+            JYM = "10X98765432"
+            M = JYM[Y]  # 判断校验位
+            if (M == idcard_list[17]):  # 检测ID的校验位
+                return 'pass'
+            else:
+                return 'no pass'
+        else:
+            return 'no pass'
     else:
-        return render(request, 'test1.html', context={'data': 'false'})
-    # if username in dept_adminList:
-    #     return render(request, 'test1.html', context={'data': '存在'})
-    # return render(request, 'test1.html', context={'data': '不存在'})
+        return 'no pass'
 
 
+# 测试1
+def test1(request):
+    return HttpResponseRedirect('/test2/')
+
+
+# 测试2
 @csrf_exempt
 def test2(request):
-    value = request.session.get('username', default=None)
-    return JsonResponse({'data': value})
+    email = request.POST.get('email')
+    if email:
+        # email = UserInfo.objects.get(username=username).email
+        try:
+            #  第一个是 邮件的标题
+            #  第二个是 邮件的内容
+            #  第三个是 邮件的发起人账号 管理员邮箱
+            #  第四个是 给谁发送可多人
+            email_title = '感谢注册VDIN, 本次验证码详见内容!'
+            email_password = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
+            # print email_password
+            email_message = '您本次的注册验证码是： ' + email_password + ", 一个小时内有效！"
+            email_sendPerson = 'no-reply@vdin.net'
+            email_recPerson = email
+            send_mail(email_title, email_message, email_sendPerson, [email_recPerson])
+
+            #  新密码存储至数据库
+            # data = UserInfo.objects.get(username=username)
+            # md5_password = hashlib.md5(email_password).hexdigest().upper()
+            # data.password = md5_password
+            # data.save()
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        return HttpResponseRedirect('/login/')
+    else:
+        return HttpResponse('请确保所有字段都输入并有效')
+    # return render(request, 'test1.html', context={'data': email})
+
+
+# return
