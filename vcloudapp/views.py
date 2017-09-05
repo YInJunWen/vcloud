@@ -7,7 +7,7 @@ import commands
 import re
 
 # import uuid
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -373,8 +373,15 @@ def userRegister(request):
     email = request.POST.get('e_mail', None).strip()
     dept = request.POST.get('dept', 'other')
     reg_ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
+    id_card = request.POST.get('id_card')
+    u_phone = request.POST.get('u_phone')
+    code = request.POST.get('code')
     date = time.time()
     reg_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
+    # 验证身份证账号
+    id_card_return = check_id_card(id_card)
+    return_phone = check_u_phone(u_phone)
+
     # 错误信息
     error = [
         '用户名至少6个字符以上！',
@@ -382,7 +389,12 @@ def userRegister(request):
         "用户名由字母和数字组成，且必须以字母开头!",
         "密码至少8位及以上，包含大小写字母数字及特殊字符！",
         '用户名已存在',
+        '您的邮箱验证码不正确',
+        '请填写正确的身份证证件号！',
+        '请填入正确的手机号！'
     ]
+    code_data = CheckCode.objects.get(email=email).code
+
     if len(username) < 6:
         return render(request, 'register.html', context={'err_name': error[0]})
     if username[0].isdigit() or not username[0].isalpha():
@@ -394,9 +406,16 @@ def userRegister(request):
         return render(request, 'register.html', context={'err_password': error[3]})
     if UserInfo.objects.filter(username__exact=username):
         return render(request, 'register.html', {'err_name': error[4]})
+    if code != code_data:
+        return render(request, 'register.html', context={'err_name': error[5]})
+    if id_card_return == 'no_pass':
+        return render(request, 'register.html', context={'err_name': error[6]})
+    if return_phone == 'no_pass':
+        return render(request, 'register.html', context={'err_name': error[7]})
     md5_password = hashlib.md5(password).hexdigest().upper()
     data = UserInfo(username=username, email=email, password=md5_password, dept=dept, reg_time=reg_time, reg_ip=reg_ip,
-                    last_ip=reg_ip)
+                    last_ip=reg_ip, id_card=id_card, u_phone=u_phone)
+    CheckCode.objects.filter(email=email).delete()
     data.save()
     return HttpResponseRedirect('/login/')
 
@@ -608,10 +627,31 @@ def send_email(request):
         return HttpResponse('请确保所有字段都输入并有效')
 
 
-# def check_code(request):
-#     email = request.POST.get('email')
-#     print email
-#     return
+# 邮箱注册验证
+def check_code(request):
+    email = request.POST.get('email')
+    if email:
+        try:
+            #  第一个是 邮件的标题
+            #  第二个是 邮件的内容
+            #  第三个是 邮件的发起人账号 管理员邮箱
+            #  第四个是 给谁发送可多人
+            email_title = '感谢注册VDIN, 本次验证码详见内容!'
+            email_code = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
+            # print email_password
+            email_message = '您本次的注册验证码是： ' + email_code + ", 一个小时内有效！"
+            email_sendPerson = 'no-reply@vdin.net'
+            email_recPerson = email
+            send_mail(email_title, email_message, email_sendPerson, [email_recPerson])
+
+            #  注册邮箱及验证版写入临时数据库
+            data = CheckCode(email=email, code=email_code)
+            data.save()
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        return render(request, 'register.html')
+    else:
+        return HttpResponse('请确保所有字段都输入并有效')
 
 
 @csrf_exempt
@@ -643,7 +683,7 @@ def logined(request):
     return False
 
 
-# logout
+# logout 登出
 def logout(request):
     del request.session['username']
     return HttpResponseRedirect('/login/')
@@ -683,60 +723,71 @@ def create_virtual(password, flavor, os_name, net_name, ins_name):
 
 
 # 身份证号码验证
-def check_id_card(idcard):
+def check_id_card(id_card):
     Errors = ['验证通过!', '身份证号码位数不对!', '身份证号码出生日期超出范围或含有非法字符!', '身份证号码校验错误!', '身份证地区非法!']
     area = {"11": "北京", "12": "天津", "13": "河北", "14": "山西", "15": "内蒙古", "21": "辽宁", "22": "吉林", "23": "黑龙江",
             "31": "上海", "32": "江苏", "33": "浙江", "34": "安徽", "35": "福建", "36": "江西", "37": "山东", "41": "河南", "42": "湖北",
             "43": "湖南", "44": "广东", "45": "广西", "46": "海南", "50": "重庆", "51": "四川", "52": "贵州", "53": "云南", "54": "西藏",
             "61": "陕西", "62": "甘肃", "63": "青海", "64": "宁夏", "65": "新疆", "71": "台湾", "81": "香港", "82": "澳门", "91": "国外"}
-    idcard = str(idcard)
-    idcard = idcard.strip()
-    idcard_list = list(idcard)
+    id_card = str(id_card)
+    id_card = id_card.strip()
+    id_card_list = list(id_card)
 
     # 地区校验
-    area_id = str(idcard[0:2])
+    area_id = str(id_card[0:2])
     if area_id not in area:
-        return 'no pass'
+        return 'no_pass'
 
     # 15位身份号码检测
-    if len(idcard) == 15:
-        if (int(idcard[6:8]) + 1900) % 4 == 0 or ((int(idcard[6:8]) + 1900) % 100 == 0 and (int(idcard[6:8]) + 1900) % 4 == 0):
+    if len(id_card) == 15:
+        if (int(id_card[6:8]) + 1900) % 4 == 0 or ((int(id_card[6:8]) + 1900) % 100 == 0 and (int(id_card[6:8]) + 1900) % 4 == 0):
             ereg = re.compile(
                 '[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}$')  # //测试出生日期的合法性
         else:
             ereg = re.compile(
                 '[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}$')  # //测试出生日期的合法性
-        if (re.match(ereg, idcard)):
+        if (re.match(ereg, id_card)):
             return 'pass'
         else:
-            return 'no pass'
+            return 'no_pass'
     # 18位身份号码检测
-    elif len(idcard) == 18:
+    elif len(id_card) == 18:
         # 出生日期的合法性检查
         # 闰年月日:((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))
         # 平年月日:((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))
-        if int(idcard[6:10]) % 4 == 0 or (int(idcard[6:10]) % 100 == 0 and int(idcard[6:10]) % 4 == 0):
+        if int(id_card[6:10]) % 4 == 0 or (int(id_card[6:10]) % 100 == 0 and int(id_card[6:10]) % 4 == 0):
             ereg = re.compile(
                 '[1-9][0-9]{5}19[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}[0-9Xx]$')  # //闰年出生日期的合法性正则表达式
         else:
             ereg = re.compile(
                 '[1-9][0-9]{5}19[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}[0-9Xx]$')  # //平年出生日期的合法性正则表达式
         # //测试出生日期的合法性
-        if re.match(ereg, idcard):
+        if re.match(ereg, id_card):
             # //计算校验位
-            S = (int(idcard_list[0]) + int(idcard_list[10])) * 7 + (int(idcard_list[1]) + int(idcard_list[11])) * 9 +(int(idcard_list[2]) + int(idcard_list[12])) * 10 + (int(idcard_list[3]) + int(idcard_list[13])) * 5 +(int(idcard_list[4]) + int(idcard_list[14])) * 8 + (int(idcard_list[5]) + int(idcard_list[15])) * 4 + (int(idcard_list[6]) + int(idcard_list[16])) * 2 + int(idcard_list[7]) * 1 + int(idcard_list[8]) * 6 + int(idcard_list[9]) * 3
+            S = (int(id_card_list[0]) + int(id_card_list[10])) * 7 + (int(id_card_list[1]) + int(id_card_list[11])) * 9 +(int(id_card_list[2]) + int(id_card_list[12])) * 10 + (int(id_card_list[3]) + int(id_card_list[13])) * 5 +(int(id_card_list[4]) + int(id_card_list[14])) * 8 + (int(id_card_list[5]) + int(id_card_list[15])) * 4 + (int(id_card_list[6]) + int(id_card_list[16])) * 2 + int(id_card_list[7]) * 1 + int(id_card_list[8]) * 6 + int(id_card_list[9]) * 3
             Y = S % 11
             M = "F"
             JYM = "10X98765432"
             M = JYM[Y]  # 判断校验位
-            if (M == idcard_list[17]):  # 检测ID的校验位
+            if (M == id_card_list[17]):  # 检测ID的校验位
                 return 'pass'
             else:
-                return 'no pass'
+                return 'no_pass'
         else:
-            return 'no pass'
+            return 'no_pass'
     else:
-        return 'no pass'
+        return 'no_pass'
+
+
+# 手机号码验证
+def check_u_phone(phone):
+    # rep = re.compile('^0\d{2,3}\d{7,8}$|^1[358]\d{9}$|^147\d{8}')
+    rep = re.compile("^1[34578][0-9]{9}")
+    phone_match = rep.match(phone)
+    if phone_match:
+        return 'pass'
+    else:
+        return 'no_pass'
 
 
 # 测试1
@@ -770,7 +821,7 @@ def test2(request):
             # data.save()
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('验证码已发送至所填邮箱！')
     else:
         return HttpResponse('请确保所有字段都输入并有效')
     # return render(request, 'test1.html', context={'data': email})
