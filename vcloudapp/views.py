@@ -194,25 +194,39 @@ def order_checking(request):
         return HttpResponseRedirect('/login/')
     # 判断是否是管理员权限 防止复制链接进入管理审批界面
     username = request.session.get('username')
-    dept = UserInfo.objects.get(username=username).dept
     power = get_power(username)
     if power == 'false':
         return HttpResponseRedirect('/error/')
+    dept_arr = dept_list(username)
     u = []
-    if power == 'true':
-        a = Power.objects.filter(dept_admin='person2').values()
-        data = Order.objects.values()
-        for i in data:
-            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-            if i['dept_pending'] == 0:
-                i['status'] = "已通过"
-            if i['dept_pending'] == 1:
-                i['status'] = "审核中"
-            if i['status'] == 2:
-                i['status'] = "已过期"
-            u.append(i)
+    m = []
+    for i in dept_arr:
+        if i == 'yjs_center':
+            a = list(Order.objects.filter(dept_pending=0).values())
+            u.extend(a)
+            for j in u:
+                j['created_at'] = datetime.datetime.strftime(j['created_at'], '%Y-%m-%d %H:%M:%S')
+                if j['vcloud_pending'] == 0:
+                    j['status'] = "已通过"
+                if j['vcloud_pending'] == 1:
+                    j['status'] = "审核中"
+                if j['vcloud_pending'] == 2:
+                    j['status'] = "已过期"
+                m.append(j)
+        else:
+            a = list(Order.objects.filter(dept=i).values())
+            u.extend(a)
+            for j in u:
+                j['created_at'] = datetime.datetime.strftime(j['created_at'], '%Y-%m-%d %H:%M:%S')
+                if j['dept_pending'] == 0:
+                    j['status'] = "已通过"
+                if j['dept_pending'] == 1:
+                    j['status'] = "审核中"
+                if j['dept_pending'] == 2:
+                    j['status'] = "已过期"
+                m.append(j)
     limit = 10  # 每页显示的记录数
-    paginator = Paginator(u, limit)
+    paginator = Paginator(m, limit)
     page = request.GET.get('page')  # 获取页码
     try:
         topics = paginator.page(page)  # 获取某页对应的记录
@@ -220,60 +234,49 @@ def order_checking(request):
         topics = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
         topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
-    return render(request, 'order_checking.html', context={'approval': topics, 'dept': dept})
+    return render(request, 'order_checking.html', context={'approval': topics, 'power': power})
 
 
 # 审核中的接口吐数据
-@csrf_exempt
 def approval(request):
+    username = request.session.get('username')
+    power = get_power(username)
+    if not power:
+        return HttpResponseRedirect('/error/')
     # 工单号 时间 事由 申请人 状态 操作
     pid = request.POST.get('_id')
     _status = request.POST.get('_status')
-    username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    data = ""
-    u = []
+    dept_arr = dept_list(username)
     if _status == 'y':
-        # 同意 继续
-        if power == 0:
-            return HttpResponseRedirect('/overview/')
-        elif power == 1:
-            Order.objects.filter(pid=pid).update(dept_pending=0)
-            data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
-        elif power == 2:
-            Order.objects.filter(pid=pid).update(admin_pending=0)
-            data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
-        elif power == 3:
-            Order.objects.filter(pid=pid).update(vcloud_pending=0)
-            data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
+        # 判断此用户权限
+        for i in dept_arr:
+            if i == 'yjs_center':
+                Order.objects.filter(pid=pid).update(vcloud_pending=0)
+            else:
+                Order.objects.filter(pid=pid).update(dept_pending=0)
+        #     data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
     else:
-        # 否定 直接过期
-        if power == 0:
-            return HttpResponseRedirect('/overview/')
-        elif power == 1:
-            Order.objects.filter(pid=pid).update(status=2)
-            data = Order.objects.exclude(status=2).exclude(dept_pending=0).values()
-        elif power == 2:
-            Order.objects.filter(pid=pid).update(status=2)
-            data = Order.objects.exclude(status=2).exclude(admin_pending=0).values()
-        elif power == 3:
-            Order.objects.filter(pid=pid).update(status=2)
-            data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
-    for i in data:
-        i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-        if i['dept_pending'] == 0:
-            i['status'] = 0
-        if i['dept_pending'] == 1:
-            i['status'] = 1
-        if i['status'] == 0:
-            i['status'] = "已通过"
-        if i['status'] == 1:
-            i['status'] = "审核中"
-        if i['status'] == 2:
-            i['status'] = "已过期"
-        u.append(i)
-    return JsonResponse({'data': list(u)})
-    # return HttpResponseRedirect('/order_checking/')
+        for i in dept_arr:
+            if i == 'yjs_center':
+                Order.objects.filter(pid=pid).update(vcloud_pending=2)
+            else:
+                Order.objects.filter(pid=pid).update(dept_pending=2)
+    # for i in data:
+    #     i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
+    #     if i['dept_pending'] == 0:
+    #         i['status'] = 0
+    #     if i['dept_pending'] == 1:
+    #         i['status'] = 1
+    #     if i['status'] == 0:
+    #         i['status'] = "已通过"
+    #     if i['status'] == 1:
+    #         i['status'] = "审核中"
+    #     if i['status'] == 2:
+    #         i['status'] = "已过期"
+    #     u.append(i)
+    # return JsonResponse({'data': list(u)})
+    # return JsonResponse({'data': ""})
+    return HttpResponseRedirect('/order_checking/')
 
 
 # 已完成
@@ -328,7 +331,7 @@ def order_finished(request):
         topics = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
         topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
-    return render(request, 'order_finished.html', context={'finish': topics})
+    return render(request, 'order_finished.html', context={'finish': topics, 'power': power})
 
 
 def finished(request):
@@ -445,7 +448,6 @@ def checkLogin(request):
 
 # 创建实例接口
 # 防止页面403不提交引入 csrf
-@csrf_exempt
 def chkcreate_instance(request):
     ins_name = request.POST.get('instance_name', None)
     sameName = Instances.objects.filter(name=ins_name)
@@ -548,7 +550,6 @@ def get_flavor(vcpu, mem):
 
 
 # 请求价格接口
-@csrf_exempt
 def calculatePrice(request):
     cpu = str(request.POST.get('cpu', '2'))
     _cpu = int(cpu)
@@ -567,7 +568,6 @@ def calculatePrice(request):
 
 
 # 获取日志信息
-@csrf_exempt
 # @JSON(format="yyyy-MM-dd HH:mm:ss")
 def accessLog(request):
     username = request.session.get('username')
@@ -592,7 +592,6 @@ def accessLog(request):
 
 
 # 发送更改密码邮件
-@csrf_exempt
 def send_email(request):
     username = request.POST.get('username', None)
     check_mail = UserInfo.objects.filter(username__exact=username)
@@ -650,7 +649,6 @@ def check_code(request):
         return HttpResponse('请确保所有字段都输入并有效')
 
 
-@csrf_exempt
 def change_psw(request):
     username = request.session.get('username')
     old = request.POST.get('old_psw')
@@ -786,13 +784,19 @@ def check_u_phone(phone):
         return 'no_pass'
 
 
+# 返回所在部门列表
+def dept_list(username):
+    dept = UserInfo.objects.get(username=username).dept
+    dept_list = dept.split(',')
+    return dept_list
+
+
 # 测试1
 def test1(request):
     return HttpResponseRedirect('/test2/')
 
 
 # 测试2
-@csrf_exempt
 def test2(request):
     email = request.POST.get('email')
     if email:

@@ -20,7 +20,7 @@ class UserInfo(models.Model):
     locked = models.BooleanField(max_length=1, default=False)  # True锁定账号, 不允许登陆
     power = models.IntegerField(default=0)  # 0-员工，1-主管，2-总经办，3-云计算中心
     role = models.IntegerField(default=1)  # 0-管理员，1-普通用户
-    dept = models.CharField(max_length=50, default='other')  # 部门 默认云计算
+    dept = models.CharField(max_length=255, default='other')  # 部门 默认云计算
     reg_ip = models.GenericIPAddressField(protocol='IPV4', max_length=15)  # 注册IP
     reg_time = models.DateTimeField(auto_now_add=True)  # 注册时间
     login_count = models.IntegerField(default=0)  # 登陆次数
