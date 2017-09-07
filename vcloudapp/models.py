@@ -197,8 +197,8 @@ class InsFlavor(models.Model):
 
 # 部门领导
 class Power(models.Model):
-    dept_name = models.CharField(max_length=36)
-    dept_admin = models.CharField(max_length=36)
+    dept_name = models.CharField(max_length=255)
+    dept_admin = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'power'

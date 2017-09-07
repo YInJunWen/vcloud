@@ -186,7 +186,7 @@ def order_create(request):
         return HttpResponseRedirect('/login/')
     return render(request, 'order_create.html')
 
-
+                   
 # 审核中
 def order_checking(request):
     o = logined(request)
@@ -201,8 +201,6 @@ def order_checking(request):
     u = []
     if power == 'true':
         a = Power.objects.filter(dept_admin='person2').values()
-        print list(a)
-        # Order.objects.filter(dept=dept).exclude(dept_pending=0)
         data = Order.objects.values()
         for i in data:
             i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
@@ -429,7 +427,6 @@ def checkLogin(request):
     md5_password = hashlib.md5(password).hexdigest().upper()
     loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
     lock = UserInfo.objects.get(username=username).locked
-    # print lock
     data = Log(log_type=0, log_opt=nowtime, log_user=username, log_ip=ip, log_detail="信息")  # 用户登陆 log记录
     if lock:
         return render(request, 'login.html', context={'err': '该用户已被锁定！'})
@@ -441,7 +438,6 @@ def checkLogin(request):
         login_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
         request.session['now_time'] = login_time
         request.session.set_expiry(20000 * 60)
-        dept = UserInfo.objects.get(username=username).dept
         power = get_power(username)
         data.save()
         return render(request, 'overview.html', context={"power": power})
