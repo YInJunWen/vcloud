@@ -41,7 +41,9 @@
                                 <th style="text-align: center;" width="40%">事由</th>
                                 <th style="text-align: center;">申请人</th>
                                 <th style="text-align: center;">状态</th>
-                                <th style="text-align: center;">操作</th>
+                                {% if dept != 'zjb' %}
+                                    <th style="text-align: center;">操作</th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody class="yChecking-body">
@@ -56,8 +58,8 @@
                                         {% if dept != 'zjb' %}
                                         <td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a
                                                 href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td>
-                                        {% else %}
-                                            <td></td>
+{#                                        {% else %}#}
+{#                                            <td></td>#}
                                         {% endif %}
                                     </tr>
                                 {% endfor %}

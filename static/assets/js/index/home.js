@@ -153,6 +153,7 @@ $(function () {
         $('#my-player').css({
             "width": "100%",
             "height": "100%"
+            // "display": "block"
         });
         $(this).hide();
         $('.cha').show();
@@ -172,6 +173,7 @@ $(function () {
         $('#my-player').css({
             "width": "0",
             "height": "0"
+            // "display": "none"
         });
     });
 });

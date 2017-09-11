@@ -216,6 +216,6 @@ body {
 
 #my-player {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -20000px;
+    left: -20000px;
 }

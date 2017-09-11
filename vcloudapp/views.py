@@ -141,15 +141,13 @@ def order(request):
     u = []
     for i in data:
         # 判断三级审批
-        if (i['dept_pending'] == 0) and (i['admin_pending'] == 0) and (i['vcloud_pending']) == 0:
-            i['status'] = 0
-        # 0 - 已完成，1 - 审核中，2 - 已过期
-        if i['status'] == 0:
-            i['status'] = "已完成"
+        if (i['dept_pending'] == 0) and (i['vcloud_pending']) == 0:
+            i['status'] = "已通过"
+        if (i['dept_pending'] == 2) or (i['vcloud_pending']) == 2:
+            i['status'] = "拒绝/过期"
+        # 0 - 已完成，1 - 待审核，2 - 已过期
         if i['status'] == 1:
-            i['status'] = "审核中"
-        if i['status'] == 2:
-            i['status'] = "已过期"
+            i['status'] = "待审核"
         u.append(i)
     limit = 10  # 每页显示的记录数
     paginator = Paginator(u, limit)
@@ -169,13 +167,11 @@ def create_instance(request):
     if not o:
         return HttpResponseRedirect('/login/')
     network = Network.objects.values()
-    # print list(network)
     obj = {}
     arr = []
     obj['windows'] = ['win1', 'win2', 'win3']
     obj['linux'] = ['lin1', 'lin2', 'lin3']
     arr.append(obj)
-    # print dir(list(arr))
     return render(request, 'create_instance.html', context={'network': list(network), 'data': list(arr)})
 
 
@@ -187,13 +183,14 @@ def order_create(request):
     return render(request, 'order_create.html')
 
                    
-# 审核中
+# 待审核
 def order_checking(request):
     o = logined(request)
     if not o:
         return HttpResponseRedirect('/login/')
     # 判断是否是管理员权限 防止复制链接进入管理审批界面
     username = request.session.get('username')
+    dept = UserInfo.objects.get(username=username).dept
     power = get_power(username)
     if power == 'false':
         return HttpResponseRedirect('/error/')
@@ -201,27 +198,25 @@ def order_checking(request):
     u = []
     m = []
     for i in dept_arr:
-        if i == 'yjs_center':
-            a = list(Order.objects.filter(dept_pending=0).values())
+        if i == 'yjs_center' or i == "zjb":
+            a = list(Order.objects.filter(dept_pending=0, vcloud_pending=1).values())
             u.extend(a)
             for j in u:
-                j['created_at'] = datetime.datetime.strftime(j['created_at'], '%Y-%m-%d %H:%M:%S')
                 if j['vcloud_pending'] == 0:
                     j['status'] = "已通过"
                 if j['vcloud_pending'] == 1:
-                    j['status'] = "审核中"
+                    j['status'] = "待审核"
                 if j['vcloud_pending'] == 2:
                     j['status'] = "已过期"
                 m.append(j)
         else:
-            a = list(Order.objects.filter(dept=i).values())
+            a = list(Order.objects.filter(dept=i, dept_pending=1).exclude(dept_pending=(0 | 2)).values())
             u.extend(a)
             for j in u:
-                j['created_at'] = datetime.datetime.strftime(j['created_at'], '%Y-%m-%d %H:%M:%S')
                 if j['dept_pending'] == 0:
                     j['status'] = "已通过"
                 if j['dept_pending'] == 1:
-                    j['status'] = "审核中"
+                    j['status'] = "待审核"
                 if j['dept_pending'] == 2:
                     j['status'] = "已过期"
                 m.append(j)
@@ -234,10 +229,10 @@ def order_checking(request):
         topics = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
         topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
-    return render(request, 'order_checking.html', context={'approval': topics, 'power': power})
+    return render(request, 'order_checking.html', context={'approval': topics, 'power': power, 'dept': dept})
 
 
-# 审核中的接口吐数据
+# 待审核的接口吐数据
 def approval(request):
     username = request.session.get('username')
     power = get_power(username)
@@ -254,28 +249,12 @@ def approval(request):
                 Order.objects.filter(pid=pid).update(vcloud_pending=0)
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=0)
-        #     data = Order.objects.exclude(status=2).exclude(vcloud_pending=0).values()
     else:
         for i in dept_arr:
             if i == 'yjs_center':
                 Order.objects.filter(pid=pid).update(vcloud_pending=2)
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=2)
-    # for i in data:
-    #     i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-    #     if i['dept_pending'] == 0:
-    #         i['status'] = 0
-    #     if i['dept_pending'] == 1:
-    #         i['status'] = 1
-    #     if i['status'] == 0:
-    #         i['status'] = "已通过"
-    #     if i['status'] == 1:
-    #         i['status'] = "审核中"
-    #     if i['status'] == 2:
-    #         i['status'] = "已过期"
-    #     u.append(i)
-    # return JsonResponse({'data': list(u)})
-    # return JsonResponse({'data': ""})
     return HttpResponseRedirect('/order_checking/')
 
 
@@ -286,44 +265,34 @@ def order_finished(request):
         return HttpResponseRedirect('/login/')
     # 判断是否是管理员权限 防止复制链接进入管理审批界面
     username = request.session.get('username')
-    dept = UserInfo.objects.get(username=username).dept
     power = get_power(username)
+    dept = UserInfo.objects.get(username=username).dept
     if power == 'false':
         return HttpResponseRedirect('/error/')
+    dept_arr =dept_list(username)
     u = []
-    if power == 0:
-        return HttpResponseRedirect('/overview/')
-    elif power == "":  # 如果没有权限 返回报错页面
-        return HttpResponseRedirect('/error/')
-    elif power == 1:
-        data = Order.objects.filter(Q(status=2) | Q(dept_pending=0)).filter(dept=dept).values()
-        for i in data:
-            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-            if i['dept_pending'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 2:
-                i['status'] = "拒绝/过期"
-            u.append(i)
-    elif power == 2:
-        data = Order.objects.filter(Q(status=2) | Q(admin_pending=0)).values()
-        for i in data:
-            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-            if i['admin_pending'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 2:
-                i['status'] = "拒绝/过期"
-            u.append(i)
-    elif power == 3:
-        data = Order.objects.filter(Q(status=2) | Q(vcloud_pending=0)).values()
-        for i in data:
-            i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-            if i['vcloud_pending'] == 0:
-                i['status'] = "已通过"
-            if i['status'] == 2:
-                i['status'] = "拒绝/过期"
-            u.append(i)
+    m = []
+    for i in dept_arr:
+        if i == 'yjs_center' or i == 'zjb':
+            a = list(Order.objects.filter(Q(vcloud_pending=0) | Q(vcloud_pending=2)).values())
+            u.extend(a)
+            for j in u:
+                if j['vcloud_pending'] == 0:
+                    j['status'] = "已通过"
+                if j['vcloud_pending'] == 2:
+                    j['status'] = "拒绝/过期"
+                m.append(j)
+        else:
+            a = list(Order.objects.filter(dept=i).filter(Q(dept_pending=0) | Q(dept_pending=2)).values())
+            u.extend(a)
+            for j in u:
+                if j['dept_pending'] == 0:
+                    j['status'] = "已通过"
+                if j['dept_pending'] == 2:
+                    j['status'] = "拒绝/过期"
+                m.append(j)
     limit = 10  # 每页显示的记录数
-    paginator = Paginator(u, limit)
+    paginator = Paginator(m, limit)
     page = request.GET.get('page')  # 获取页码
     try:
         topics = paginator.page(page)  # 获取某页对应的记录
@@ -331,40 +300,24 @@ def order_finished(request):
         topics = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
         topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
-    return render(request, 'order_finished.html', context={'finish': topics, 'power': power})
+    return render(request, 'order_finished.html', context={'finish': topics, 'power': power, 'dept': dept})
 
 
 def finished(request):
     pid = request.POST.get('_id')
     _status = request.POST.get('_status')
     username = request.session.get('username')
-    power = UserInfo.objects.get(username=username).power
-    dept = UserInfo.objects.get(username=username).dept
-    data = ""
-    u = []
+    power = get_power(username)
+    if power == 'false':
+        return HttpResponseRedirect('/error/')
+    dept_arr = dept_list(username)
     if _status == 'back':
-        # 撤销继续
-        if power == 0:
-            return HttpResponseRedirect('/overview/')
-        elif power == 1:
-            Order.objects.filter(pid=pid).update(dept_pending=1, status=1)
-            data = Order.objects.filter(dept=dept).exclude(dept_pending=1).values()
-        elif power == 2:
-            Order.objects.filter(pid=pid).update(admin_pending=1, status=1)
-            data = Order.objects.exclude(status=2).exclude(admin_pending=1).values()
-        elif power == 3:
-            Order.objects.filter(pid=pid).update(vcloud_pending=1, status=1)
-            data = Order.objects.exclude(status=2).exclude(vcloud_pending=1).values()
-    for i in data:
-        i['created_at'] = datetime.datetime.strftime(i['created_at'], '%Y-%m-%d %H:%M:%S')
-        if i['dept_pending'] == 0:
-            i['status'] = "已通过"
-        if i['dept_pending'] == 1:
-            i['status'] = "审核中"
-        if i['status'] == 2:
-            i['status'] = "过期"
-        u.append(i)
-    return JsonResponse({'data': list(u)})
+        for i in dept_arr:
+            if i == 'yjs_center':
+                Order.objects.filter(pid=pid).update(vcloud_pending=1)
+            else:
+                Order.objects.filter(pid=pid).update(dept_pending=1)
+    return HttpResponseRedirect('/order_finished/')
 
 
 #  注册接口注册完跳login
@@ -429,13 +382,13 @@ def checkLogin(request):
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     md5_password = hashlib.md5(password).hexdigest().upper()
     loginInfo = UserInfo.objects.filter(username__exact=username, password__exact=md5_password)
-    lock = UserInfo.objects.get(username=username).locked
     data = Log(log_type=0, log_opt=nowtime, log_user=username, log_ip=ip, log_detail="信息")  # 用户登陆 log记录
-    if lock:
-        return render(request, 'login.html', context={'err': '该用户已被锁定！'})
     if not loginInfo:
         return render(request, 'login.html', context={'err': '用户名或密码错误!'})
     else:
+        lock = UserInfo.objects.get(username=username).locked
+        if lock:
+            return render(request, 'login.html', context={'err': '该用户已被锁定！'})
         request.session['username'] = username
         date = time.time()
         login_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
@@ -475,9 +428,7 @@ def chkcreate_instance(request):
 
     date_order = now() + timedelta(days=3)  # 生成订单失效时间
     buy_days = int(expired) * 30
-    # print buy_days
     date_expire = now() + timedelta(days=buy_days)
-    # print date_expire
 
     # 选择操作系统
     if os == 'Win2008R2 64':
@@ -500,7 +451,6 @@ def chkcreate_instance(request):
 
     # 生成订单
     uuid_one = str(uuid.uuid4())  # 生成一个关联uuid
-    # print uuid_one
     if network == "VLan11":
         network = 'vlan11'
     if network == "VxLan1":
@@ -587,7 +537,6 @@ def accessLog(request):
         if i['log_type'] == 4:
             i['log_type'] = "系统"
         u.append(i)
-    print list(u)
     return JsonResponse({'data': list(u)})
 
 
@@ -604,7 +553,6 @@ def send_email(request):
             #  第四个是 给谁发送可多人
             email_title = '密码重置通知!'
             email_password = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
-            # print email_password
             email_message = '您的密码已初始化为： ' + email_password + ", 可登录后在控制台页面修改新密码！"
             email_sendPerson = 'no-reply@vdin.net'
             email_recPerson = email
@@ -633,7 +581,6 @@ def check_code(request):
             #  第四个是 给谁发送可多人
             email_title = '感谢注册VDIN, 本次验证码详见内容!'
             email_code = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
-            # print email_password
             email_message = '您本次的注册验证码是： ' + email_code + ", 一个小时内有效！"
             email_sendPerson = 'no-reply@vdin.net'
             email_recPerson = email
@@ -704,7 +651,6 @@ def create_virtual(password, flavor, os_name, net_name, ins_name):
     lin_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta password=%s --flavor %s --image %s --nic net-name=%s %s' % (
         password, flavor, os_name, net_name, ins_name)
     (status, output) = commands.getstatusoutput(lin_CMD)
-    print output
     if status == 0:
         print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX success!"
     else:
@@ -808,7 +754,6 @@ def test2(request):
             #  第四个是 给谁发送可多人
             email_title = '感谢注册VDIN, 本次验证码详见内容!'
             email_password = "".join(random.sample('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 8))
-            # print email_password
             email_message = '您本次的注册验证码是： ' + email_password + ", 一个小时内有效！"
             email_sendPerson = 'no-reply@vdin.net'
             email_recPerson = email
