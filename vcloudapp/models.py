@@ -66,6 +66,7 @@ class Order(models.Model):
 # 订单明细
 class OrderDetail(models.Model):
     pid = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20)  # 实例名称
     uuid = models.UUIDField()
     vcpu = models.IntegerField(default=1)  # cpu
     memory = models.IntegerField(default=1)  # 内存

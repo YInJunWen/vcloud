@@ -182,7 +182,7 @@ def order_create(request):
         return HttpResponseRedirect('/login/')
     return render(request, 'order_create.html')
 
-                   
+
 # 待审核
 def order_checking(request):
     o = logined(request)
@@ -247,6 +247,13 @@ def approval(request):
         for i in dept_arr:
             if i == 'yjs_center':
                 Order.objects.filter(pid=pid).update(vcloud_pending=0)
+                detail_data = OrderDetail.objects.get(pid=pid)  # 获取当前 id 的Object
+                os = detail_data.os
+                os_name = OS.objects.get(pid=os).os_name  # 获取虚机创建系统名称
+                os_type = OS.objects.get(pid=os).os_type  # 获取是linux还是windows
+                print detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type
+                # 创建虚机命令
+                create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=0)
     else:
@@ -465,15 +472,13 @@ def chkcreate_instance(request):
                              name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
         ins_data.save()
         # 生成订单明细
-        order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
+        order_detail = OrderDetail(name=ins_name, uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
                                    password=password, expire=expired, network=network, price=price, flavor=flavor)
         order_detail.save()
         # 生成订单
         order_data = Order(created_at=apply_time, created_user=username, expired_at=date_order, uuid=uuid_one,
                            dept=dept)
         order_data.save()
-    # 创建虚机命令
-    create_virtual(password, flavor, cmd_os, network, ins_name)
     return HttpResponseRedirect('/overview/')
 
 
@@ -646,20 +651,19 @@ def get_power(username):
 
 
 # 创建虚机的命令
-def create_virtual(password, flavor, os_name, net_name, ins_name):
-    # Linux
+def create_virtual(password, flavor, os_name, net_name, ins_name, os_type):
     lin_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta password=%s --flavor %s --image %s --nic net-name=%s %s' % (
         password, flavor, os_name, net_name, ins_name)
-    (status, output) = commands.getstatusoutput(lin_CMD)
-    if status == 0:
-        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX success!"
+    win_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta admin_pass=%s --flavor %s --image %s --nic net-name=%s %s' % (
+        password, flavor, os_name, net_name, ins_name)
+    if os_type == 'Linux':
+        (status, output) = commands.getstatusoutput(lin_CMD)
     else:
-        print 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO failed!'
-
-        # windows
-        # win_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta admin_pass=%s --flavor %s --image %s --nic net-name=%s %s' % (
-        # password, flavor, os_name, net_name, ins_name)
-        # print commands.getstatusoutput(win_CMD)
+        (status, output) = commands.getstatusoutput(win_CMD)
+    if status == 0:
+        print "success!"
+    else:
+        print 'failed!'
 
 
 # 身份证号码验证

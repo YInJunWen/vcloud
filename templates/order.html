@@ -81,7 +81,7 @@
                                 {% for value in order %}
                                     <tr>
                                         <td style="text-indent: 0;text-align: center;">
-                                            <a href="" style="text-decoration: underline;">{{ value.pid }}</a>
+                                            <a href="/{{ value.pid }}" style="text-decoration: underline;">{{ value.pid }}</a>
                                         </td>
                                         <td style="text-indent: 100px;">{{ value.created_at }}</td>
                                         <td>{{ value.expired_at }}</td>
