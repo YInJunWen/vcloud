@@ -61,12 +61,12 @@ def instances(request):
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
     power = get_power(username)
-    data = Instances.objects.filter(belonged=username).values()
+    data = Instances.objects.filter(belonged=username, locked=True).values()
     # 获取现在的时间与订单期限对比
     now_time = now()
-    Filter_Data = Instances.objects.filter(belonged=username).filter(expired_at__lte=now_time)
-    if Filter_Data:
-        Filter_Data.update(status=2)
+    filter_data = Instances.objects.filter(belonged=username).filter(expired_at__lte=now_time)
+    if filter_data:
+        filter_data.update(status=2)
     u = []
     for i in data:
         if i['status'] == 0:
@@ -247,11 +247,11 @@ def approval(request):
         for i in dept_arr:
             if i == 'yjs_center':
                 Order.objects.filter(pid=pid).update(vcloud_pending=0)
+                Instances.objects.filter(pid=pid).update(locked=True)
                 detail_data = OrderDetail.objects.get(pid=pid)  # 获取当前 id 的Object
                 os = detail_data.os
                 os_name = OS.objects.get(pid=os).os_name  # 获取虚机创建系统名称
                 os_type = OS.objects.get(pid=os).os_type  # 获取是linux还是windows
-                print detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type
                 # 创建虚机命令
                 create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
             else:
@@ -472,14 +472,14 @@ def chkcreate_instance(request):
                              name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
         ins_data.save()
         # 生成订单明细
-        order_detail = OrderDetail(name=ins_name, uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
-                                   password=password, expire=expired, network=network, price=price, flavor=flavor)
+        order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
+                                   password=password, expire=expired, network=network, price=price, flavor=flavor, name=ins_name)
         order_detail.save()
         # 生成订单
         order_data = Order(created_at=apply_time, created_user=username, expired_at=date_order, uuid=uuid_one,
                            dept=dept)
         order_data.save()
-    return HttpResponseRedirect('/overview/')
+    return HttpResponseRedirect('/order/')
 
 
 # 获取分配资源

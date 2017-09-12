@@ -66,8 +66,8 @@ class Order(models.Model):
 # 订单明细
 class OrderDetail(models.Model):
     pid = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=20)  # 实例名称
     uuid = models.UUIDField()
+    name = models.CharField(max_length=50, default=None)
     vcpu = models.IntegerField(default=1)  # cpu
     memory = models.IntegerField(default=1)  # 内存
     bandwidth = models.IntegerField()
@@ -124,7 +124,7 @@ class Instances(models.Model):
     expired_at = models.DateTimeField()  # 申请时常
     delayed_at = models.DateTimeField()  # 到期未续后宽限时间
     belonged = models.CharField(max_length=20)  # 创建者 属于
-    name = models.CharField(max_length=20)  # 实例名称
+    name = models.CharField(max_length=20, default=None)  # 实例名称
     uuid = models.UUIDField(default=uuid.uuid4, max_length=36)  # 实例uuid
     vcpus = models.IntegerField(default=1)
     memory = models.IntegerField(default=1)
@@ -142,10 +142,9 @@ class Instances(models.Model):
 class IP(models.Model):
     pid = models.AutoField(primary_key=True)
     uuid = models.UUIDField(default=uuid.uuid4, max_length=36)  # 唯一识别码
-    mac_address = models.CharField(max_length=15, default='0000-0000-0000')  # 网卡地址
     ip_address = models.GenericIPAddressField(max_length=15, default='0.0.0.0')
-    traffice_in = models.IntegerField(default=0)  # 流量进
-    traffice_out = models.IntegerField(default=0)  # 流量出
+    traffic_in = models.IntegerField(default=0)  # 流量进
+    traffic_out = models.IntegerField(default=0)  # 流量出
 
     class Meta:
         db_table = "ip"
@@ -212,6 +211,21 @@ class CheckCode(models.Model):
 
     class Meta:
         db_table = 'check_code'
+
+
+# 流量
+class Traffic(models.Model):
+    uuid = models.UUIDField(uuid.uuid4, max_length=36, primary_key=True)
+    host_name = models.CharField(max_length=20)
+    port_name = models.CharField(max_length=20)
+    ip_address = models.GenericIPAddressField(max_length=15, default='0.0.0.0')
+    traffic_in = models.IntegerField(default=0)  # 流量进
+    traffic_out = models.IntegerField(default=0)  # 流量出
+    server_name = models.CharField(max_length=20)
+    mac_address = models.CharField(max_length=15, default='0000-0000-0000')  # 网卡地址
+
+    class Meta:
+        db_table = "traffic"
 
 
 # return

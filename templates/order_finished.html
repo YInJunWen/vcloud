@@ -38,7 +38,7 @@
                                 <th style="text-align: center;" width="40%">事由</th>
                                 <th style="text-align: center;">服务器</th>
                                 <th style="text-align: center;">状态</th>
-                                {% if dept != 'zjb' %}
+                                {% if dept != 'zjb' and dept != 'yjs_center' %}
                                     <th style="text-align: center;">操作</th>
                                 {% endif %}
                             </tr>
@@ -52,7 +52,7 @@
                                         <td style="text-align: center;" width="40%">创建云主机</td>
                                         <td style="text-align: center;">undefined</td>
                                         <td style="text-align: center;">{{ i.status }}</td>
-                                        {% if dept != 'zjb' %}
+                                        {% if dept != 'zjb' and dept != 'yjs_center' %}
                                         <td style="text-align: center;"><a href="javascript:void(0)"
                                                                            class="orderBtnOpen"
                                                                            onclick="Finished(this)">撤销&nbsp</a>
