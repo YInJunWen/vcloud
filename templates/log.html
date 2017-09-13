@@ -48,7 +48,7 @@
                             <table class="table" id="logTable" style="width: 100% !important;">
                                 <thead>
                                 <tr>
-                                    <th style="text-align:left;width:10%;text-indent: 22px">操作对象</th>
+                                    <th style="text-align:center;width: 10%;">操作对象</th>
                                     <th style="text-align:center;">操作类型</th>
                                     <th style="text-align:center;">操作人</th>
                                     <th style="text-align:center">IP</th>
@@ -56,17 +56,18 @@
                                 </tr>
                                 </thead>
                                 <tbody id="Logtbody" class="testbody">
+                                {% if log %}
+                                    {% for i in log %}
+                                        <tr>
+                                            <th style="text-align:center;width: 10%;">{{ i.log_detail }}</th>
+                                            <th style="text-align:center;">{{ i.log_type }}</th>
+                                            <th style="text-align:center;">{{ i.log_user }}</th>
+                                            <th style="text-align:center">{{ i.log_ip }}</th>
+                                            <th style="text-align:center">{{ i.log_opt }}</th>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 </tbody>
-                                {#                                <tfoot style="border-top: none">#}
-                                {#                                <tr>#}
-                                {#                                    <th width="10"></th>#}
-                                {#                                    <th style="text-align:left;width:10%;text-indent: 22px">操作对象</th>#}
-                                {#                                    <th style="text-align:center;">操作类型</th>#}
-                                {#                                    <th style="text-align:center;">操作人</th>#}
-                                {#                                    <th style="text-align:center">IP</th>#}
-                                {#                                    <th style="text-align:center">操作时间</th>#}
-                                {#                                </tr>#}
-                                {#                                </tfoot>#}
                             </table>
                             <div class="noMessage log_noMessage">
                                 <p>没有查询到符合条件的记录!</p>

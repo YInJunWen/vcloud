@@ -66,21 +66,21 @@ $('#manageBar').click(function () {
  * logintime
  */
 
-$('#logTable').DataTable({
-    ajax: '/accessLog/',
-    columns: [
-        {data: 'log_user'},
-        {data: 'log_type'},
-        {data: 'log_detail'},
-        {data: 'log_ip'},
-        {data: 'log_opt'}
-    ],
-    "fnInitComplete": function () {
-        if ($('#Logtbody tr').length > 1) {
-            $('.log_noMessage').hide();
-        }
-    }
-});
+// $('#logTable').DataTable({
+//     ajax: '/accessLog/',
+//     columns: [
+//         {data: 'log_user'},
+//         {data: 'log_type'},
+//         {data: 'log_detail'},
+//         {data: 'log_ip'},
+//         {data: 'log_opt'}
+//     ],
+//     "fnInitComplete": function () {
+//         if ($('#Logtbody tr').length > 1) {
+//             $('.log_noMessage').hide();
+//         }
+//     }
+// });
 
 
 // $.ajax({

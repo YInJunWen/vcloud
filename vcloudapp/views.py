@@ -127,7 +127,22 @@ def log(request):
         return HttpResponseRedirect('/login/')
     username = request.session.get('username')
     power = get_power(username)
-    return render(request, 'log.html', context={"power": power})
+    data = Log.objects.filter(log_user=username).values()
+    u = []
+    for i in data:
+        print i['log_type']
+        i['log_type'] = LogType.objects.get(log_id=i['log_type']).log_name
+        u.append(i)
+    limit = 10  # 每页显示的记录数
+    paginator = Paginator(u, limit)
+    page = request.GET.get('page')  # 获取页码
+    try:
+        topics = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        topics = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
+    return render(request, 'log.html', context={"power": power, "log": topics})
 
 
 # 订单
