@@ -21,7 +21,9 @@ from .models import *
 
 # 主页
 def home(request):
-    return render(request, 'index.html')
+    user_session = request.session.get('username')
+    # print user_session
+    return render(request, 'index.html', context={'user_session': user_session})
 
 
 #  user登录跳转
@@ -130,7 +132,6 @@ def log(request):
     data = Log.objects.filter(log_user=username).values()
     u = []
     for i in data:
-        print i['log_type']
         i['log_type'] = LogType.objects.get(log_id=i['log_type']).log_name
         u.append(i)
     limit = 10  # 每页显示的记录数
@@ -262,13 +263,14 @@ def approval(request):
         for i in dept_arr:
             if i == 'yjs_center':
                 Order.objects.filter(pid=pid).update(vcloud_pending=0)
-                Instances.objects.filter(pid=pid).update(locked=True)
+                Instances.objects.filter(pid=pid).update(locked=1)
                 detail_data = OrderDetail.objects.get(pid=pid)  # 获取当前 id 的Object
                 os = detail_data.os
                 os_name = OS.objects.get(pid=os).os_name  # 获取虚机创建系统名称
                 os_type = OS.objects.get(pid=os).os_type  # 获取是linux还是windows
                 # 创建虚机命令
                 create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
+                admin_email(pid)
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=0)
     else:
@@ -614,6 +616,23 @@ def check_code(request):
         return render(request, 'register.html')
     else:
         return HttpResponse('请确保所有字段都输入并有效')
+
+
+# 审批通过后发送邮件通知管理员
+def admin_email(_id):
+    pc_id = _id  # 主机编号
+    try:
+        #  第一个是 邮件的标题
+        #  第二个是 邮件的内容
+        #  第三个是 邮件的发起人账号 管理员邮箱
+        #  第四个是 给谁发送可多人
+        email_title = 'Vdin新建主机通知!'
+        email_message = '本次注册的虚机编号为： ' + pc_id
+        email_sendPerson = 'no-reply@vdin.net'
+        email_recPerson = '877564747@qq.com'
+        send_mail(email_title, email_message, email_sendPerson, [email_recPerson])
+    except BadHeaderError:
+        return HttpResponse('Invalid header found.')
 
 
 def change_psw(request):

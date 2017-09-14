@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="全中国用户正享用中德宏泰提供的云服务器、云数据库、云存储、CDN、大数据等服务，7x24售后支持，故障100倍赔偿，快速备案，5天无理由退款。">
+    <meta name="description" content="全中国用户正享用中德宏泰提供的云服务器、云数据库、云存储、CDN、大数据等服务，7x24售后支持，故障100倍赔偿，5天无理由退款。">
     <meta name="keyword" content="中德宏泰,云数据库,云服务器,云计算">
     <meta name="author" content="">
     <meta name="keywords" content="">
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/static/assets/components/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/components/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/static/assets/components/font-awesome/css/font-awesome.min.css">
-    <link href="/static/assets/css/public/video-js.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/assets/css/public/video-js.min.css">
     <link rel="stylesheet" href="/static/assets/components/elegant-font/style.css">
     <link rel="stylesheet" href="/static/assets/components/owl-carousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="/static/assets/components/owl-carousel/assets/owl.theme.default.min.css">
@@ -97,9 +97,47 @@
                 {#                    <span></span>#}
                 {#                </li>#}
             </ul>
-            <a href="/register/" target="_blank">免费注册</a>
-            <a href="/login/" target="_blank" style="background: none">登录</a>
-            {#            <a href="" target="_blank" style="background: none">控制台</a>#}
+            {% if not user_session %}
+                <a href="/register/" target="_blank">免费注册</a>
+                <a href="/login/" target="_blank" style="background: none">登录</a>
+            {% else %}
+{#                <span class="fa fa-user-circle user_session" style="font-size: 24px;color: #fff;float: right;height: 60px;line-height: 60px;padding: 0 32px;"></span>#}
+{#                <a href="javascript:void(0)" target="_blank" style="background: none;padding: 0;">控制台</a>#}
+                <ul class="user_session_list">
+                    <li style="position:relative;top: 0;left: 0;" class="user_info_bar">
+                        <a href="javascript:void(0)" class="fa fa-user-circle"></a>
+                        {#                        <ul style="position: absolute; width: 80px; top: 60px; left: 0;z-index: 999;">#}
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    {% for key,value in request.session.items %}
+                                        {% ifequal 'username' key %}
+                                            昵称：&nbsp;<span style="text-overflow: ellipsis">{{ value }}</span>
+                                        {% endifequal %}
+                                    {% endfor %}
+                                </a>
+                            </li>
+                             <li>
+                                <a href="/instances/">
+                                    我的虚机
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/order/">
+                                    我的工单
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout/">
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/overview/" style="color: #fff;border: 1px solid rgba(255,255,255,.35);box-sizing: border-box;padding: 5px 10px;font-size: 12px;">控制台</a></li>
+                </ul>
+            {% endif %}
         </div>
         <!-- 云主机 -->
         <div class="swiper-container" style="min-width: 1280px;">
