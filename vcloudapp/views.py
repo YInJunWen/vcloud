@@ -179,16 +179,17 @@ def order(request):
 
 # 创建实例跳转
 def create_instance(request):
-    o = logined(request)
-    if not o:
-        return HttpResponseRedirect('/login/')
+    # o = logined(request)
+    # if not o:
+    #     return HttpResponseRedirect('/login/')
     network = Network.objects.values()
-    obj = {}
-    arr = []
-    obj['windows'] = ['win1', 'win2', 'win3']
-    obj['linux'] = ['lin1', 'lin2', 'lin3']
-    arr.append(obj)
-    return render(request, 'create_instance.html', context={'network': list(network), 'data': list(arr)})
+    # obj = {}
+    # arr = []
+    # # obj['windows'] = ['win1', 'win2', 'win3']
+    # # obj['linux'] = ['lin1', 'lin2', 'lin3']
+    # arr.append(obj)
+    # return render(request, 'create_instance.html', context={'network': list(network), 'data': list(arr)})
+    return render(request, 'create_instance.html', context={'network': list(network)})
 
 
 # 创建订单
@@ -327,6 +328,7 @@ def order_finished(request):
     return render(request, 'order_finished.html', context={'finish': topics, 'power': power, 'dept': dept})
 
 
+# 审核完成
 def finished(request):
     pid = request.POST.get('_id')
     _status = request.POST.get('_status')
@@ -424,8 +426,10 @@ def checkLogin(request):
 
 
 # 创建实例接口
-# 防止页面403不提交引入 csrf
 def chkcreate_instance(request):
+    o = logined(request)
+    if not o:
+        return render(request, 'login.html', context={'err': '请先登录后再申请！'})
     ins_name = request.POST.get('instance_name', None)
     sameName = Instances.objects.filter(name=ins_name)
     # 获取所在部门
@@ -540,7 +544,6 @@ def calculatePrice(request):
 
 
 # 获取日志信息
-# @JSON(format="yyyy-MM-dd HH:mm:ss")
 def accessLog(request):
     username = request.session.get('username')
     data = Log.objects.filter(log_user=username).order_by('-log_user', '-log_type', '-log_detail', '-log_ip',
@@ -777,7 +780,7 @@ def dept_list(username):
 
 # 测试1
 def test1(request):
-    return HttpResponseRedirect('/test2/')
+    return render(request, 'test1.html')
 
 
 # 测试2

@@ -1,3 +1,7 @@
+html, body{
+    width: 100%;
+    height: 100%;
+}
 body {
     font-family: 'helvetica neue',PingFangSC-Light,arial,'hiragino sans gb','microsoft yahei ui','microsoft yahei',simsun,sans-serif;;
 }
@@ -171,7 +175,7 @@ body {
 }
 
 .mapWapper .point-area:nth-child(5):after {
-    animation-delay: 1;
+    animation-delay: 1s;
 }
 
 .mapWapper .point-area:nth-child(6):after {
@@ -209,16 +213,25 @@ body {
     display: none !important;
 }
 
-.video-js {
-    width: 0;
-    height: 0;
+/*.video-js {*/
+    /*width: 0;*/
+    /*height: 0;*/
+/*}*/
+
+#my-player {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
-/*#my-player {*/
-    /*position: fixed;*/
-    /*top: -20000px;*/
-    /*left: -20000px;*/
-/*}*/
+.section{
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: #fff;
+}
 
 /*后期添加的user_session*/
 /*.user_session_list{*/

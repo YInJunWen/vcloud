@@ -149,31 +149,30 @@ $(function () {
         }, 200);
     });
     var a = null;
+    var options = {autoplay: true, muted: false};
     $('.video_link').click(function () {
-        $('#my-player').css({
-            "width": "100%",
-            "height": "100%"
-            // "display": "block"
-        });
         $(this).hide();
         $('.cha').show();
-        var options = {autoplay: true};
+        $('#my-player').css({
+            "width": "100%",
+            "height": "100%",
+            "display": "block",
+            'z-index': "2"
+        });
         var player = videojs("my-player", options, function onPlayerReady() {
             this.src('/static/assets/video/trailer.mp4');
             this.play();
             this.enterFullWindow();
             a = player;
         });
-        $('.vjs-button').click();
+        $('.vjs-fullscreen-control').click();
     });
     $('.cha').click(function () {
         $(this).hide();
         $('.video_link').show();
         a.pause();
         $('#my-player').css({
-            "width": "0",
-            "height": "0"
-            // "display": "none"
+            'display': 'none'
         });
     });
 });
