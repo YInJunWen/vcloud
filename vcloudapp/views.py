@@ -7,6 +7,7 @@ import commands
 import re
 
 # import uuid
+import redis as redis
 from django.shortcuts import render, render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, JsonResponse
@@ -478,10 +479,12 @@ def chkcreate_instance(request):
     sameName = Instances.objects.filter(name=ins_name)
     # 获取所在部门
     username = request.session.get('username')
+    network = Network.objects.values()
     if username:
         dept = UserInfo.objects.get(username=username).dept
     if sameName:
-        return render(request, 'create_instance.html', {'err_name': '此名称已存在'})
+        print list(network)
+        return render(request, 'create_instance.html', {'err_name': '此名称已存在', 'network': list(network)})
     cpu = request.POST.get('cpu', 2)
     mem = request.POST.get('mem', 4)
     disk = request.POST.get('disk', 50)
@@ -833,6 +836,20 @@ def info_number(request, username):
     data = len(number_data)
     request.session['number_data'] = data  # 审批条数
     request.session.set_expiry(20 * 60)
+
+
+# 获取流量接口
+# 参数说明
+# hostname:云主机名称
+# rx:接收总流量
+# tx:发送总流量
+# 返回数据为B 字节  需要处理
+def get_traffic(hostname):
+    r = redis.StrictRedis(host='10.1.1.203')
+    rx = r.hmget(hostname, 'rx')
+    tx = r.hmget(hostname, 'tx')
+    return rx, tx
+
 
 # 测试1
 def test1(request):
