@@ -168,10 +168,18 @@
                 </a>
             </li>
             {% if power != 'false' %}
-                <li>
+                <li style="position:relative;top: 0;left: 0;">
+                    {% for key,value in request.session.items %}
+                        {% ifequal 'number_data' key %}
+                            <span style="display:inline-block;width: 17px;height: 17px;background: red;color: #fff;
+                                     position: absolute;top: 2px;left: 37px;text-align: center;line-height: 17px;
+                                     border-radius: 50%;">{{ value }}</span>
+                        {% endifequal %}
+                    {% endfor %}
                     <a class="nav__item" id="manageBar" target="" id="guanlibar" href="javascript:void(0)">
                         <span class="nav__icon icon__umon icon--md"></span>
-                        <span class="nav__title"><span translate="UNET">管理</span>
+                        <span class="nav__title">
+                            <span translate="UNET">管理</span>
 		                </span>
                     </a>
                 </li>
@@ -179,7 +187,9 @@
                 <div class="manage_hidden" style="width: 55px;height: 104px;display: none;">
                     <ul>
                         <li class="nav__item" style="text-align: center;text-indent: 25px;">
-                            <a href="/order_checking/">审核中</a>
+{#                            {% if info_number %}#}
+                                <a href="/order_checking/">待审核</a>
+{#                            {% endif %}#}
                         </li>
                         <li class="nav__item" style="text-align: center;text-indent: 25px;">
                             <a href="/order_finished/">已完成</a>

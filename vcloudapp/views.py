@@ -225,6 +225,25 @@ def order_checking(request):
                     j['status'] = "待审核"
                 if j['vcloud_pending'] == 2:
                     j['status'] = "已过期"
+                # 获取pid
+                ins_data = Instances.objects.get(pid=j['pid'])
+                j['vcpus'] = ins_data.vcpus
+                j['memory'] = ins_data.memory
+                j['disk'] = ins_data.disk
+                j['bandwidth'] = ins_data.bandwidth
+                if ins_data.os == 0:
+                    ins_data.os = 'Win2008R2_64'
+                if ins_data.os == 1:
+                    ins_data.os = 'Win2008R2_64(SQLServer)'
+                if ins_data.os == 2:
+                    ins_data.os = 'Win2008R2_64'
+                if ins_data.os == 3:
+                    ins_data.os = 'Win2012R2_64(SQLServer)'
+                if ins_data.os == 4:
+                    ins_data.os = 'CentOS7.2'
+                if ins_data.os == 5:
+                    ins_data.os = 'CentOS7.2 + Lamp'
+                j['os'] = ins_data.os
                 m.append(j)
         else:
             a = list(Order.objects.filter(dept=i, dept_pending=1).exclude(dept_pending=(0 | 2)).values())
@@ -236,7 +255,27 @@ def order_checking(request):
                     j['status'] = "待审核"
                 if j['dept_pending'] == 2:
                     j['status'] = "已过期"
+                # 获取pid
+                ins_data = Instances.objects.get(pid=j['pid'])
+                j['vcpus'] = ins_data.vcpus
+                j['memory'] = ins_data.memory
+                j['disk'] = ins_data.disk
+                j['bandwidth'] = ins_data.bandwidth
+                if ins_data.os == 0:
+                    ins_data.os = 'Win2008R2_64'
+                if ins_data.os == 1:
+                    ins_data.os = 'Win2008R2_64(SQLServer)'
+                if ins_data.os == 2:
+                    ins_data.os = 'Win2008R2_64'
+                if ins_data.os == 3:
+                    ins_data.os = 'Win2012R2_64(SQLServer)'
+                if ins_data.os == 4:
+                    ins_data.os = 'CentOS7.2'
+                if ins_data.os == 5:
+                    ins_data.os = 'CentOS7.2 + Lamp'
+                j['os'] = ins_data.os
                 m.append(j)
+    info_number = len(m)
     limit = 10  # 每页显示的记录数
     paginator = Paginator(m, limit)
     page = request.GET.get('page')  # 获取页码
@@ -246,7 +285,7 @@ def order_checking(request):
         topics = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
         topics = paginator.page(paginator.num_pages)  # 取最后一页的记录
-    return render(request, 'order_checking.html', context={'approval': topics, 'power': power, 'dept': dept})
+    return render(request, 'order_checking.html', context={'approval': topics, 'power': power, 'dept': dept, 'info_number': info_number})
 
 
 # 待审核的接口吐数据
@@ -280,6 +319,7 @@ def approval(request):
                 Order.objects.filter(pid=pid).update(vcloud_pending=2)
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=2)
+    info_number(request, username)
     return HttpResponseRedirect('/order_checking/')
 
 
@@ -316,6 +356,8 @@ def order_finished(request):
                 if j['dept_pending'] == 2:
                     j['status'] = "拒绝/过期"
                 m.append(j)
+    # info_number = len(m)
+    # print info_number
     limit = 10  # 每页显示的记录数
     paginator = Paginator(m, limit)
     page = request.GET.get('page')  # 获取页码
@@ -343,6 +385,7 @@ def finished(request):
                 Order.objects.filter(pid=pid).update(vcloud_pending=1)
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=1)
+    info_number(request, username)
     return HttpResponseRedirect('/order_finished/')
 
 
@@ -404,6 +447,7 @@ def userRegister(request):
 def checkLogin(request):
     username = request.POST.get('username', None).strip()
     password = request.POST.get('password', None).strip()
+    info_number(request, username)
     nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%I:%S")
     ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
     md5_password = hashlib.md5(password).hexdigest().upper()
@@ -419,7 +463,7 @@ def checkLogin(request):
         date = time.time()
         login_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
         request.session['now_time'] = login_time
-        request.session.set_expiry(20000 * 60)
+        request.session.set_expiry(20 * 60)
         power = get_power(username)
         data.save()
         return render(request, 'overview.html', context={"power": power})
@@ -777,6 +821,18 @@ def dept_list(username):
     dept_list = dept.split(',')
     return dept_list
 
+
+# 获取审批提示数量
+def info_number(request, username):
+    dept_arr = dept_list(username)
+    for i in dept_arr:
+        if i == 'yjs_center' or i == "zjb":
+            number_data = list(Order.objects.filter(dept_pending=0, vcloud_pending=1).values())
+        else:
+            number_data = list(Order.objects.filter(dept=i, dept_pending=1).exclude(dept_pending=(0 | 2)).values())
+    data = len(number_data)
+    request.session['number_data'] = data  # 审批条数
+    request.session.set_expiry(20 * 60)
 
 # 测试1
 def test1(request):

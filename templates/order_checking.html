@@ -38,7 +38,8 @@
                                 {#                                </th>#}
                                 <th style="text-align: center;" width="10%">工单号</th>
                                 <th style="text-align: center;" width="20%">时间</th>
-                                <th style="text-align: center;" width="40%">事由</th>
+                                <th style="text-align: center;" width="20%">事由</th>
+                                <th style="text-align: center;">配置</th>
                                 <th style="text-align: center;">申请人</th>
                                 <th style="text-align: center;">状态</th>
                                 {% if dept != 'zjb' %}
@@ -53,6 +54,38 @@
                                         <td style="text-indent: 0;text-align: center;">{{ i.pid }}</td>
                                         <td style="text-indent: 100px;">{{ i.created_at }}</td>
                                         <td>创建云主机</td>
+                                        <td class="pz">详细配置
+                                                <ul id="hideList">
+                                                    <li><h3>云主机类型详情:</h3>
+                                                        <div class="table-wapper">
+                                                            <table>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <th class="hideTh">CPU</th>
+                                                                    <td class="hideTd">{{ i.vcpus }}核</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">内存</th>
+                                                                    <td class="hideTd">{{ i.memory }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">Disk</th>
+                                                                    <td class="hideTd">{{ i.disk }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">带宽</th>
+                                                                    <td class="hideTd">{{ i.bandwidth }}MB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">系统</th>
+                                                                    <td class="hideTd">{{ i.os }}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
                                         <td>{{ i.created_user }}</td>
                                         <td>{{ i.status }}</td>
                                         {% if dept != 'zjb' %}
