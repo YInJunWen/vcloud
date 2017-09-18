@@ -483,7 +483,7 @@ def chkcreate_instance(request):
     if username:
         dept = UserInfo.objects.get(username=username).dept
     if sameName:
-        print list(network)
+        # print list(network)
         return render(request, 'create_instance.html', {'err_name': '此名称已存在', 'network': list(network)})
     cpu = request.POST.get('cpu', 2)
     mem = request.POST.get('mem', 4)
