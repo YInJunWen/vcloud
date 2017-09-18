@@ -171,9 +171,11 @@
                 <li style="position:relative;top: 0;left: 0;">
                     {% for key,value in request.session.items %}
                         {% ifequal 'number_data' key %}
-                            <span style="display:inline-block;width: 17px;height: 17px;background: red;color: #fff;
+                            {% if value > 0 %}
+                                <span style="display:inline-block;width: 17px;height: 17px;background: red;color: #fff;
                                      position: absolute;top: 2px;left: 37px;text-align: center;line-height: 17px;
                                      border-radius: 50%;">{{ value }}</span>
+                            {% endif %}
                         {% endifequal %}
                     {% endfor %}
                     <a class="nav__item" id="manageBar" target="" id="guanlibar" href="javascript:void(0)">

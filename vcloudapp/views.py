@@ -160,7 +160,7 @@ def order(request):
         if (i['dept_pending'] == 0) and (i['vcloud_pending']) == 0:
             i['status'] = "已通过"
         if (i['dept_pending'] == 2) or (i['vcloud_pending']) == 2:
-            i['status'] = "拒绝/过期"
+            i['status'] = "已失效"
         # 0 - 已完成，1 - 待审核，2 - 已过期
         if i['status'] == 1:
             i['status'] = "待审核"
@@ -345,7 +345,7 @@ def order_finished(request):
                 if j['vcloud_pending'] == 0:
                     j['status'] = "已通过"
                 if j['vcloud_pending'] == 2:
-                    j['status'] = "拒绝/过期"
+                    j['status'] = "已失效"
                 m.append(j)
         else:
             a = list(Order.objects.filter(dept=i).filter(Q(dept_pending=0) | Q(dept_pending=2)).values())
@@ -354,7 +354,7 @@ def order_finished(request):
                 if j['dept_pending'] == 0:
                     j['status'] = "已通过"
                 if j['dept_pending'] == 2:
-                    j['status'] = "拒绝/过期"
+                    j['status'] = "已失效"
                 m.append(j)
     # info_number = len(m)
     # print info_number
