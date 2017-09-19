@@ -81,17 +81,27 @@
                                 {% for value in order %}
                                     <tr>
                                         <td style="text-indent: 0;text-align: center;">
-                                            <a href="/{{ value.pid }}" style="text-decoration: underline;">{{ value.pid }}</a>
+{#                                            <a href="/{{ value.pid }}" style="text-decoration: underline;">{{ value.pid }}</a>#}
+                                            {{ value.pid }}
                                         </td>
                                         <td style="text-indent: 100px;">{{ value.created_at }}</td>
                                         <td>{{ value.expired_at }}</td>
                                         <td>创建云主机</td>
-                                        <td>{{ value.status }}</td>
-{#                                        <td>{{ value.status }}</td>#}
-{#                                        <td>#}
-{#                                            <a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a><a#}
-{#                                                href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>#}
-{#                                        </td>#}
+                                        {% if value.status == '已通过' %}
+                                            <td style="position: relative;">
+                                                {{ value.status }}
+                                                <span style="display: inline-block;width: 50px;height: 50px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 45px 45px;"></span>
+                                            </td>
+                                        {% elif value.status == '已失效' %}
+                                            <td style="position: relative;">
+                                                {{ value.status }}
+                                                <span style="display: inline-block;width: 50px;height: 50px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/refuse.png) no-repeat;background-size: 45px 45px;"></span>
+                                            </td>
+                                        {% else %}
+                                            <td style="position: relative;">
+                                                {{ value.status }}
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                             {% endif %}

@@ -3,15 +3,13 @@ from __future__ import unicode_literals
 import random
 import time
 import commands
-
 import re
-
-# import uuid
 import redis as redis
-from django.shortcuts import render, render_to_response
+
+from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from datetime import datetime
@@ -504,22 +502,22 @@ def chkcreate_instance(request):
     date_order = now() + timedelta(days=3)  # 生成订单失效时间
     buy_days = int(expired) * 30
     date_expire = now() + timedelta(days=buy_days)
-
+    print os
     # 选择操作系统
     if os == 'Win2008R2 64':
-        os = 1
+        os = 0
         cmd_os = 'win2k8r2-v3'
     if os == 'Win2008R2 64(SQLServer)':
-        os = 2
+        os = 1
     if os == "Win2012R2 64":
-        os = 3
+        os = 2
     if os == "Win2012R2 64(SQLServer)":
-        os = 4
+        os = 3
     if os == "CentOS7.2":
-        os = 5
+        os = 4
         cmd_os = 'centos7-v2'
     if os == "CentOS7.2 + Lamp":
-        os = 6
+        os = 5
     # 生成操作日志
     log_data = Log(log_type=1, log_opt=apply_time, log_user=username, log_detail="申请云主机", log_ip=ip)
     log_data.save()
@@ -849,6 +847,47 @@ def get_traffic(hostname):
     rx = r.hmget(hostname, 'rx')
     tx = r.hmget(hostname, 'tx')
     return rx, tx
+
+
+# 获取权限
+def get_privileges():
+    cmd = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123'
+    return cmd
+
+
+# ins_name:实例名称
+# status=0表示关机成功
+# 关机
+def shutdown_instance(ins_name):
+    cmd = get_privileges()
+    cmd = cmd + ' stop ' + ins_name
+    (status, output) = commands.getstatusoutput(cmd)
+    if status == 0:
+        return 'ok'
+    else:
+        return 'false'
+
+
+# 重启
+def reboot_instance(ins_name):
+    cmd = get_privileges()
+    cmd = cmd + ' reboot ' + ins_name
+    (status, output) = commands.getstatusoutput(cmd)
+    if status == 0:
+        return 'ok'
+    else:
+        return 'false'
+
+
+# 开机
+def start_instance(ins_name):
+    cmd = get_privileges()
+    cmd = cmd + ' start ' + ins_name
+    (status, output) = commands.getstatusoutput(cmd)
+    if status == 0:
+        return 'ok'
+    else:
+        return 'false'
 
 
 # 测试1
