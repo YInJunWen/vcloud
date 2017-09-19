@@ -88,6 +88,11 @@ def instances(request):
             i['os'] = 'CentOS7.2'
         if i['os'] == 5:
             i['os'] = 'CentOS7.2 + Lamp'
+        (rx, tx, ip) = get_traffic(i['name'])
+        # print get_traffic(i['name'])
+        i['rx'] = rx[0]
+        i['tx'] = tx[0]
+        i['ip'] = ip[0]
         u.append(i)
     limit = 10  # 每页显示的记录数
     paginator = Paginator(u, limit)
@@ -230,17 +235,17 @@ def order_checking(request):
                 j['memory'] = ins_data.memory
                 j['disk'] = ins_data.disk
                 j['bandwidth'] = ins_data.bandwidth
-                if ins_data.os == 0:
-                    ins_data.os = 'Win2008R2_64'
                 if ins_data.os == 1:
-                    ins_data.os = 'Win2008R2_64(SQLServer)'
-                if ins_data.os == 2:
                     ins_data.os = 'Win2008R2_64'
+                if ins_data.os == 2:
+                    ins_data.os = 'Win2008R2_64(SQLServer)'
                 if ins_data.os == 3:
-                    ins_data.os = 'Win2012R2_64(SQLServer)'
+                    ins_data.os = 'Win2008R2_64'
                 if ins_data.os == 4:
-                    ins_data.os = 'CentOS7.2'
+                    ins_data.os = 'Win2012R2_64(SQLServer)'
                 if ins_data.os == 5:
+                    ins_data.os = 'CentOS7.2'
+                if ins_data.os == 6:
                     ins_data.os = 'CentOS7.2 + Lamp'
                 j['os'] = ins_data.os
                 m.append(j)
@@ -260,17 +265,17 @@ def order_checking(request):
                 j['memory'] = ins_data.memory
                 j['disk'] = ins_data.disk
                 j['bandwidth'] = ins_data.bandwidth
-                if ins_data.os == 0:
-                    ins_data.os = 'Win2008R2_64'
                 if ins_data.os == 1:
-                    ins_data.os = 'Win2008R2_64(SQLServer)'
-                if ins_data.os == 2:
                     ins_data.os = 'Win2008R2_64'
+                if ins_data.os == 2:
+                    ins_data.os = 'Win2008R2_64(SQLServer)'
                 if ins_data.os == 3:
-                    ins_data.os = 'Win2012R2_64(SQLServer)'
+                    ins_data.os = 'Win2008R2_64'
                 if ins_data.os == 4:
-                    ins_data.os = 'CentOS7.2'
+                    ins_data.os = 'Win2012R2_64(SQLServer)'
                 if ins_data.os == 5:
+                    ins_data.os = 'CentOS7.2'
+                if ins_data.os == 6:
                     ins_data.os = 'CentOS7.2 + Lamp'
                 j['os'] = ins_data.os
                 m.append(j)
@@ -297,19 +302,23 @@ def approval(request):
     pid = request.POST.get('_id')
     _status = request.POST.get('_status')
     dept_arr = dept_list(username)
+    o = ""
     if _status == 'y':
         # 判断此用户权限
         for i in dept_arr:
             if i == 'yjs_center':
-                Order.objects.filter(pid=pid).update(vcloud_pending=0)
-                Instances.objects.filter(pid=pid).update(locked=1)
                 detail_data = OrderDetail.objects.get(pid=pid)  # 获取当前 id 的Object
                 os = detail_data.os
                 os_name = OS.objects.get(pid=os).os_name  # 获取虚机创建系统名称
                 os_type = OS.objects.get(pid=os).os_type  # 获取是linux还是windows
                 # 创建虚机命令
-                create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
-                admin_email(pid)
+                o = create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
+                if o == '1':  #
+                    Order.objects.filter(pid=pid).update(vcloud_pending=0)
+                    Instances.objects.filter(pid=pid).update(locked=1)
+                    admin_email(pid)
+                # else:
+                #     JsonResponse({'a': '虚机没搞出来！出错啦！'})
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=0)
     else:
@@ -319,7 +328,8 @@ def approval(request):
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=2)
     info_number(request, username)
-    return HttpResponseRedirect('/order_checking/')
+    # print o
+    return JsonResponse({'a': o})
 
 
 # 已完成
@@ -502,22 +512,22 @@ def chkcreate_instance(request):
     date_order = now() + timedelta(days=3)  # 生成订单失效时间
     buy_days = int(expired) * 30
     date_expire = now() + timedelta(days=buy_days)
-    print os
+    # print os
     # 选择操作系统
     if os == 'Win2008R2 64':
-        os = 0
+        os = 1
         cmd_os = 'win2k8r2-v3'
     if os == 'Win2008R2 64(SQLServer)':
-        os = 1
-    if os == "Win2012R2 64":
         os = 2
-    if os == "Win2012R2 64(SQLServer)":
+    if os == "Win2012R2 64":
         os = 3
-    if os == "CentOS7.2":
+    if os == "Win2012R2 64(SQLServer)":
         os = 4
+    if os == "CentOS7.2":
+        os = 5
         cmd_os = 'centos7-v2'
     if os == "CentOS7.2 + Lamp":
-        os = 5
+        os = 6
     # 生成操作日志
     log_data = Log(log_type=1, log_opt=apply_time, log_user=username, log_detail="申请云主机", log_ip=ip)
     log_data.save()
@@ -738,14 +748,15 @@ def create_virtual(password, flavor, os_name, net_name, ins_name, os_type):
         password, flavor, os_name, net_name, ins_name)
     win_CMD = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123 boot --meta admin_pass=%s --flavor %s --image %s --nic net-name=%s %s' % (
         password, flavor, os_name, net_name, ins_name)
+    # print ins_name
     if os_type == 'Linux':
         (status, output) = commands.getstatusoutput(lin_CMD)
     else:
         (status, output) = commands.getstatusoutput(win_CMD)
     if status == 0:
-        print "success!"
+        return '1'
     else:
-        print 'failed!'
+        return '0'
 
 
 # 身份证号码验证
@@ -846,7 +857,8 @@ def get_traffic(hostname):
     r = redis.StrictRedis(host='10.1.1.203')
     rx = r.hmget(hostname, 'rx')
     tx = r.hmget(hostname, 'tx')
-    return rx, tx
+    ip = r.hmget(hostname, 'ip')
+    return rx, tx, ip
 
 
 # 获取权限

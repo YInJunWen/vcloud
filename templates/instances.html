@@ -52,7 +52,7 @@
                                     {% for value in instancesData %}
                                         <tr>
                                             <td style="text-align: center;">{{ value.name }}</td>
-                                            <td style="text-align: center;text-indent: 30px;">255.255.255.255</td>
+                                            <td style="text-align: center;text-indent: 30px;">{{ value.ip }}</td>
                                             <td class="pz">详细配置
                                                 <ul id="hideList">
                                                     <li><h3>云主机类型详情:</h3>
@@ -85,7 +85,9 @@
                                                     </li>
                                                 </ul>
                                             </td>
-                                            <td>no_function</td>
+                                            <td>
+                                                接受:{{ value.rx }}丨发送:{{ value.tx }}
+                                            </td>
                                             <td>{{ value.expired_at }}</td>
 
                                             <td>{{ value.status }}</td>

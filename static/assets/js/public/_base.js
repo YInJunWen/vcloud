@@ -180,7 +180,12 @@ function Approval(obj) {
     //         $('.orderCk_noMessage').show();
     //     }
     // });
-    $.post('/approval/', {'_id': id, '_status': status}, function(){
+    $.post('/approval/', {'_id': id, '_status': status}, function(data){
+        if (data.a === '0'){
+            alert('虚机创建失败！')
+        }else{
+            alert('success!')
+        }
         window.location.reload();
     });
 }
