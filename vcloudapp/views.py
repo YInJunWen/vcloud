@@ -849,16 +849,40 @@ def info_number(request, username):
 
 # 获取流量接口
 # 参数说明
-# hostname:云主机名称
-# rx:接收总流量
-# tx:发送总流量
-# 返回数据为B 字节  需要处理
+# hostname:云主机名称 rx:接收总流量 tx:发送总流量 返b字节
 def get_traffic(hostname):
     r = redis.StrictRedis(host='10.1.1.203')
     rx = r.hmget(hostname, 'rx')
     tx = r.hmget(hostname, 'tx')
     ip = r.hmget(hostname, 'ip')
     return rx, tx, ip
+
+
+# 关机接口
+def close_pc(request):
+    ins_name = request.POST.get('ins_name')
+    i = shutdown_instance(ins_name)
+    if i == 'ok':
+        return JsonResponse({'status': '0'})
+    return JsonResponse({'status': '1'})
+
+
+# 开机接口
+def open_pc(request):
+    ins_name = request.POST.get('ins_name')
+    i = start_instance(ins_name)
+    if i == 'ok':
+        return JsonResponse({'status': '0'})
+    return JsonResponse({'status': '1'})
+
+
+# 重启接口
+def reboot_pc(request):
+    ins_name = request.POST.get('ins_name')
+    i = reboot_instance(ins_name)
+    if i == 'ok':
+        return JsonResponse({'status': '0'})
+    return JsonResponse({'status': '1'})
 
 
 # 获取权限
@@ -871,12 +895,15 @@ def get_privileges():
 # status=0表示关机成功
 # 关机
 def shutdown_instance(ins_name):
+    print ins_name
     cmd = get_privileges()
     cmd = cmd + ' stop ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
+        Instances.objects.filter(name=ins_name).update(status=1)
         return 'ok'
     else:
+        print 'QQQQQQQQQQQQQQQQQQQQ close    ' + output
         return 'false'
 
 
@@ -888,6 +915,7 @@ def reboot_instance(ins_name):
     if status == 0:
         return 'ok'
     else:
+        print 'QQQQQQQQQQQQQQQQQQQQ reboot    ' + output
         return 'false'
 
 
@@ -897,8 +925,10 @@ def start_instance(ins_name):
     cmd = cmd + ' start ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
+        Instances.objects.filter(name=ins_name).update(status=0)
         return 'ok'
     else:
+        print 'QQQQQQQQQQQQQQQQQQQQ open    ' + output
         return 'false'
 
 

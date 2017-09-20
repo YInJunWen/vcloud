@@ -89,8 +89,16 @@
                                                 接受:{{ value.rx }}丨发送:{{ value.tx }}
                                             </td>
                                             <td>{{ value.expired_at }}</td>
-
-                                            <td>{{ value.status }}</td>
+                                            <td>
+                                                {% if value.status == 'running' %}
+                                                    <span class="fa fa-play" style="color: #419641;"></span><span>&nbsp;&nbsp;运行中</span>
+                                                {% elif value.status == 'stopped' %}
+                                                    <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>
+                                                {% else %}
+{#                                                    <span class="fa fa-circle-o-notch" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
+                                                    <span class="fa fa-history" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>
+                                                {% endif %}
+                                            </td>
                                             <td style="text-align:center">
                                                 {% if value.status == 'expire' %}
                                                     <select disabled="disabled" name="" class="console_select"
@@ -98,11 +106,16 @@
                                                         <option value="0">过期锁定</option>
                                                     </select>
                                                 {% else %}
-                                                    <select name="" class="console_select"
-                                                            onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
+                                                    <select name="" class="console_select Ts_select"
+                                                            onchange="yzj_Change(this.options[this.options.selectedIndex].value,
+                                                                                 this.parentNode.parentNode.childNodes[1].innerText)">
                                                         <option value="0">--------</option>
-                                                        <option value="1">开机</option>
-                                                        <option value="2">关机</option>
+                                                        {% if value.status != 'running' %}
+                                                            <option value="1">开机</option>
+                                                        {% endif %}
+                                                        {% if value.status != 'stopped' %}
+                                                            <option value="2">关机</option>
+                                                        {% endif %}
                                                         <option value="3">重启</option>
                                                         <option value="4">修改密码</option>
                                                         <option value="5">快照</option>

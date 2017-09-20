@@ -1,6 +1,13 @@
 ﻿/**
  * Created by YIn on 2017/3/4.
  */
+
+// 全局变量
+var Ts_start = "";
+var Ts_stop = "";
+// var Ts
+
+
 //切换三角
 (function () {
 
@@ -98,33 +105,69 @@ $('.table thead input').click(function () {
     })
 });
 
-
 // select对应打开逻辑
 $(function () {
     //  取消按钮点击
     $('.closeBtnBar').click(function () {
         $('.openWapper,.closeWapper,.restartWapper,.changeWapper,.snapshotWapper,.change_psw_Wapper').hide();
+        $('.Ts_select').children().first().attr('selected', 'selected');
+        window.location.reload();
     });
 
     //  开启云主机
     $('.openBtnComputer').click(function () {
         $('.openWapper').hide();
+        $('.Ts_select').children().first().attr('selected', 'selected');
         //给服务器发送关闭请求
-
+        $.post('/open_pc/', {'ins_name': Ts_start}, function(data){
+            // console.log(data.status);
+            if (data.status == '1') {
+                // console.log(data.status)
+                alert('虚拟机已开启!');
+                window.location.reload();
+            }else{
+                alert('开启失败, 请联系管理员!');
+                window.location.reload();
+            }
+        });
     });
 
     //  关闭云主机
     $('.closeBtnComputer').click(function () {
         $('.closeWapper').hide();
         //给服务器发送关闭请求
-
+        $('.Ts_select').children().first().attr('selected', 'selected');
+        console.log(Ts_start);
+        //给服务器发送关闭请求
+        $.post('/close_pc/', {'ins_name': Ts_start}, function(data){
+            // console.log(data.status);
+            if (data.status == '1') {
+                // console.log(data.status)
+                alert('虚拟机已关闭！');
+                window.location.reload();
+            }else{
+                alert('关机失败, 请联系管理员!');
+                window.location.reload();
+            }
+        });
     });
 
     // 重启云主机
     $('.restartBtnComputer').click(function () {
         $('.restartWapper').hide();
         //给服务器发送关闭请求
-
+        $('.Ts_select').children().first().attr('selected', 'selected');
+        //给服务器发送关闭请求
+        $.post('/reboot_pc/', {'ins_name': Ts_start}, function(data){
+            // console.log(data.status);
+            if (data.status == '1') {
+                alert('虚拟机已完成重启!');
+                window.location.reload();
+            }else{
+                alert('重启失败, 请联系管理员!');
+                window.location.reload();
+            }
+        });
     });
 
     // 更改密码
@@ -145,20 +188,25 @@ $(function () {
 
 });
 
-function yzj_Change(v) {
-    if (v == '1') {
+function yzj_Change(a, b) {
+    if (a == '1') {
+        Ts_start = b;
         $('.openWapper').show();
     }
-    if (v == '2') {
+    if (a == '2') {
+        Ts_start = b;
         $('.closeWapper').show();
     }
-    if (v == '3') {
+    if (a == '3') {
+        Ts_start = b;
         $('.restartWapper').show();
     }
-    if (v == '4') {
+    if (a == '4') {
+        Ts_start = b;
         $('.changeWapper').show();
     }
-    if (v == '5') {
+    if (a == '5') {
+        Ts_start = b;
         $('.snapshotWapper').show();
     }
 }
@@ -184,14 +232,14 @@ var order_id = $('.order_id').text();
 $('.withdrawBtnComputer').click(function () {
     $(".withdrawWapper").hide();
     $.post('/order_rollback/', {'order_index': order_id}, function () {
-        window.location.href = "http://10.1.1.102/order/";
+        window.location.href = "/order/";
     })
 });
 
 $('.deleteBtnComputer').click(function () {
     $(".deleteOrderBar").hide();
     $.post('/order_delete/', {'order_index': order_id}, function () {
-        window.location.href = "http://10.1.1.102/order/";
+        window.location.href = "/order/";
     })
 });
 
