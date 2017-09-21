@@ -509,7 +509,7 @@ def chkcreate_instance(request):
     date = time.time()
     apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
 
-    date_order = now() + timedelta(days=3)  # 生成订单失效时间
+    date_order = now() + timedelta(hours=12)  # 生成订单失效时间
     buy_days = int(expired) * 30
     date_expire = now() + timedelta(days=buy_days)
     # print os

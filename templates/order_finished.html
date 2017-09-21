@@ -33,11 +33,13 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th style="text-align: center;" width="5%">工单号</th>
-                                <th style="text-align: center;" width="5%">时间</th>
-                                <th style="text-align: center;" width="10%">事由</th>
-                                <th style="text-align: center;" width="25%">审批摘要</th>
-                                <th style="text-align: center;" width="8%">状态</th>
+                                <th>工单号</th>
+                                <th>审批摘要</th>
+                                <th>配置</th>
+                                <th>发起时间</th>
+                                <th>审批人</th>
+                                <th>审批时间</th>
+                                <th>状态</th>
                                 {% if dept != 'zjb' and dept != 'yjs_center' %}
                                     <th style="text-align: center;" width="10%">操作</th>
                                 {% endif %}
@@ -47,23 +49,81 @@
                             {% if finish %}
                                 {% for i in finish %}
                                     <tr>
-                                        <td style="text-align: center;text-indent: 0;" width="5%">{{ i.pid }}</td>
-                                        <td style="text-align: center;" width="5%">{{ i.created_at }} </td>
-                                        <td style="text-align: center;" width="10%">创建云主机</td>
-                                        <td style="text-align: center;width: 25%;">
+                                        <td>{{ i.pid }}</td>
+                                        <td>
+                                            <ul style="margin: 0;">
+                                                <li>
+                                                    <span style="display: inline-block;text-align: right;width: 60px;">发起人:</span>
+                                                    <span style="text-align: left;">666</span>
+                                                </li>
+                                                <li>
+                                                    <span style="display: inline-block;text-align: right;width: 60px;">发起部门:</span>
+                                                    <span style="text-align: left;">666</span>
+                                                </li>
+                                                <li>
+                                                    <span style="display: inline-block;text-align: right;width: 60px;">事由:</span>
+                                                    <span style="text-align: left;">666</span>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td class="pz">详细配置
+                                                <ul id="hideList" style="margin: 0;">
+                                                    <li><h3>云主机类型详情:</h3>
+                                                        <div class="table-wapper">
+                                                            <table>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <th class="hideTh">CPU</th>
+                                                                    <td class="hideTd">{{ i.vcpus }}核</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">内存</th>
+                                                                    <td class="hideTd">{{ i.memory }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">Disk</th>
+                                                                    <td class="hideTd">{{ i.disk }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">带宽</th>
+                                                                    <td class="hideTd">{{ i.bandwidth }}MB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">系统</th>
+                                                                    <td class="hideTd">{{ i.os }}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        <td>{{ i.created_at }} </td>
+                                        <td>部门经理</td>
+                                        <td>
                                             <ul>
-                                                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet cumque explicabo modi non provident saepe sapiente veritatis. Ad, at consequatur?！</li>
+                                                <li>123</li>
                                             </ul>
                                         </td>
                                         {% if i.status == '已通过' %}  {# agree #}
                                             <td style="position: relative;text-align: center;width: 8%;">
-                                                {{ i.status }}
-                                                <span style="display: inline-block;width: 50px;height: 50px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 45px 45px;"></span>
+{#                                                {{ i.status }}#}
+                                                <ul>
+                                                    <li>
+{#                                                        <span style="display: inline-block;text-align: right;width: 60px;">审批完成:</span>#}
+                                                        <span style="text-align: left;">{{ i.status }}</span>
+                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 75px 75px;"></span>
+                                                    </li>
+                                                    <li>
+{#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
+                                                        <span style="text-align: left;">(同意)</span>
+                                                    </li>
+                                                </ul>
                                             </td>
                                         {% else %}  {# refuse #}
                                             <td style="position: relative;text-align: center;width: 8%;">
                                                 {{ i.status }}
-                                                <span style="display: inline-block;width: 50px;height: 50px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/refuse.png) no-repeat;background-size: 45px 45px;"></span>
+                                                <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/refuse.png) no-repeat;background-size: 75px 75px;"></span>
                                             </td>
                                         {% endif %}
                                         {% if dept != 'zjb' and dept != 'yjs_center' %}

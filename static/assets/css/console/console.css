@@ -535,6 +535,7 @@ line-height: 34px;
 .main-body-wapper #manageView .table th,
 .main-body-wapper #orderView .table th {
   padding: 8px;
+  text-align: center;
   border-bottom: 1px solid #ddd;
   font-weight: normal;
 }
@@ -756,14 +757,14 @@ line-height: 34px;
   background: #dff0d8;
 }
 
-/*#management table tbody td:nth-child(1),*/
-/*#shiliView table tbody td:nth-child(1),*/
-/*#yunpanView table tbody td:nth-child(1),*/
-/*#kuaizhaoView table tbody td:nth-child(1),*/
-#logView table tbody td:nth-child(1){
-/*#manageView table tbody td:nth-child(1),*/
-/*#orderView table tbody td:nth-child(1){*/
-  text-indent:22px;
+#management table tbody td:nth-child(1),
+#shiliView table tbody td:nth-child(1),
+#yunpanView table tbody td:nth-child(1),
+#kuaizhaoView table tbody td:nth-child(1),
+#logView table tbody td:nth-child(1),
+#manageView table tbody td:nth-child(1),
+#orderView table tbody td:nth-child(1){
+  text-align: center;
 }
 
 #management table tbody td:nth-child(2),
@@ -773,9 +774,7 @@ line-height: 34px;
 #logView table tbody td:nth-child(2),
 #manageView table tbody td:nth-child(2),
 #orderView table tbody td:nth-child(2){
-  text-align:left;
-  width:10%;
-  text-indent:65px;
+  text-align: center;
 }
 
 #management table tbody td:nth-child(3),

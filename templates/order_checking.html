@@ -36,12 +36,13 @@
                                 {#                                <th width="10">#}
                                 {#                                    <input type="checkbox">#}
                                 {#                                </th>#}
-                                <th style="text-align: center;" width="10%">工单号</th>
-                                <th style="text-align: center;" width="20%">时间</th>
-                                <th style="text-align: center;" width="20%">事由</th>
-                                <th style="text-align: center;">配置</th>
-                                <th style="text-align: center;">申请人</th>
-                                <th style="text-align: center;">状态</th>
+                                <th>工单号</th>
+                                <th>审批摘要</th>
+                                <th>配置</th>
+                                <th>发起时间</th>
+{#                                <th>事由</th>#}
+                                <th>审核人</th>
+                                <th>状态</th>
                                 {% if dept != 'zjb' %}
                                     <th style="text-align: center;">操作</th>
                                 {% endif %}
@@ -51,11 +52,25 @@
                             {% if approval %}
                                 {% for i in approval %}
                                     <tr>
-                                        <td style="text-indent: 0;text-align: center;">{{ i.pid }}</td>
-                                        <td style="text-indent: 100px;">{{ i.created_at }}</td>
-                                        <td>创建云主机</td>
+                                        <td>{{ i.pid }}</td>
+                                        <td>
+                                            <ul style="margin: 0;">
+                                                <li>
+                                                    <span style="display: inline-block;text-align: right;width: 60px;">发起人:</span>
+                                                    <span style="text-align: left;color: #111;">{{ i.created_user }}</span>
+                                                </li>
+                                                <li>
+                                                    <span style="display: inline-block;text-align: right;width: 60px;">发起部门:</span>
+                                                    <span style="text-align: left;">666</span>
+                                                </li>
+                                                <li>
+                                                    <span style="display: inline-block;text-align: right;width: 60px;">事由:</span>
+                                                    <span style="text-align: left;">666</span>
+                                                </li>
+                                            </ul>
+                                        </td>
                                         <td class="pz">详细配置
-                                                <ul id="hideList">
+                                            <ul id="hideList">
                                                     <li><h3>云主机类型详情:</h3>
                                                         <div class="table-wapper">
                                                             <table>
@@ -86,10 +101,12 @@
                                                     </li>
                                                 </ul>
                                             </td>
-                                        <td>{{ i.created_user }}</td>
+                                        <td>{{ i.created_at }}</td>
+{#                                        <td>创建云主机</td>#}
+                                        <td>部门经理</td>
                                         <td>{{ i.status }}</td>
                                         {% if dept != 'zjb' %}
-                                        <td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a
+                                        <td style="text-align: center;"><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a
                                                 href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td>
 {#                                        {% else %}#}
 {#                                            <td></td>#}
