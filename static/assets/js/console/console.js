@@ -3,8 +3,7 @@
  */
 
 // 全局变量
-var Ts_start = "";
-var Ts_stop = "";
+var TS_START = "";
 // var Ts
 
 
@@ -119,7 +118,7 @@ $(function () {
         $('.openWapper').hide();
         $('.Ts_select').children().first().attr('selected', 'selected');
         //给服务器发送关闭请求
-        $.post('/open_pc/', {'ins_name': Ts_start}, function(data){
+        $.post('/open_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
             if (data.status == '1') {
                 // console.log(data.status)
@@ -137,9 +136,9 @@ $(function () {
         $('.closeWapper').hide();
         //给服务器发送关闭请求
         $('.Ts_select').children().first().attr('selected', 'selected');
-        console.log(Ts_start);
+        console.log(TS_START);
         //给服务器发送关闭请求
-        $.post('/close_pc/', {'ins_name': Ts_start}, function(data){
+        $.post('/close_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
             if (data.status == '1') {
                 // console.log(data.status)
@@ -158,7 +157,7 @@ $(function () {
         //给服务器发送关闭请求
         $('.Ts_select').children().first().attr('selected', 'selected');
         //给服务器发送关闭请求
-        $.post('/reboot_pc/', {'ins_name': Ts_start}, function(data){
+        $.post('/reboot_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
             if (data.status == '1') {
                 alert('虚拟机已完成重启!');
@@ -190,23 +189,23 @@ $(function () {
 
 function yzj_Change(a, b) {
     if (a == '1') {
-        Ts_start = b;
+        TS_START = b;
         $('.openWapper').show();
     }
     if (a == '2') {
-        Ts_start = b;
+        TS_START = b;
         $('.closeWapper').show();
     }
     if (a == '3') {
-        Ts_start = b;
+        TS_START = b;
         $('.restartWapper').show();
     }
     if (a == '4') {
-        Ts_start = b;
+        TS_START = b;
         $('.changeWapper').show();
     }
     if (a == '5') {
-        Ts_start = b;
+        TS_START = b;
         $('.snapshotWapper').show();
     }
 }
@@ -223,7 +222,7 @@ function yzj_Change(a, b) {
 
     //对应关闭
     $('.closeBtnBar').click(function () {
-        $('.withdrawWapper,.deleteOrderBar').hide()
+        $('.withdrawWapper,.deleteOrderBar,.reasonOrderBar').hide()
     });
 })();
 

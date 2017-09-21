@@ -733,7 +733,7 @@ line-height: 34px;
 .jumbotron label input {
   width: 300px;
 }
-.withdrawWapper,.deleteOrderBar {
+.withdrawWapper,.deleteOrderBar,.reasonOrderBar{
   display: none;
   position: fixed;
   width: 100%;

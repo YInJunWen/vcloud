@@ -57,7 +57,6 @@ class Order(models.Model):
     uuid = models.UUIDField()  # 订单明细 uuid关联订单明细用
     payed = models.IntegerField(default=1)  # 支付确认 0-已支付 1-未支付
     dept = models.CharField(max_length=20)
-    # visibility = models.BooleanField(default=0)  # 0-不可见
 
     class Meta:
         db_table = "order"
@@ -227,6 +226,17 @@ class Traffic(models.Model):
     class Meta:
         db_table = "traffic"
 
+
+# 审批时间及过程 日后好生成操作日志
+class Reason(models.Model):
+    pid = models.CharField(max_length=255, default=None)  # 云主机的对应ID 对应下面的反馈值
+    dept_approval_time = models.DateTimeField()  # 部门订单的审批时间
+    vcloud_approval_time = models.DateTimeField()  # 云计算订单的审批时间
+    dept_reason = models.CharField(max_length=255, default=None)  # 部门经理反馈的拒绝理由
+    vcloud_reason = models.CharField(max_length=255, default=None)  # 云计算中心返回的拒绝理由
+
+    class Meta:
+        db_table = 'reason'
 
 # return
 

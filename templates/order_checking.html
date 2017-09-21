@@ -54,56 +54,28 @@
                                     <tr>
                                         <td>{{ i.pid }}</td>
                                         <td>
-                                            <ul style="margin: 0;">
-                                                <li>
-                                                    <span style="display: inline-block;text-align: right;width: 60px;">发起人:</span>
-                                                    <span style="text-align: left;color: #111;">{{ i.created_user }}</span>
-                                                </li>
-                                                <li>
-                                                    <span style="display: inline-block;text-align: right;width: 60px;">发起部门:</span>
-                                                    <span style="text-align: left;">666</span>
-                                                </li>
-                                                <li>
-                                                    <span style="display: inline-block;text-align: right;width: 60px;">事由:</span>
-                                                    <span style="text-align: left;">666</span>
-                                                </li>
-                                            </ul>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">发起人：{{ i.created_user }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">所在部门：{{ i.dept }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">事由：{{ '创建云主机' }}</span>
                                         </td>
-                                        <td class="pz">详细配置
-                                            <ul id="hideList">
-                                                    <li><h3>云主机类型详情:</h3>
-                                                        <div class="table-wapper">
-                                                            <table>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <th class="hideTh">CPU</th>
-                                                                    <td class="hideTd">{{ i.vcpus }}核</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="hideTh">内存</th>
-                                                                    <td class="hideTd">{{ i.memory }}GB</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="hideTh">Disk</th>
-                                                                    <td class="hideTd">{{ i.disk }}GB</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="hideTh">带宽</th>
-                                                                    <td class="hideTd">{{ i.bandwidth }}MB</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="hideTh">系统</th>
-                                                                    <td class="hideTd">{{ i.os }}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </td>
+                                        <td style="font-size: 12px;">
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">主机名：{{ i.name }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">CPU：{{ i.vcpus }}核</span>
+                                            丨
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">内存：{{ i.memory }}GB</span>
+                                            丨
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">硬盘：{{ i.disk }}GB</span>
+                                            丨
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">带宽：{{ i.bandwidth }}MB</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">系统：{{ i.os }}</span>
+                                        </td>
                                         <td>{{ i.created_at }}</td>
 {#                                        <td>创建云主机</td>#}
-                                        <td>部门经理</td>
+                                        <td>{{ i.dept_admin }}</td>
                                         <td>{{ i.status }}</td>
                                         {% if dept != 'zjb' %}
                                         <td style="text-align: center;"><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a
@@ -169,6 +141,18 @@
             <div class="checkBar">
                 <button class="btn btn-default closeBtnBar">取消</button>
                 <button class="btn btn-primary deleteBtnComputer">删除工单</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reasonOrderBar">
+        <div class="jumbotron">
+            <h3>请填写拒绝的理由！</h3>
+            <textarea class="form-control reasonValue" rows="8" style="outline:none;resize:none;width: 90%;margin: 0 auto;" maxlength="150" placeholder="最多150个字符..."></textarea>
+            <div>&nbsp;</div>
+            <div class="checkBar">
+                <button class="btn btn-default closeBtnBar">取消</button>
+                <button class="btn btn-primary reasonBtnComputer">提交</button>
             </div>
         </div>
     </div>

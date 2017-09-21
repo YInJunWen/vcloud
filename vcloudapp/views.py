@@ -231,6 +231,8 @@ def order_checking(request):
                     j['status'] = "已过期"
                 # 获取pid
                 ins_data = Instances.objects.get(pid=j['pid'])
+                j['name'] = OrderDetail.objects.get(pid=j['pid']).name
+                # print j['name']
                 j['vcpus'] = ins_data.vcpus
                 j['memory'] = ins_data.memory
                 j['disk'] = ins_data.disk
@@ -253,6 +255,7 @@ def order_checking(request):
             a = list(Order.objects.filter(dept=i, dept_pending=1).exclude(dept_pending=(0 | 2)).values())
             u.extend(a)
             for j in u:
+                # print j['dept']
                 if j['dept_pending'] == 0:
                     j['status'] = "已通过"
                 if j['dept_pending'] == 1:
@@ -261,10 +264,12 @@ def order_checking(request):
                     j['status'] = "已过期"
                 # 获取pid
                 ins_data = Instances.objects.get(pid=j['pid'])
+                j['name'] = OrderDetail.objects.get(pid=j['pid']).name
                 j['vcpus'] = ins_data.vcpus
                 j['memory'] = ins_data.memory
                 j['disk'] = ins_data.disk
                 j['bandwidth'] = ins_data.bandwidth
+                j['dept_admin'] = Power.objects.get(dept_name=j['dept']).dept_admin
                 if ins_data.os == 1:
                     ins_data.os = 'Win2008R2_64'
                 if ins_data.os == 2:
@@ -280,7 +285,7 @@ def order_checking(request):
                 j['os'] = ins_data.os
                 m.append(j)
     info_number = len(m)
-    limit = 10  # 每页显示的记录数
+    limit = 7  # 每页显示的记录数
     paginator = Paginator(m, limit)
     page = request.GET.get('page')  # 获取页码
     try:
@@ -295,6 +300,9 @@ def order_checking(request):
 # 待审核的接口吐数据
 def approval(request):
     username = request.session.get('username')
+    reason = request.POST.get('reason')  # 获取用户填写的拒绝理由
+    now_time = now()
+    print now_time
     power = get_power(username)
     if not power:
         return HttpResponseRedirect('/error/')
@@ -324,9 +332,12 @@ def approval(request):
     else:
         for i in dept_arr:
             if i == 'yjs_center':
-                Order.objects.filter(pid=pid).update(vcloud_pending=2)
+                Order.objects.filter(pid=pid).update(vcloud_pending=2, vcloud_reason=reason)
             else:
-                Order.objects.filter(pid=pid).update(dept_pending=2)
+                Order.objects.filter(pid=pid).update(dept_pending=2, dept_reason=reason)
+                # Reason.objects.filter(pid=)
+    #  少了经理级别和云计算经理级别的 拒绝反馈
+
     info_number(request, username)
     # print o
     return JsonResponse({'a': o})

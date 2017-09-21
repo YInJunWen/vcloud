@@ -2,7 +2,9 @@
  * Created by YIn on 2017/7/19.
  */
 
-/*====================django ajax ======*/
+var REASON_ID = "";  // 定义拒绝的订单ID
+var REASON_STATUS = "";  // 定义拒绝的状态
+
 jQuery(document).ajaxSend(function (event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;
@@ -58,58 +60,6 @@ $('#manageBar').click(function () {
     return false;
 });
 
-/***
- * actionObject
- * operationType
- * username
- * ip
- * logintime
- */
-
-// $('#logTable').DataTable({
-//     ajax: '/accessLog/',
-//     columns: [
-//         {data: 'log_user'},
-//         {data: 'log_type'},
-//         {data: 'log_detail'},
-//         {data: 'log_ip'},
-//         {data: 'log_opt'}
-//     ],
-//     "fnInitComplete": function () {
-//         if ($('#Logtbody tr').length > 1) {
-//             $('.log_noMessage').hide();
-//         }
-//     }
-// });
-
-
-// $.ajax({
-//     url: '/accessOrder/',
-//     success: function (data) {
-//         $.each(data.data, function (key, value) {
-//             tbody = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.status + '</td><td>' + '<a href="javascript:void(0)" onclick="Approval(this)">撤销&nbsp;</a>' + '<a href="javascript:void(0)" onclick="Approval(this)">&nbsp;删除</a>' + '</td></tr>';
-//             $('#orderTable').append(tbody);
-//             if ($('#orderTable tr').length >= 1) {
-//                 $('.order_noMessage').hide();
-//             }
-//         })
-//     }
-// });
-
-// $.ajax({
-//     url: '/accessIns/',
-//     success: function (data) {
-//         $.each(data.data, function (key, value) {
-//             tbody = '<tr><td style="text-align: center;">' + value.name + '</td><td style="text-align: center;text-indent: 30px;">255.255.255.255</td><td class="pz">详细配置<ul id="hideList"><li><h3>云主机类型详情:</h3><div class="table-wapper"><table><tbody><tr><th class="hideTh">CPU</th><td class="hideTd">' + value.vcpus + '核</td></tr><tr><th class="hideTh">内存</th><td class="hideTd">' + value.memory + 'GB</td></tr><tr><th class="hideTh">Disk</th><td class="hideTd">' + value.disk + 'GB</td></tr><tr><th class="hideTh">带宽</th><td class="hideTd">' + value.bandwidth + 'MB</td></tr><tr><th class="hideTh">系统</th><td class="hideTd">' + value.os + '</td></tr></tbody></table></div></li></ul></td><td>1 MB</td><td>1</td>' + '<td>' + value.status + '</td>' + '<td style="text-align:center"><select name="" class="console_select" onchange="yzj_Change(this.options[this.options.selectedIndex].value)"><option value="0">--------</option><option value="1">开机</option><option value="2">关机</option><option value="3">重启</option><option value="4">修改密码</option><option value="5">快照</option></select></td></tr>';
-//             $('#yDisk-body').append(tbody);
-//             if ($('#yDisk-body tr').length >= 1) {
-//                 $('.ins_noMessage').hide();
-//             }
-//         })
-//     }
-// });
-
-
 //  修改密码
 $('#change_psw').click(function () {
     $('.change_psw_Wapper').show();
@@ -162,33 +112,51 @@ $('.closeBtnBar').click(function () {
 });
 
 function Approval(obj) {
+    REASON_ID = $(obj).parent().parent().children().get(0).innerText;
     var status = $.trim($(obj).text());
     if (status === '同意'){
         status = 'y';
+        var id = $(obj).parent().parent().children().get(0).innerText;
+        $.post('/approval/', {'_id': REASON_ID, '_status': status}, function(data){
+            if (data.a === '0'){
+                alert('failed！')
+            }else{
+                alert('success!')
+            }
+            window.location.reload();
+        });
     } else {
-      status = 'n'
+      status = 'n';
+      REASON_STATUS = 'n';
     }
-    var id = $(obj).parent().parent().children().get(0).innerText;
-    // console.log(id);
-    // $.post('/approval/', {'_id': id, '_status': status}, function (data) {
-    //     $('.yChecking-body').empty();
-    //     $.each(data.data, function (key, value) {
-    //         var data = '<tr><td style="text-indent: 0;text-align: center;">' + value.pid + '</td><td style="text-indent: 100px;">' + value.created_at + '</td><td>创建云主机</td><td>' + value.created_user + '</td><td>' + value.status + '</td><td><a href="javascript:void(0)" onclick="Approval(this)">同意&nbsp;</a><a href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td></tr>';
-    //         $('.yChecking-body').append(data);
-    //     });
-    //     if ($('.yChecking-body tr').length < 1) {
-    //         $('.orderCk_noMessage').show();
+
+    // 如果审批拒绝就弹窗
+    if (status == 'n'){
+        $('.reasonOrderBar').show();
+    }
+    // var id = $(obj).parent().parent().children().get(0).innerText;
+    // $.post('/approval/', {'_id': id, '_status': status}, function(data){
+    //     if (data.a === '0'){
+    //         alert('failed！')
+    //     }else{
+    //         alert('success!')
     //     }
+    //     window.location.reload();
     // });
-    $.post('/approval/', {'_id': id, '_status': status}, function(data){
+}
+
+$('.reasonBtnComputer').click(function(){
+    $('.reasonOrderBar').hide();
+    $.post('/approval/', {'_id': REASON_ID, '_status': REASON_STATUS, 'reason': $('.reasonValue').val()}, function(data){
         if (data.a === '0'){
-            alert('虚机创建失败！')
+            alert('failed！')
         }else{
             alert('success!')
         }
         window.location.reload();
     });
-}
+});
+
 
 function Finished(obj) {
     var status = $.trim($(obj).text());
