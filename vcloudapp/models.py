@@ -228,15 +228,26 @@ class Traffic(models.Model):
 
 
 # 审批时间及过程 日后好生成操作日志
-class Reason(models.Model):
+class DeptReason(models.Model):
     pid = models.CharField(max_length=255, default=None)  # 云主机的对应ID 对应下面的反馈值
+    approval_person = models.CharField(max_length=255, default=None)  # 审批人
     dept_approval_time = models.DateTimeField()  # 部门订单的审批时间
-    vcloud_approval_time = models.DateTimeField()  # 云计算订单的审批时间
     dept_reason = models.CharField(max_length=255, default=None)  # 部门经理反馈的拒绝理由
+
+    class Meta:
+        db_table = 'dept_reason'
+
+
+class VcloudReason(models.Model):
+    pid = models.CharField(max_length=255, default=None)  # 云主机的对应ID 对应下面的反馈值
+    approval_person = models.CharField(max_length=255, default=None)  # 审批人
+    vcloud_approval_time = models.DateTimeField()  # 云计算订单的审批时间
     vcloud_reason = models.CharField(max_length=255, default=None)  # 云计算中心返回的拒绝理由
 
     class Meta:
-        db_table = 'reason'
+        db_table = 'vcloud_reason'
+
+
 
 # return
 

@@ -71,31 +71,33 @@
                                             <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">系统：{{ i.os }}</span>
                                         </td>
                                         <td>{{ i.created_at }} </td>
-                                        <td>部门经理</td>
-                                        <td>
-                                            <ul>
-                                                <li>123</li>
-                                            </ul>
-                                        </td>
+                                        <td>{{ i.approval_person }}</td>
+                                        <td>{{ i.dept_approval_time }}</td>
                                         {% if i.status == '已通过' %}  {# agree #}
-                                            <td style="position: relative;text-align: center;width: 8%;">
+                                            <td style="position: relative;text-align: center;width: 8%;font-size: 13px;">
 {#                                                {{ i.status }}#}
                                                 <ul>
-                                                    <li>
+                                                    <li style="margin-bottom: 5px;">
 {#                                                        <span style="display: inline-block;text-align: right;width: 60px;">审批完成:</span>#}
-                                                        <span style="text-align: left;">{{ i.status }}</span>
-                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 75px 75px;"></span>
+                                                        <span style="text-align: left;">部门审核:{{ i.status }}</span>
+{#                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 75px 75px;"></span>#}
                                                     </li>
-                                                    <li>
+                                                    <li style="margin-bottom: 5px;">
 {#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
-                                                        <span style="text-align: left;">(同意)</span>
+                                                        <span style="text-align: left;">云计算审核: 待审核</span>
+                                                    </li>
+                                                    <li style="margin-bottom: 5px;">
+                                                        <span style="text-align: left;color: #337ab7">备注: 就是不给你建！</span>
                                                     </li>
                                                 </ul>
                                             </td>
                                         {% else %}  {# refuse #}
-                                            <td style="position: relative;text-align: center;width: 8%;">
-                                                {{ i.status }}
-                                                <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/refuse.png) no-repeat;background-size: 75px 75px;"></span>
+                                            <td style="position: relative;text-align: center;width: 8%;font-size: 13px;">
+                                                <ul>
+                                                    <li style="margin-bottom: 5px;">{{ i.status }}</li>
+                                                    <li style="text-align: left;margin-bottom: 5px;">备注:{{ i.dept_reason }}</li>
+                                                </ul>
+{#                                                <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/refuse.png) no-repeat;background-size: 75px 75px;"></span>#}
                                             </td>
                                         {% endif %}
                                         {% if dept != 'zjb' and dept != 'yjs_center' %}

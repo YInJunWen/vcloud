@@ -94,7 +94,7 @@ def instances(request):
         i['tx'] = tx[0]
         i['ip'] = ip[0]
         u.append(i)
-    limit = 10  # 每页显示的记录数
+    limit = 7  # 每页显示的记录数
     paginator = Paginator(u, limit)
     page = request.GET.get('page')  # 获取页码
     try:
@@ -169,7 +169,7 @@ def order(request):
         if i['status'] == 1:
             i['status'] = "待审核"
         u.append(i)
-    limit = 10  # 每页显示的记录数
+    limit = 7  # 每页显示的记录数
     paginator = Paginator(u, limit)
     page = request.GET.get('page')  # 获取页码
     try:
@@ -237,6 +237,7 @@ def order_checking(request):
                 j['memory'] = ins_data.memory
                 j['disk'] = ins_data.disk
                 j['bandwidth'] = ins_data.bandwidth
+                j['dept_admin'] = Power.objects.get(dept_name='yjs').dept_admin
                 if ins_data.os == 1:
                     ins_data.os = 'Win2008R2_64'
                 if ins_data.os == 2:
@@ -322,6 +323,8 @@ def approval(request):
                 # 创建虚机命令
                 o = create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
                 if o == '1':  #
+                    data = VcloudReason(pid=pid, vcloud_approval_time=now(), vcloud_reason='同意', approval_person=username)
+                    data.save()
                     Order.objects.filter(pid=pid).update(vcloud_pending=0)
                     Instances.objects.filter(pid=pid).update(locked=1)
                     admin_email(pid)
@@ -329,13 +332,18 @@ def approval(request):
                 #     JsonResponse({'a': '虚机没搞出来！出错啦！'})
             else:
                 Order.objects.filter(pid=pid).update(dept_pending=0)
+                data = DeptReason(pid=pid, dept_approval_time=now(), dept_reason='同意', approval_person=username)
+                data.save()
     else:
         for i in dept_arr:
             if i == 'yjs_center':
-                Order.objects.filter(pid=pid).update(vcloud_pending=2, vcloud_reason=reason)
+                Order.objects.filter(pid=pid).update(vcloud_pending=2)
+                data = VcloudReason(pid=pid, vcloud_approval_time=now(), vcloud_reason=reason, approval_person=username)
+                data.save()
             else:
-                Order.objects.filter(pid=pid).update(dept_pending=2, dept_reason=reason)
-                # Reason.objects.filter(pid=)
+                Order.objects.filter(pid=pid).update(dept_pending=2)
+                data = DeptReason(pid=pid, dept_approval_time=now(), dept_reason=reason, approval_person=username)
+                data.save()
     #  少了经理级别和云计算经理级别的 拒绝反馈
 
     info_number(request, username)
@@ -371,6 +379,27 @@ def order_finished(request):
             a = list(Order.objects.filter(dept=i).filter(Q(dept_pending=0) | Q(dept_pending=2)).values())
             u.extend(a)
             for j in u:
+                data = OrderDetail.objects.get(pid=j['pid'])
+                j['name'] = data.name
+                j['vcpu'] = data.vcpu
+                j['memory'] = data.memory
+                j['bandwidth'] = data.bandwidth
+                j['disk'] = data.disk
+                if data.os == 1:
+                    j['os'] = 'Win2008R2_64'
+                if data.os == 2:
+                    j['os'] = 'Win2008R2_64(SQLServer)'
+                if data.os == 3:
+                    j['os'] = 'Win2008R2_64'
+                if data.os == 4:
+                    j['os'] = 'Win2012R2_64(SQLServer)'
+                if data.os == 5:
+                    j['os'] = 'CentOS7.2'
+                if data.os == 6:
+                    j['os'] = 'CentOS7.2 + Lamp'
+                j['approval_person'] = DeptReason.objects.get(pid=j['pid']).approval_person
+                j['dept_approval_time'] = DeptReason.objects.get(pid=j['pid']).dept_approval_time
+                j['dept_reason'] = DeptReason.objects.get(pid=j['pid']).dept_reason
                 if j['dept_pending'] == 0:
                     j['status'] = "已通过"
                 if j['dept_pending'] == 2:
@@ -378,7 +407,7 @@ def order_finished(request):
                 m.append(j)
     # info_number = len(m)
     # print info_number
-    limit = 10  # 每页显示的记录数
+    limit = 7  # 每页显示的记录数
     paginator = Paginator(m, limit)
     page = request.GET.get('page')  # 获取页码
     try:
@@ -404,6 +433,8 @@ def finished(request):
             if i == 'yjs_center':
                 Order.objects.filter(pid=pid).update(vcloud_pending=1)
             else:
+                # 删除之前的评论
+                DeptReason.objects.filter(pid=pid).delete()
                 Order.objects.filter(pid=pid).update(dept_pending=1)
     info_number(request, username)
     return HttpResponseRedirect('/order_finished/')
