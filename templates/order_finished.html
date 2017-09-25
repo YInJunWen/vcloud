@@ -72,35 +72,71 @@
                                         </td>
                                         <td>{{ i.created_at }} </td>
                                         <td>{{ i.approval_person }}</td>
-                                        <td>{{ i.dept_approval_time }}</td>
+{#                                        <td>{{ dept }}</td>#}
+                                        {% if dept == 'yjs_center' %}
+                                            <td>{{ i.vcloud_approval_time }}</td>
+                                        {% else %}
+                                            <td>{{ i.dept_approval_time }}</td>
+                                        {% endif %}
                                         {% if i.status == '已通过' %}  {# agree #}
                                             <td style="position: relative;text-align: center;width: 8%;font-size: 13px;">
 {#                                                {{ i.status }}#}
                                                 <ul>
-                                                    <li style="margin-bottom: 5px;">
+{#                                                    <li style="margin-bottom: 5px;">#}
 {#                                                        <span style="display: inline-block;text-align: right;width: 60px;">审批完成:</span>#}
-                                                        <span style="text-align: left;">部门审核:{{ i.status }}</span>
+{#                                                        <span style="text-align: left;">部门审核:{{ i.status }}</span>#}
 {#                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 75px 75px;"></span>#}
-                                                    </li>
-                                                    <li style="margin-bottom: 5px;">
-{#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
-                                                        <span style="text-align: left;">云计算审核: 待审核</span>
-                                                    </li>
-                                                    <li style="margin-bottom: 5px;">
-                                                        <span style="text-align: left;color: #337ab7">备注: 就是不给你建！</span>
-                                                    </li>
+{#                                                    </li>#}
+                                                    {% if dept == 'yjs_center' %}
+                                                        <li style="margin-bottom: 5px;">
+    {#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
+                                                            <span style="text-align: left;">云计算审核: {{ i.status }}</span>
+                                                        </li>
+                                                        <li style="margin-bottom: 5px;">
+                                                            <span style="text-align: left;">备注: {{ i.vcloud_reason }}</span>
+                                                        </li>
+                                                    {% else %}
+                                                        <li style="margin-bottom: 5px;">
+    {#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
+                                                            <span style="text-align: left;">部门审核: {{ i.status }}</span>
+                                                        </li>
+                                                        <li style="margin-bottom: 5px;">
+                                                            <span style="text-align: left;">备注: {{ i.dept_reason }}</span>
+                                                        </li>
+                                                    {% endif %}
                                                 </ul>
                                             </td>
+{#                                            不通过 #}
                                         {% else %}  {# refuse #}
                                             <td style="position: relative;text-align: center;width: 8%;font-size: 13px;">
                                                 <ul>
-                                                    <li style="margin-bottom: 5px;">{{ i.status }}</li>
-                                                    <li style="text-align: left;margin-bottom: 5px;">备注:{{ i.dept_reason }}</li>
+{#                                                    <li style="margin-bottom: 5px;">#}
+{#                                                        <span style="display: inline-block;text-align: right;width: 60px;">审批完成:</span>#}
+{#                                                        <span style="text-align: left;">部门审核: 已通过</span>#}
+{#                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 75px 75px;"></span>#}
+{#                                                    </li>#}
+                                                    {% if dept == 'yjs_center' %}
+                                                        <li style="margin-bottom: 5px;">
+    {#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
+                                                            <span style="text-align: left;">云计算审核: {{ i.status }}</span>
+                                                        </li>
+                                                        <li style="margin-bottom: 5px;">
+                                                            <span style="text-align: left;">备注: {{ i.vcloud_reason }}</span>
+                                                        </li>
+                                                    {% else %}
+                                                        <li style="margin-bottom: 5px;">
+    {#                                                        <span style="display: inline-block;text-align: right;width: 60px;"> 备注:</span>#}
+                                                            <span style="text-align: left;">部门审核: {{ i.status }}</span>
+                                                        </li>
+                                                        <li style="margin-bottom: 5px;">
+                                                            <span style="text-align: left;">备注: {{ i.dept_reason }}</span>
+                                                        </li>
+                                                    {% endif %}
                                                 </ul>
 {#                                                <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -5px;right: 50%;background: url(/static/assets/img/refuse.png) no-repeat;background-size: 75px 75px;"></span>#}
                                             </td>
                                         {% endif %}
-                                        {% if dept != 'zjb' and dept != 'yjs_center' %}
+                                        {% if dept != 'zjb' and dept != 'yjs_center'  %}
                                         <td style="text-align: center;width: 10%;"><a href="javascript:void(0)"
                                                                            class="orderBtnOpen"
                                                                            onclick="Finished(this)">撤销&nbsp</a>

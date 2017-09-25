@@ -160,11 +160,43 @@ def order(request):
     data = Order.objects.filter(created_user=username).values()
     u = []
     for i in data:
-        # 判断三级审批
+        data = OrderDetail.objects.get(pid=i['pid'])
+        i['name'] = data.name
+        i['vcpu'] = data.vcpu
+        i['memory'] = data.memory
+        i['bandwidth'] = data.bandwidth
+        i['disk'] = data.disk
+        if data.os == 1:
+            i['os'] = 'Win2008R2_64'
+        if data.os == 2:
+            i['os'] = 'Win2008R2_64(SQLServer)'
+        if data.os == 3:
+            i['os'] = 'Win2008R2_64'
+        if data.os == 4:
+            i['os'] = 'Win2012R2_64(SQLServer)'
+        if data.os == 5:
+            i['os'] = 'CentOS7.2'
+        if data.os == 6:
+            i['os'] = 'CentOS7.2 + Lamp'
+        if VcloudReason.objects.filter(pid=i['pid']):
+            # print VcloudReason.objects.filter(pid=i['pid']).values()
+            i['vcloud_approval_person'] = VcloudReason.objects.get(pid=i['pid']).approval_person
+            i['vcloud_approval_time'] = VcloudReason.objects.get(pid=i['pid']).vcloud_approval_time
+            i['vcloud_reason'] = VcloudReason.objects.get(pid=i['pid']).vcloud_reason
+            # print i['vcloud_reason']
+        elif DeptReason.objects.filter(pid=i['pid']):
+            i['dept_approval_person'] = DeptReason.objects.get(pid=i['pid']).approval_person
+            i['dept_approval_time'] = DeptReason.objects.get(pid=i['pid']).dept_approval_time
+            i['dept_reason'] = DeptReason.objects.get(pid=i['pid']).dept_reason
+            # print i['dept_reason']
+        else:
+            i['vcloud_reason'] = '待审批'
+            i['dept_reason'] = '待审批'
+            # 判断三级审批
         if (i['dept_pending'] == 0) and (i['vcloud_pending']) == 0:
             i['status'] = "已通过"
         if (i['dept_pending'] == 2) or (i['vcloud_pending']) == 2:
-            i['status'] = "已失效"
+            i['status'] = "已拒绝"
         # 0 - 已完成，1 - 待审核，2 - 已过期
         if i['status'] == 1:
             i['status'] = "待审核"
@@ -303,7 +335,7 @@ def approval(request):
     username = request.session.get('username')
     reason = request.POST.get('reason')  # 获取用户填写的拒绝理由
     now_time = now()
-    print now_time
+    # print now_time
     power = get_power(username)
     if not power:
         return HttpResponseRedirect('/error/')
@@ -370,10 +402,31 @@ def order_finished(request):
             a = list(Order.objects.filter(Q(vcloud_pending=0) | Q(vcloud_pending=2)).values())
             u.extend(a)
             for j in u:
+                data = OrderDetail.objects.get(pid=j['pid'])
+                j['name'] = data.name
+                j['vcpu'] = data.vcpu
+                j['memory'] = data.memory
+                j['bandwidth'] = data.bandwidth
+                j['disk'] = data.disk
+                if data.os == 1:
+                    j['os'] = 'Win2008R2_64'
+                if data.os == 2:
+                    j['os'] = 'Win2008R2_64(SQLServer)'
+                if data.os == 3:
+                    j['os'] = 'Win2008R2_64'
+                if data.os == 4:
+                    j['os'] = 'Win2012R2_64(SQLServer)'
+                if data.os == 5:
+                    j['os'] = 'CentOS7.2'
+                if data.os == 6:
+                    j['os'] = 'CentOS7.2 + Lamp'
+                j['approval_person'] = VcloudReason.objects.get(pid=j['pid']).approval_person
+                j['vcloud_approval_time'] = VcloudReason.objects.get(pid=j['pid']).vcloud_approval_time
+                j['vcloud_reason'] = VcloudReason.objects.get(pid=j['pid']).vcloud_reason
                 if j['vcloud_pending'] == 0:
                     j['status'] = "已通过"
                 if j['vcloud_pending'] == 2:
-                    j['status'] = "已失效"
+                    j['status'] = "已拒绝"
                 m.append(j)
         else:
             a = list(Order.objects.filter(dept=i).filter(Q(dept_pending=0) | Q(dept_pending=2)).values())
@@ -403,7 +456,7 @@ def order_finished(request):
                 if j['dept_pending'] == 0:
                     j['status'] = "已通过"
                 if j['dept_pending'] == 2:
-                    j['status'] = "已失效"
+                    j['status'] = "已拒绝"
                 m.append(j)
     # info_number = len(m)
     # print info_number
@@ -431,6 +484,7 @@ def finished(request):
     if _status == 'back':
         for i in dept_arr:
             if i == 'yjs_center':
+                VcloudReason.objects.filter(pid=pid).delete()
                 Order.objects.filter(pid=pid).update(vcloud_pending=1)
             else:
                 # 删除之前的评论
@@ -937,7 +991,7 @@ def get_privileges():
 # status=0表示关机成功
 # 关机
 def shutdown_instance(ins_name):
-    print ins_name
+    # print ins_name
     cmd = get_privileges()
     cmd = cmd + ' stop ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
