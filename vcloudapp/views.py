@@ -5,6 +5,7 @@ import time
 import commands
 import re
 import redis as redis
+# import sys
 
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -89,9 +90,19 @@ def instances(request):
         if i['os'] == 5:
             i['os'] = 'CentOS7.2 + Lamp'
         (rx, tx, ip) = get_traffic(i['name'])
-        # print get_traffic(i['name'])
-        i['rx'] = rx[0]
-        i['tx'] = tx[0]
+        # print rx[0]
+        rx = int(rx[0]) / 1024.0
+        tx = int(tx[0]) / 1024.0
+        if rx < 1024.0:  # k单位
+            i['rx'] = '%s %s' % (round(rx, 2), 'Kb')
+            i['tx'] = '%s %s' % (round(tx, 2), 'Kb')
+        else:
+            rx = rx / 1024.0
+            tx = tx / 1024.0
+            i['rx'] = '%s %s' % (round(rx, 2), 'Mb')
+            i['tx'] = '%s %s' % (round(tx, 2), 'Mb')
+        # i['rx'] = rx
+        # i['tx'] = tx
         i['ip'] = ip[0]
         u.append(i)
     limit = 7  # 每页显示的记录数
@@ -158,6 +169,11 @@ def order(request):
     username = request.session.get('username')
     power = get_power(username)
     data = Order.objects.filter(created_user=username).values()
+    # print data
+    timing = now()
+    expired_data = Order.objects.filter(created_user=username, expired_at__lte=timing, dept_pending=1, vcloud_pending=1)
+    if expired_data:
+        expired_data.update(dept_pending=2, vcloud_pending=2)
     u = []
     for i in data:
         data = OrderDetail.objects.get(pid=i['pid'])
@@ -179,16 +195,13 @@ def order(request):
         if data.os == 6:
             i['os'] = 'CentOS7.2 + Lamp'
         if VcloudReason.objects.filter(pid=i['pid']):
-            # print VcloudReason.objects.filter(pid=i['pid']).values()
             i['vcloud_approval_person'] = VcloudReason.objects.get(pid=i['pid']).approval_person
             i['vcloud_approval_time'] = VcloudReason.objects.get(pid=i['pid']).vcloud_approval_time
             i['vcloud_reason'] = VcloudReason.objects.get(pid=i['pid']).vcloud_reason
-            # print i['vcloud_reason']
         elif DeptReason.objects.filter(pid=i['pid']):
             i['dept_approval_person'] = DeptReason.objects.get(pid=i['pid']).approval_person
             i['dept_approval_time'] = DeptReason.objects.get(pid=i['pid']).dept_approval_time
             i['dept_reason'] = DeptReason.objects.get(pid=i['pid']).dept_reason
-            # print i['dept_reason']
         else:
             i['vcloud_reason'] = '待审批'
             i['dept_reason'] = '待审批'
@@ -197,6 +210,8 @@ def order(request):
             i['status'] = "已通过"
         if (i['dept_pending'] == 2) or (i['vcloud_pending']) == 2:
             i['status'] = "已拒绝"
+        if (i['dept_pending'] == 2) and (i['vcloud_pending']) == 2:
+            i['status'] = "已过期"
         # 0 - 已完成，1 - 待审核，2 - 已过期
         if i['status'] == 1:
             i['status'] = "待审核"
@@ -420,9 +435,10 @@ def order_finished(request):
                     j['os'] = 'CentOS7.2'
                 if data.os == 6:
                     j['os'] = 'CentOS7.2 + Lamp'
-                j['approval_person'] = VcloudReason.objects.get(pid=j['pid']).approval_person
-                j['vcloud_approval_time'] = VcloudReason.objects.get(pid=j['pid']).vcloud_approval_time
-                j['vcloud_reason'] = VcloudReason.objects.get(pid=j['pid']).vcloud_reason
+                if VcloudReason.objects.filter(pid=j['pid']):
+                    j['approval_person'] = VcloudReason.objects.get(pid=j['pid']).approval_person
+                    j['vcloud_approval_time'] = VcloudReason.objects.get(pid=j['pid']).vcloud_approval_time
+                    j['vcloud_reason'] = VcloudReason.objects.get(pid=j['pid']).vcloud_reason
                 if j['vcloud_pending'] == 0:
                     j['status'] = "已通过"
                 if j['vcloud_pending'] == 2:
@@ -450,9 +466,10 @@ def order_finished(request):
                     j['os'] = 'CentOS7.2'
                 if data.os == 6:
                     j['os'] = 'CentOS7.2 + Lamp'
-                j['approval_person'] = DeptReason.objects.get(pid=j['pid']).approval_person
-                j['dept_approval_time'] = DeptReason.objects.get(pid=j['pid']).dept_approval_time
-                j['dept_reason'] = DeptReason.objects.get(pid=j['pid']).dept_reason
+                if DeptReason.objects.filter(pid=j['pid']):
+                    j['approval_person'] = DeptReason.objects.get(pid=j['pid']).approval_person
+                    j['dept_approval_time'] = DeptReason.objects.get(pid=j['pid']).dept_approval_time
+                    j['dept_reason'] = DeptReason.objects.get(pid=j['pid']).dept_reason
                 if j['dept_pending'] == 0:
                     j['status'] = "已通过"
                 if j['dept_pending'] == 2:
@@ -489,9 +506,11 @@ def finished(request):
             else:
                 # 删除之前的评论
                 DeptReason.objects.filter(pid=pid).delete()
-                Order.objects.filter(pid=pid).update(dept_pending=1)
+                if Order.objects.get(pid=pid).vcloud_pending == True:
+                    Order.objects.filter(pid=pid).update(dept_pending=1)
+                    return JsonResponse({'status': '1'})
     info_number(request, username)
-    return HttpResponseRedirect('/order_finished/')
+    return JsonResponse({'status': '0'})
 
 
 #  注册接口注册完跳login
@@ -605,7 +624,7 @@ def chkcreate_instance(request):
     date = time.time()
     apply_time = time.strftime('%Y-%m-%d %X', time.localtime(date))
 
-    date_order = now() + timedelta(hours=12)  # 生成订单失效时间
+    date_order = now() + timedelta(hours=24)  # 生成订单失效时间
     buy_days = int(expired) * 30
     date_expire = now() + timedelta(days=buy_days)
     # print os
@@ -954,33 +973,6 @@ def get_traffic(hostname):
     return rx, tx, ip
 
 
-# 关机接口
-def close_pc(request):
-    ins_name = request.POST.get('ins_name')
-    i = shutdown_instance(ins_name)
-    if i == 'ok':
-        return JsonResponse({'status': '0'})
-    return JsonResponse({'status': '1'})
-
-
-# 开机接口
-def open_pc(request):
-    ins_name = request.POST.get('ins_name')
-    i = start_instance(ins_name)
-    if i == 'ok':
-        return JsonResponse({'status': '0'})
-    return JsonResponse({'status': '1'})
-
-
-# 重启接口
-def reboot_pc(request):
-    ins_name = request.POST.get('ins_name')
-    i = reboot_instance(ins_name)
-    if i == 'ok':
-        return JsonResponse({'status': '0'})
-    return JsonResponse({'status': '1'})
-
-
 # 获取权限
 def get_privileges():
     cmd = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123'
@@ -1026,6 +1018,34 @@ def start_instance(ins_name):
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ open    ' + output
         return 'false'
+
+
+# 关机接口
+def close_pc(request):
+    ins_name = request.POST.get('ins_name')
+    print ins_name
+    i = shutdown_instance(ins_name)
+    if i == 'ok':
+        return JsonResponse({'status': '0'})
+    return JsonResponse({'status': '1'})
+
+
+# 开机接口
+def open_pc(request):
+    ins_name = request.POST.get('ins_name')
+    i = start_instance(ins_name)
+    if i == 'ok':
+        return JsonResponse({'status': '0'})
+    return JsonResponse({'status': '1'})
+
+
+# 重启接口
+def reboot_pc(request):
+    ins_name = request.POST.get('ins_name')
+    i = reboot_instance(ins_name)
+    if i == 'ok':
+        return JsonResponse({'status': '0'})
+    return JsonResponse({'status': '1'})
 
 
 # 测试1

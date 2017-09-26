@@ -78,7 +78,7 @@
                                 {% for value in order %}
                                     <tr>
                                         <td>
-{#                                            <a href="/{{ value.pid }}" style="text-decoration: underline;">{{ value.pid }}</a>#}
+                                            {#                                            <a href="/{{ value.pid }}" style="text-decoration: underline;">{{ value.pid }}</a>#}
                                             {{ value.pid }}
                                         </td>
                                         <td>
@@ -88,19 +88,51 @@
                                             <br>
                                             <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">事由：{{ '创建云主机' }}</span>
                                         </td>
-                                        <td style="font-size: 12px;">
-                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">主机名：{{ value.name }}</span>
-                                            <br>
-                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">CPU：{{ value.vcpus }}核</span>
-                                            丨
-                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">内存：{{ value.memory }}GB</span>
-                                            丨
-                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">硬盘：{{ value.disk }}GB</span>
-                                            丨
-                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">带宽：{{ value.bandwidth }}MB</span>
-                                            <br>
-                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">系统：{{ value.os }}</span>
+                                        <td class="pz">详细配置
+                                            <ul id="hideList">
+                                                <li><h3>云主机类型详情:</h3>
+                                                    <div class="table-wapper">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <th class="hideTh">CPU</th>
+                                                                <td class="hideTd">{{ value.vcpus }}核</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">内存</th>
+                                                                <td class="hideTd">{{ value.memory }}GB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">Disk</th>
+                                                                <td class="hideTd">{{ value.disk }}GB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">带宽</th>
+                                                                <td class="hideTd">{{ value.bandwidth }}MB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">系统</th>
+                                                                <td class="hideTd">{{ value.os }}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
+                                        {#                                        <td style="font-size: 12px;">#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">主机名：{{ value.name }}</span>#}
+                                        {#                                            <br>#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">CPU：{{ value.vcpus }}核</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">内存：{{ value.memory }}GB</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">硬盘：{{ value.disk }}GB</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">带宽：{{ value.bandwidth }}MB</span>#}
+                                        {#                                            <br>#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">系统：{{ value.os }}</span>#}
+                                        {#                                        </td>#}
                                         <td>{{ value.created_at }}</td>
                                         <td>{{ value.expired_at }}</td>
                                         {% if value.status != '待审核' %}
@@ -114,47 +146,49 @@
                                         {% endif %}
                                         <td>
                                             <ul>
-                                                {% if value.status == '已通过' or value.status == '已拒绝'%}
+                                                {% if value.status == '已通过' or value.status == '已拒绝' %}
                                                     <li>审批完成</li>
                                                     <li style="position: relative;margin-bottom: 5px;">
                                                         ({{ value.status }})
-                                                    {% if value.status == '已通过' %}
-                                                         <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -25px;right: 60%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 85px 85px;"></span>
-                                                    {% else %}
-                                                        {% if value.dept_reason %}
-                                                            <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">部门审核: {{ value.dept_reason }}</li>
+                                                        {% if value.status == '已通过' %}
+                                                            <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -25px;right: 60%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 85px 85px;"></span>
                                                         {% else %}
-{#                                                            <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">部门审核: 同意</li><br>#}
-                                                            <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">云计算中心: {{ value.vcloud_reason }}</li>
+                                                            {% if value.dept_reason %}
+                                                                <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">
+                                                                    部门审核: {{ value.dept_reason }}</li>
+                                                            {% else %}
+                                                                {#                                                            <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">部门审核: 同意</li><br>#}
+                                                                <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">
+                                                                    云计算中心: {{ value.vcloud_reason }}</li>
+                                                            {% endif %}
                                                         {% endif %}
-                                                    {% endif %}
                                                     </li>
                                                 {% else %}
                                                     <li>审批未完成</li>
                                                     <li>({{ value.status }})</li>
                                                 {% endif %}
-{#                                                <li style="margin-bottom: 5px;">#}
-{#                                                    <span style="text-align: left;">部门审核: {{ value.status }}</span>#}
-{#                                                </li>#}
-{#                                                <li style="margin-bottom: 5px;">#}
-{#                                                    <span style="text-align: left;">云计算审核: {{ value.status }}</span>#}
-{#                                                </li>#}
-{#                                                {% if value.vcloud_reason != '同意' and value.dept_reason != '同意'%}#}
-{#                                                    {% if value.vcloud_reason %}#}
-{#                                                        <li style="margin-bottom: 5px;">#}
-{#                                                            <span style="text-align: left;">审批详情: {{ value.vcloud_reason }}</span>#}
-{#                                                        </li>#}
-{#                                                    {% else %}#}
-{#                                                        <li style="margin-bottom: 5px;">#}
-{#                                                            <span style="text-align: left;">审批详情: {{ value.dept_reason }}</span>#}
-{#                                                        </li>#}
-{#                                                    {% endif %}#}
-{#                                                {% else %}#}
-{#                                                    <li style="margin-bottom: 5px;position: relative;">#}
-{#                                                        <span style="text-align: left;">审批详情: 已通过</span>#}
-{#                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -50px;right: 60%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 85px 85px;"></span>#}
-{#                                                    </li>#}
-{#                                                {% endif %}#}
+                                                {#                                                <li style="margin-bottom: 5px;">#}
+                                                {#                                                    <span style="text-align: left;">部门审核: {{ value.status }}</span>#}
+                                                {#                                                </li>#}
+                                                {#                                                <li style="margin-bottom: 5px;">#}
+                                                {#                                                    <span style="text-align: left;">云计算审核: {{ value.status }}</span>#}
+                                                {#                                                </li>#}
+                                                {#                                                {% if value.vcloud_reason != '同意' and value.dept_reason != '同意'%}#}
+                                                {#                                                    {% if value.vcloud_reason %}#}
+                                                {#                                                        <li style="margin-bottom: 5px;">#}
+                                                {#                                                            <span style="text-align: left;">审批详情: {{ value.vcloud_reason }}</span>#}
+                                                {#                                                        </li>#}
+                                                {#                                                    {% else %}#}
+                                                {#                                                        <li style="margin-bottom: 5px;">#}
+                                                {#                                                            <span style="text-align: left;">审批详情: {{ value.dept_reason }}</span>#}
+                                                {#                                                        </li>#}
+                                                {#                                                    {% endif %}#}
+                                                {#                                                {% else %}#}
+                                                {#                                                    <li style="margin-bottom: 5px;position: relative;">#}
+                                                {#                                                        <span style="text-align: left;">审批详情: 已通过</span>#}
+                                                {#                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -50px;right: 60%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 85px 85px;"></span>#}
+                                                {#                                                    </li>#}
+                                                {#                                                {% endif %}#}
                                             </ul>
                                         </td>
                                     </tr>
@@ -162,8 +196,8 @@
                             {% endif %}
                             </tbody>
                         </table>
-                    {% if order %}
-                        <div class="pagination" style="text-align: center;display: block;">
+                        {% if order %}
+                            <div class="pagination" style="text-align: center;display: block;">
                                 <span class="step-links">
                                     {% if order.has_previous %}
                                         <a href="?page={{ order.previous_page_number }}">上一页</a>
@@ -177,7 +211,7 @@
                                         <a href="?page={{ order.next_page_number }}">下一页</a>
                                     {% endif %}
                                 </span>
-                        </div>
+                            </div>
 
                             <div class="noMessage order_noMessage" style="display: none;">
                                 <p>没有查询到符合条件的记录!</p>
