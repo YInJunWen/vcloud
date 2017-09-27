@@ -77,17 +77,17 @@ def instances(request):
             i['status'] = 'stopped'
         if i['status'] == 2:
             i['status'] = 'expire'
-        if i['os'] == 0:
-            i['os'] = 'Win2008R2_64'
         if i['os'] == 1:
-            i['os'] = 'Win2008R2_64(SQLServer)'
-        if i['os'] == 2:
             i['os'] = 'Win2008R2_64'
+        if i['os'] == 2:
+            i['os'] = 'Win2008R2_64(SQLServer)'
         if i['os'] == 3:
-            i['os'] = 'Win2012R2_64(SQLServer)'
+            i['os'] = 'Win2008R2_64'
         if i['os'] == 4:
-            i['os'] = 'CentOS7.2'
+            i['os'] = 'Win2012R2_64(SQLServer)'
         if i['os'] == 5:
+            i['os'] = 'CentOS7.2'
+        if i['os'] == 6:
             i['os'] = 'CentOS7.2 + Lamp'
         (rx, tx, ip) = get_traffic(i['name'])
         # print rx[0]
@@ -985,7 +985,6 @@ def get_privileges():
 
 
 # ins_name:实例名称
-# status=0表示关机成功
 # 关机
 def shutdown_instance(ins_name):
     # print ins_name
@@ -1017,7 +1016,6 @@ def start_instance(ins_name):
     cmd = cmd + ' start ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        Instances.objects.filter(name=ins_name).update(status=0)
         return 'ok'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ open    ' + output
@@ -1041,6 +1039,7 @@ def open_pc(request):
     ins_name = request.POST.get('ins_name')
     i = start_instance(ins_name)
     if i == 'ok':
+        Instances.objects.filter(name=ins_name).update(status=0)
         return JsonResponse({'status': '0'})
     return JsonResponse({'status': '1'})
 
@@ -1050,6 +1049,7 @@ def reboot_pc(request):
     ins_name = request.POST.get('ins_name')
     i = reboot_instance(ins_name)
     if i == 'ok':
+        Instances.objects.filter(name=ins_name).update(status=0)
         return JsonResponse({'status': '0'})
     return JsonResponse({'status': '1'})
 
