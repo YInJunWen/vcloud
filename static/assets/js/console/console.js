@@ -120,7 +120,7 @@ $(function () {
         //给服务器发送关闭请求
         $.post('/open_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
-            if (data.status == '1') {
+            if (data.status == '0') {
                 // console.log(data.status)
                 alert('虚拟机已开启!');
                 window.location.reload();
@@ -140,7 +140,7 @@ $(function () {
         //给服务器发送关闭请求
         $.post('/close_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
-            if (data.status == '1') {
+            if (data.status == '0') {
                 // console.log(data.status)
                 alert('虚拟机已关闭！');
                 window.location.reload();
@@ -159,7 +159,7 @@ $(function () {
         //给服务器发送关闭请求
         $.post('/reboot_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
-            if (data.status == '1') {
+            if (data.status == '0') {
                 alert('虚拟机已完成重启!');
                 window.location.reload();
             }else{

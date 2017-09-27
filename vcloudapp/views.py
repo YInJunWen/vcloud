@@ -598,16 +598,16 @@ def chkcreate_instance(request):
     o = logined(request)
     if not o:
         return render(request, 'login.html', context={'err': '请先登录后再申请！'})
-    ins_name = request.POST.get('instance_name', None)
-    sameName = Instances.objects.filter(name=ins_name)
+    # ins_name = request.POST.get('instance_name', None)
+    # sameName = Instances.objects.filter(name=ins_name)
     # 获取所在部门
     username = request.session.get('username')
     network = Network.objects.values()
     if username:
         dept = UserInfo.objects.get(username=username).dept
-    if sameName:
+    # if sameName:
         # print list(network)
-        return render(request, 'create_instance.html', {'err_name': '此名称已存在', 'network': list(network)})
+    #     return render(request, 'create_instance.html', {'err_name': '此名称已存在', 'network': list(network)})
     cpu = request.POST.get('cpu', 2)
     mem = request.POST.get('mem', 4)
     disk = request.POST.get('disk', 50)
@@ -658,13 +658,18 @@ def chkcreate_instance(request):
     flavor = get_flavor(cpu, mem)
 
     for i in range(number):
+        ins_uuid = str(uuid.uuid4())
+        ins_uuid = ins_uuid.split('-')
+        ins_uuid = ''.join(ins_uuid)
+        ins_uuid = ins_uuid[0:15]
+        print ins_uuid
         # 买几个生成几个主机
         ins_data = Instances(create_at=apply_time, expired_at=date_expire, delayed_at=apply_time, belonged=username,
-                             name=ins_name, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
+                             name=ins_uuid, vcpus=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk)
         ins_data.save()
         # 生成订单明细
         order_detail = OrderDetail(uuid=uuid_one, vcpu=cpu, memory=mem, bandwidth=bandwidth, os=os, disk=disk,
-                                   password=password, expire=expired, network=network, price=price, flavor=flavor, name=ins_name)
+                                   password=password, expire=expired, network=network, price=price, flavor=flavor, name=ins_uuid)
         order_detail.save()
         # 生成订单
         order_data = Order(created_at=apply_time, created_user=username, expired_at=date_order, uuid=uuid_one,
@@ -988,7 +993,6 @@ def shutdown_instance(ins_name):
     cmd = cmd + ' stop ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        Instances.objects.filter(name=ins_name).update(status=1)
         return 'ok'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ close    ' + output
@@ -1023,9 +1027,11 @@ def start_instance(ins_name):
 # 关机接口
 def close_pc(request):
     ins_name = request.POST.get('ins_name')
-    print ins_name
     i = shutdown_instance(ins_name)
+    print '1234567891111111111111111111111111111111111111111'
+    print i
     if i == 'ok':
+        Instances.objects.filter(name=ins_name).update(status=1)
         return JsonResponse({'status': '0'})
     return JsonResponse({'status': '1'})
 

@@ -117,11 +117,11 @@
             <form class="gobuyForm" method="post" action="/chkcreate_instance/" onsubmit="return checkForm()">
                 <div class="gobuyFormWapper">
                     <div class="formTitle">当前配置</div>
-                    <div class="conf">
-                        主机名：<input class="zjm" value="未填写" readonly>
-                        <input type="hidden" name="instance_name" class="h_zjm" value="未填写">
+{#                    <div class="conf">#}
+{#                        主机名：<input class="zjm" value="未填写" readonly>#}
+{#                        <input type="hidden" name="instance_name" class="h_zjm" value="未填写">#}
                         <input type="hidden" name="password" class="h_password" value="">
-                    </div>
+{#                    </div>#}
                     <div class="conf">
                         类　型：<input class="Form_lx" value="商务型" readonly>
                     </div>
@@ -218,20 +218,20 @@
         </div>
         <div class="mod4">
             <div class="ChildMenu">
-                <div class="ChildSelection">
-                    <div class="Choice clearfix">
-                        <span>主机名：</span>
-                    </div>
-                    {% if err_name %}
-                        <input type="text" placeholder="名称已存在" class="Host_Name"
-                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
-                        <span style="color: #f00"> ( * 请重新输入 )</span>
-                    {% else %}
-                        <input type="text" placeholder="请输入名称" class="Host_Name"
-                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>
-                        <span style="color: #f00"> ( * 必填 )</span>
-                    {% endif %}
-                </div>
+{#                <div class="ChildSelection">#}
+{#                    <div class="Choice clearfix">#}
+{#                        <span>主机名：</span>#}
+{#                    </div>#}
+{#                    {% if err_name %}#}
+{#                        <input type="text" placeholder="名称已存在" class="Host_Name"#}
+{#                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>#}
+{#                        <span style="color: #f00"> ( * 请重新输入 )</span>#}
+{#                    {% else %}#}
+{#                        <input type="text" placeholder="请输入名称" class="Host_Name"#}
+{#                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>#}
+{#                        <span style="color: #f00"> ( * 必填 )</span>#}
+{#                    {% endif %}#}
+{#                </div>#}
                 <div class="ChildSelection">
                     <div class="Choice clearfix">
                         <span>登陆密码：</span>
@@ -264,7 +264,7 @@
                     </div>
                     <div class="buyNumber">
                         <span class="btn jian buyNumberEnd">-</span>
-                        <input type="text" value="1" class="buy_number">
+                        <input type="text" value="1" class="buy_number" autocomplete="off">
                         <span class="btn jia">+</span>
                     </div>
                     <span style="width: 14px;height: 36px;margin-left: 12px;line-height: 36px;">台</span>
