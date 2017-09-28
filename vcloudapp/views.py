@@ -56,6 +56,56 @@ def overview(request):
     return render(request, 'overview.html', context={"power": power})
 
 
+# overview data
+def OverviewData(request):
+    o = logined(request)
+    if not o:
+        return HttpResponseRedirect('/login/')
+    username = request.session.get('username')
+    # pre1 为虚机总数及运行数量 pre2 为cpu总核心数 pre3 为内存 pre4 为ip pre5 安全组
+    data = list(Order.objects.filter(created_user=username, dept_pending=0, vcloud_pending=0).values('pid'))
+    vpc = 0  # 总虚机
+    run_vpc = 0  # 运行虚机
+    cpu = 0  # 总cpu核心数
+    run_cpu = 0
+    mem = 0  # 内存
+    run_mem = 0
+    ip = 0  # ip
+    safe = 0  # 安全组
+    for i in data:
+        vpc = len(list(Instances.objects.filter(pid=i['pid']).values('vcpus')))  # 虚机数
+        run_vpc = len(list(Instances.objects.filter(pid=i['pid'], status=0).values('vcpus')))  # 运行的虚机数
+        _cpu = int(list(Instances.objects.filter(pid=i['pid']).values('vcpus'))[0]['vcpus'])
+        cpu += _cpu
+        _mem = int(list(Instances.objects.filter(pid=i['pid']).values('memory'))[0]['memory'])
+        mem += _mem
+        _run_cpu = int(list(Instances.objects.filter(pid=i['pid'], status=0).values('vcpus'))[0]['vcpus'])
+        run_cpu += _run_cpu
+        _run_mem = int(list(Instances.objects.filter(pid=i['pid'], status=0).values('memory'))[0]['memory'])
+        run_mem += _run_mem
+    print vpc, run_vpc  # 总虚机数及运行虚机数
+    print run_cpu, run_mem
+    print cpu, mem  # 总CPU和内存Mem
+    # 筛选正在运行中的主机
+    # for o in run_data:
+
+    pre1_run = run_vpc
+    pre2_run = run_cpu
+    pre3_run = run_mem
+    pre1_odd = int(vpc) - int(run_vpc)
+    pre2_odd = int(cpu) - int(run_cpu)
+    pre3_odd = int(mem) - int(run_mem)
+    return JsonResponse(
+        {
+            'pre1_odd': pre1_odd,
+            'pre2_odd': pre2_odd,
+            'pre3_odd': pre3_odd,
+            'pre1_run': pre1_run,
+            'pre2_run': pre2_run,
+            'pre3_run': pre3_run,
+        }
+    )
+
 # 云主机
 def instances(request):
     o = logined(request)
@@ -590,8 +640,8 @@ def checkLogin(request):
         request.session.set_expiry(20 * 60)
         power = get_power(username)
         data.save()
-        return render(request, 'overview.html', context={"power": power})
-
+        # return render(request, 'overview.html', context={"power": power})
+        return HttpResponseRedirect('/overview/')
 
 # 创建实例接口
 def chkcreate_instance(request):
