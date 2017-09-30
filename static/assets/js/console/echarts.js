@@ -65,8 +65,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 2, name: '2台'},
-                    {value: 2, name: "主机"}
+                    {value: 0, name: '暂无数据'},
+                    // {value: 0, name: "主机"}
                 ],
                 itemStyle: {
                     emphasis: {
@@ -87,8 +87,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 4, name: '4核'},
-                    {value: 16, name: "CPU"}
+                    {value: 0, name: '暂无数据'},
+                    // {value: 0, name: "CPU"}
                 ],
                 itemStyle: {
                     emphasis: {
@@ -109,8 +109,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 4, name: '4G'},
-                    {value: 32, name: "ROM"}
+                    {value: 0, name: '暂无数据'},
+                    // {value: 0, name: "ROM"}
                 ],
                 itemStyle: {
                     emphasis: {
@@ -131,8 +131,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 0, name: '无'},
-                    {value: 50, name: "浮动IP"}
+                    {value: 0, name: '暂无数据'},
+                    // {value: 0, name: "浮动IP"}
                 ],
                 itemStyle: {
                     emphasis: {
@@ -153,8 +153,8 @@ $(function () {
                 radius: '50%',
                 center: ['50%', '60%'],
                 data: [
-                    {value: 1, name: '1组'},
-                    {value: 9, name: "安全组"}
+                    {value: 0, name: '暂无数据'},
+                    // {value: 0, name: "安全组"}
                 ],
                 itemStyle: {
                     emphasis: {
