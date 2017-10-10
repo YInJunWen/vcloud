@@ -121,12 +121,6 @@ def instances(request):
         filter_data.update(status=2)
     u = []
     for i in data:
-        if i['status'] == 0:
-            i['status'] = 'running'
-        if i['status'] == 1:
-            i['status'] = 'stopped'
-        if i['status'] == 2:
-            i['status'] = 'expire'
         if i['os'] == 1:
             i['os'] = 'Win2008R2_64'
         if i['os'] == 2:
@@ -139,7 +133,7 @@ def instances(request):
             i['os'] = 'CentOS7.2'
         if i['os'] == 6:
             i['os'] = 'CentOS7.2 + Lamp'
-        (rx, tx, ip) = get_traffic(i['name'])
+        (rx, tx, ip, state) = get_traffic(i['name'])
         # print rx[0]
         rx = int(rx[0]) / 1024.0
         tx = int(tx[0]) / 1024.0
@@ -151,9 +145,14 @@ def instances(request):
             tx = tx / 1024.0
             i['rx'] = '%s %s' % (round(rx, 2), 'Mb')
             i['tx'] = '%s %s' % (round(tx, 2), 'Mb')
-        # i['rx'] = rx
-        # i['tx'] = tx
         i['ip'] = ip[0]
+        i['state'] = state[0]
+        if i['status'] == 0:
+            i['status'] = 'running'
+        if i['status'] == 1:
+            i['status'] = 'stopped'
+        if i['status'] == 2:
+            i['status'] = 'expire'
         u.append(i)
     limit = 7  # 每页显示的记录数
     paginator = Paginator(u, limit)
@@ -1024,25 +1023,44 @@ def get_traffic(hostname):
     r = redis.StrictRedis(host='10.1.1.203')
     rx = r.hmget(hostname, 'rx')
     tx = r.hmget(hostname, 'tx')
-    ip = r.hmget(hostname, 'ip')
-    return rx, tx, ip
+    ip = r.hmget(hostname, 'ip_address')
+    state = r.hmget(hostname, 'state')
+    return rx, tx, ip, state
 
 
-# 获取权限
-def get_privileges():
-    cmd = 'nova --os-auth-url http://controller01:35357/v3 --os-project-name admin --os-username admin --os-password Centos123'
-    return cmd
+# 获取openstack认证字符串
+def get_openstack_auth_string():
+    auth_string = ' --os-project-name admin --os-project-domain-name=default --os-username admin --os-password Centos123 --os-auth-url http://controller01:35357/v3 '
+    return auth_string
 
 
-# ins_name:实例名称
+# 获取缓存连接
+def get_redis_connections():
+    r = redis.StrictRedis(host='10.1.1.203', port=6379)
+    return r
+
+
+# 更改实例运行状态
+def set_instance_alive(ins_name, state):
+    r = get_redis_connections()
+    try:
+        r.hmset(ins_name, {'status': 1, 'state': state})
+        return 0
+    except:
+        return 1
+
+
 # 关机
 def shutdown_instance(ins_name):
-    # print ins_name
-    cmd = get_privileges()
-    cmd = cmd + ' stop ' + ins_name
+    auth_string = get_openstack_auth_string()
+    cmd = 'nova' + auth_string + 'stop ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        return 'ok'
+        st = set_instance_alive(ins_name, 'stopped')
+        if st == 0:
+            return 'ok'
+        else:
+            return 'false'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ close    ' + output
         return 'false'
@@ -1050,11 +1068,15 @@ def shutdown_instance(ins_name):
 
 # 重启
 def reboot_instance(ins_name):
-    cmd = get_privileges()
-    cmd = cmd + ' reboot ' + ins_name
+    auth_string = get_openstack_auth_string()
+    cmd = 'nova' + auth_string + 'reboot ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        return 'ok'
+        st = set_instance_alive(ins_name)
+        if st == 0:
+            return 'ok'
+        else:
+            return 'false'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ reboot    ' + output
         return 'false'
@@ -1062,13 +1084,17 @@ def reboot_instance(ins_name):
 
 # 开机
 def start_instance(ins_name):
-    cmd = get_privileges()
-    cmd = cmd + ' start ' + ins_name
+    auth_string = get_openstack_auth_string()
+    cmd = 'nova' + auth_string + 'start ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        return 'ok'
+        st = set_instance_alive(ins_name, 'active')
+        if st == 0:
+            return 'ok'
+        else:
+            return 'false'
     else:
-        print 'QQQQQQQQQQQQQQQQQQQQ open    ' + output
+        print 'QQQQQQQQQQQQQQQQQQQQ start    ' + output
         return 'false'
 
 
@@ -1076,7 +1102,6 @@ def start_instance(ins_name):
 def close_pc(request):
     ins_name = request.POST.get('ins_name')
     i = shutdown_instance(ins_name)
-    print '1234567891111111111111111111111111111111111111111'
     print i
     if i == 'ok':
         Instances.objects.filter(name=ins_name).update(status=1)

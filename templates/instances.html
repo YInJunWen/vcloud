@@ -90,11 +90,12 @@
                                             </td>
                                             <td>{{ value.expired_at }}</td>
                                             <td>
-                                                {% if value.status == 'running' %}
+                                                {% if value.state == 'active' %}
                                                     <span class="fa fa-play" style="color: #419641;"></span><span>&nbsp;&nbsp;运行中</span>
-                                                {% elif value.status == 'stopped' %}
-                                                    <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>
                                                 {% else %}
+                                                    <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>
+                                                {% endif %}
+                                                {% if value.status == 'expire' %}
 {#                                                    <span class="fa fa-circle-o-notch" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
                                                     <span class="fa fa-history" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>
                                                 {% endif %}
