@@ -131,7 +131,7 @@ class Instances(models.Model):
     os = models.IntegerField()
     disk = models.IntegerField(default=1)
     status = models.IntegerField(default=0)  # 0=running,1=stopped
-    locked = models.BooleanField(default=False)  # true=到期未续后锁定，用户无法解锁
+    locked = models.BooleanField(default=False)  # 默认不审批不可见 True通过可见
 
     class Meta:
         db_table = "instances"
@@ -251,7 +251,7 @@ class VcloudReason(models.Model):
 class InstanceLog(models.Model):
     """ rx:接收总流量 tx:发送总流量 返b字节 """
     name = models.CharField(max_length=15)
-    tap = models.CharField(max_length=15, default='0000-0000-0000')
+    tap = models.CharField(max_length=15, default='0000-0000-0000')  # 网卡
     ip = models.GenericIPAddressField(max_length=15, default='0.0.0.0')
     state = models.BooleanField(max_length=1, default=1)  # 默认运行1 关机为0
     rx_new = models.BigIntegerField(default=0)

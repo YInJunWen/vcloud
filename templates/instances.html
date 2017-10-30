@@ -86,12 +86,12 @@
                                                 </ul>
                                             </td>
                                             <td>
-                                                接受:{{ value.rx }}丨发送:{{ value.tx }}
+                                                接受:{{ value.rx }}kb丨发送:{{ value.tx }}kb
                                             </td>
                                             <td>{{ value.expired_at }}</td>
                                             <td>
-                                                {% if value.state == 'active' %}
-                                                    <span class="fa fa-play" style="color: #419641;"></span><span>&nbsp;&nbsp;运行中</span>
+                                                {% if value.status == 'running' %}
+                                                    <span id="reboot" class="fa fa-play" style="color: #419641;"></span><span id="reboot_loading">  运行中</span>
                                                 {% else %}
                                                     <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>
                                                 {% endif %}
@@ -99,6 +99,15 @@
 {#                                                    <span class="fa fa-circle-o-notch" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
                                                     <span class="fa fa-history" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>
                                                 {% endif %}
+{#                                                {% if value.state == 'active' %}#}
+{#                                                    <span class="fa fa-play" style="color: #419641;"></span><span>&nbsp;&nbsp;运行中</span>#}
+{#                                                {% else %}#}
+{#                                                    <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>#}
+{#                                                {% endif %}#}
+{#                                                {% if value.status == 'expire' %}#}
+{#                                                    <span class="fa fa-circle-o-notch" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
+{#                                                    <span class="fa fa-history" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
+{#                                                {% endif %}#}
                                             </td>
                                             <td style="text-align:center">
                                                 {% if value.status == 'expire' %}

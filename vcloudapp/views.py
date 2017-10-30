@@ -64,6 +64,7 @@ def OverviewData(request):
     username = request.session.get('username')
     # pre1 为虚机总数及运行数量 pre2 为cpu总核心数 pre3 为内存 pre4 为ip pre5 安全组
     data = list(Order.objects.filter(created_user=username, dept_pending=0, vcloud_pending=0).values('pid'))
+    # print data
     vpc = 0  # 总虚机
     run_vpc = 0  # 运行虚机
     cpu = 0  # 总cpu核心数
@@ -74,18 +75,20 @@ def OverviewData(request):
     safe = 0  # 安全组
     for i in data:
         vpc = len(list(Instances.objects.filter(pid=i['pid']).values('vcpus')))  # 虚机数
-        run_vpc = len(list(Instances.objects.filter(pid=i['pid'], status=0).values('vcpus')))  # 运行的虚机数
+        run_vpc = len(list(Instances.objects.filter(belonged=username, status=0, locked=1).values('vcpus')))  # 运行的虚机数
+
         _cpu = int(list(Instances.objects.filter(pid=i['pid']).values('vcpus'))[0]['vcpus'])
         cpu += _cpu
         _mem = int(list(Instances.objects.filter(pid=i['pid']).values('memory'))[0]['memory'])
         mem += _mem
-        _run_cpu = int(list(Instances.objects.filter(pid=i['pid'], status=0).values('vcpus'))[0]['vcpus'])
+
+        _run_cpu = int(list(Instances.objects.filter(belonged=username, status=0, locked=1).values('vcpus'))[0]['vcpus'])
         run_cpu += _run_cpu
-        _run_mem = int(list(Instances.objects.filter(pid=i['pid'], status=0).values('memory'))[0]['memory'])
+        _run_mem = int(list(Instances.objects.filter(belonged=username, status=0, locked=1).values('memory'))[0]['memory'])
         run_mem += _run_mem
-    print vpc, run_vpc  # 总虚机数及运行虚机数
-    print run_cpu, run_mem
-    print cpu, mem  # 总CPU和内存Mem
+    # print vpc, run_vpc  # 总虚机数及运行虚机数
+    # print run_cpu, run_mem
+    # print cpu, mem  # 总CPU和内存Mem
     # 筛选正在运行中的主机
     # for o in run_data:
 
@@ -117,6 +120,8 @@ def instances(request):
     # 获取现在的时间与订单期限对比
     now_time = now()
     filter_data = Instances.objects.filter(belonged=username).filter(expired_at__lte=now_time)
+    # if Instances.objects.filter(belonged=username, locked=True):  # 已经没用了
+    #     pc_name = Instances.objects.filter(belonged=username, locked=True).values('name')  # 获取虚机name
     if filter_data:
         filter_data.update(status=2)
     u = []
@@ -133,20 +138,34 @@ def instances(request):
             i['os'] = 'CentOS7.2'
         if i['os'] == 6:
             i['os'] = 'CentOS7.2 + Lamp'
-        (rx, tx, ip, state) = get_traffic(i['name'])
+
+        # 初始的方法
+
+        # (rx, tx, ip, state) = get_traffic(i['name'])
         # print rx[0]
-        rx = int(rx[0]) / 1024.0
-        tx = int(tx[0]) / 1024.0
-        if rx < 1024.0:  # k单位
-            i['rx'] = '%s %s' % (round(rx, 2), 'Kb')
-            i['tx'] = '%s %s' % (round(tx, 2), 'Kb')
-        else:
-            rx = rx / 1024.0
-            tx = tx / 1024.0
-            i['rx'] = '%s %s' % (round(rx, 2), 'Mb')
-            i['tx'] = '%s %s' % (round(tx, 2), 'Mb')
-        i['ip'] = ip[0]
-        i['state'] = state[0]
+        # rx = int(rx[0]) / 1024.0
+        # tx = int(tx[0]) / 1024.0
+        # if rx < 1024.0:  # k单位
+        #     i['rx'] = '%s %s' % (round(rx, 2), 'Kb')
+        #     i['tx'] = '%s %s' % (round(tx, 2), 'Kb')
+        # else:
+        #     rx = rx / 1024.0
+        #     tx = tx / 1024.0
+        #     i['rx'] = '%s %s' % (round(rx, 2), 'Mb')
+        #     i['tx'] = '%s %s' % (round(tx, 2), 'Mb')
+        # i['ip'] = ip[0]
+        # i['state'] = state[0]
+        # if i['status'] == 0:
+        #     i['status'] = 'running'
+        # if i['status'] == 1:
+        #     i['status'] = 'stopped'
+        # if i['status'] == 2:
+        #     i['status'] = 'expire'
+
+        # 现有改变的方法
+        i['ip'] = InstanceLog.objects.get(name=i['name']).ip
+        i['rx'] = InstanceLog.objects.get(name=i['name']).rx_new + InstanceLog.objects.get(name=i['name']).rx_old
+        i['tx'] = InstanceLog.objects.get(name=i['name']).tx_new + InstanceLog.objects.get(name=i['name']).tx_old
         if i['status'] == 0:
             i['status'] = 'running'
         if i['status'] == 1:
@@ -1046,13 +1065,13 @@ def get_redis_connections():
 
 
 # 更改实例运行状态
-def set_instance_alive(ins_name, state):
-    r = get_redis_connections()
-    try:
-        r.hmset(ins_name, {'status': 1, 'state': state})
-        return 0
-    except:
-        return 1
+# def set_instance_alive(ins_name, state):
+#     r = get_redis_connections()
+#     try:
+#         r.hmset(ins_name, {'status': 1, 'state': state})
+#         return 0
+#     except:
+#         return 1
 
 
 # 关机
@@ -1061,11 +1080,11 @@ def shutdown_instance(ins_name):
     cmd = 'nova' + auth_string + 'stop ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        st = set_instance_alive(ins_name, 'stopped')
-        if st == 0:
-            return 'ok'
-        else:
-            return 'false'
+        # st = set_instance_alive(ins_name, 'stopped')
+        # if st == 0:
+        return 'ok'
+        # else:
+        #     return 'false'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ close    ' + output
         return 'false'
@@ -1077,11 +1096,11 @@ def reboot_instance(ins_name):
     cmd = 'nova' + auth_string + 'reboot ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        st = set_instance_alive(ins_name)
-        if st == 0:
-            return 'ok'
-        else:
-            return 'false'
+    #     st = set_instance_alive(ins_name)
+    #     if st == 0:
+        return 'ok'
+        # else:
+        #     return 'false'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ reboot    ' + output
         return 'false'
@@ -1093,11 +1112,11 @@ def start_instance(ins_name):
     cmd = 'nova' + auth_string + 'start ' + ins_name
     (status, output) = commands.getstatusoutput(cmd)
     if status == 0:
-        st = set_instance_alive(ins_name, 'active')
-        if st == 0:
-            return 'ok'
-        else:
-            return 'false'
+    #     st = set_instance_alive(ins_name, 'active')
+    #     if st == 0:
+        return 'ok'
+        # else:
+        #     return 'false'
     else:
         print 'QQQQQQQQQQQQQQQQQQQQ start    ' + output
         return 'false'
@@ -1107,9 +1126,16 @@ def start_instance(ins_name):
 def close_pc(request):
     ins_name = request.POST.get('ins_name')
     i = shutdown_instance(ins_name)
-    print i
+    # print i
     if i == 'ok':
-        Instances.objects.filter(name=ins_name).update(status=1)
+        Instances.objects.filter(name=ins_name).update(status=1)  # 更新数据库状态
+        InstanceLog_Data = InstanceLog.objects.get(name=ins_name)
+        rx_old = InstanceLog_Data.rx_new + InstanceLog_Data.rx_old
+        tx_old = InstanceLog_Data.tx_new + InstanceLog_Data.tx_old
+        InstanceLog.objects.filter(name=ins_name).update(rx_old=rx_old)
+        InstanceLog.objects.filter(name=ins_name).update(tx_old=tx_old)
+        InstanceLog.objects.filter(name=ins_name).update(rx_new=0)
+        InstanceLog.objects.filter(name=ins_name).update(tx_new=0)
         return JsonResponse({'status': '0'})
     return JsonResponse({'status': '1'})
 
@@ -1130,6 +1156,13 @@ def reboot_pc(request):
     i = reboot_instance(ins_name)
     if i == 'ok':
         Instances.objects.filter(name=ins_name).update(status=0)
+        InstanceLog_Data = InstanceLog.objects.get(name=ins_name)
+        rx_old = InstanceLog_Data.rx_new + InstanceLog_Data.rx_old
+        tx_old = InstanceLog_Data.tx_new + InstanceLog_Data.tx_old
+        InstanceLog.objects.filter(name=ins_name).update(rx_old=rx_old)
+        InstanceLog.objects.filter(name=ins_name).update(tx_old=tx_old)
+        InstanceLog.objects.filter(name=ins_name).update(rx_new=0)
+        InstanceLog.objects.filter(name=ins_name).update(tx_new=0)
         return JsonResponse({'status': '0'})
     return JsonResponse({'status': '1'})
 

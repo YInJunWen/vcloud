@@ -117,12 +117,14 @@ $(function () {
     $('.openBtnComputer').click(function () {
         $('.openWapper').hide();
         $('.Ts_select').children().first().attr('selected', 'selected');
+        $('#loading_icon').show();
         //给服务器发送关闭请求
         $.post('/open_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
             if (data.status == '0') {
                 // console.log(data.status)
                 alert('虚拟机已开启!');
+                $('#loading_icon').hide();
                 window.location.reload();
             }else{
                 alert('开启失败, 请联系管理员!');
@@ -136,13 +138,15 @@ $(function () {
         $('.closeWapper').hide();
         //给服务器发送关闭请求
         $('.Ts_select').children().first().attr('selected', 'selected');
-        console.log(TS_START);
+        $('#loading_icon').show();
+        // console.log(TS_START);
         //给服务器发送关闭请求
         $.post('/close_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
             if (data.status == '0') {
                 // console.log(data.status)
                 alert('虚拟机已关闭！');
+                $('#loading_icon').hide();
                 window.location.reload();
             }else{
                 alert('关机失败, 请联系管理员!');
@@ -156,11 +160,16 @@ $(function () {
         $('.restartWapper').hide();
         //给服务器发送关闭请求
         $('.Ts_select').children().first().attr('selected', 'selected');
-        //给服务器发送关闭请求
+        $('#loading_icon').show();
+        // 移除运行状态图标 改为重启
+        $('#reboot').removeClass().addClass('fa fa-refresh fa-spin');
+        $('#reboot_loading').text('  重启中');
+        // 给服务器发送关闭请求
         $.post('/reboot_pc/', {'ins_name': TS_START}, function(data){
             // console.log(data.status);
             if (data.status == '0') {
                 alert('虚拟机已完成重启!');
+                $('#loading_icon').hide();
                 window.location.reload();
             }else{
                 alert('重启失败, 请联系管理员!');
