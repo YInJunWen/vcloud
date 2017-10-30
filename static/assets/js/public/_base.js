@@ -112,6 +112,7 @@ $('.closeBtnBar').click(function () {
 });
 
 function Approval(obj) {
+    $('#loading_icon').show();
     REASON_ID = $(obj).parent().parent().children().get(0).innerText;
     var status = $.trim($(obj).text());
     if (status === '同意'){
@@ -119,8 +120,10 @@ function Approval(obj) {
         // var id = $(obj).parent().parent().children().get(0).innerText;
         $.post('/approval/', {'_id': REASON_ID, '_status': status}, function(data){
             if (data.a === '0'){
+                $('#loading_icon').hide();
                 alert('failed！')
             }else{
+                $('#loading_icon').hide();
                 alert('success!')
             }
             window.location.reload();

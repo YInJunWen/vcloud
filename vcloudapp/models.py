@@ -248,6 +248,20 @@ class VcloudReason(models.Model):
         db_table = 'vcloud_reason'
 
 
+class InstanceLog(models.Model):
+    """ rx:接收总流量 tx:发送总流量 返b字节 """
+    name = models.CharField(max_length=15)
+    tap = models.CharField(max_length=15, default='0000-0000-0000')
+    ip = models.GenericIPAddressField(max_length=15, default='0.0.0.0')
+    state = models.BooleanField(max_length=1, default=1)  # 默认运行1 关机为0
+    rx_new = models.BigIntegerField(default=0)
+    rx_old = models.BigIntegerField(default=0)
+    tx_new = models.BigIntegerField(default=0)
+    tx_old = models.BigIntegerField(default=0)
+
+    class Meta:
+        db_table = "instance_log"
+
 
 # return
 

@@ -238,7 +238,15 @@
             </form>
         </div>
     </div>
+    {#    loading进度框    #}
+    <div id="loading_icon" style="display: none;position:fixed;top:0; z-index:999;width: 100%;height: 100%;background: transparent;">
+        <div style="position:absolute;top: 28%;left: 50%;margin-left: -50px;width: 100px; height: 100px; text-align: center;vertical-align: middle;line-height: 100px;">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 </div>
+
 
 
 <script src="/static/assets/js/public/jquery.min.js"></script>

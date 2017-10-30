@@ -4,7 +4,7 @@ import random
 import time
 import commands
 import re
-import redis as redis
+import redis
 # import sys
 
 from django.shortcuts import render
@@ -265,6 +265,7 @@ def order(request):
         if i['status'] == 1:
             i['status'] = "待审核"
         u.append(i)
+        # u.reverse()
     limit = 7  # 每页显示的记录数
     paginator = Paginator(u, limit)
     page = request.GET.get('page')  # 获取页码
@@ -419,11 +420,15 @@ def approval(request):
                 # 创建虚机命令
                 o = create_virtual(detail_data.password, detail_data.flavor, os_name, detail_data.network, detail_data.name, os_type)
                 if o == '1':  #
+                    # ins_name = Instances.objects.get(pid=pid).name
                     data = VcloudReason(pid=pid, vcloud_approval_time=now(), vcloud_reason='同意', approval_person=username)
                     data.save()
                     Order.objects.filter(pid=pid).update(vcloud_pending=0)
                     Instances.objects.filter(pid=pid).update(locked=1)
                     admin_email(pid)
+                    instance_log_data = InstanceLog()
+                    instance_log_data.name = detail_data.name
+                    instance_log_data.save()
                 # else:
                 #     JsonResponse({'a': '虚机没搞出来！出错啦！'})
             else:
@@ -1127,6 +1132,18 @@ def reboot_pc(request):
         Instances.objects.filter(name=ins_name).update(status=0)
         return JsonResponse({'status': '0'})
     return JsonResponse({'status': '1'})
+
+
+# 向缓存服务器推送虚机哈希及判断重启状态
+def set_push_hash(ins_name):
+    r = get_redis_connections()
+    # 虚机名称
+    r.rpush('ins_name', ins_name)
+    r.expire(ins_name, 60*20)
+    # 虚机名称
+    status = {'status': 0}
+    r.hmset(ins_name, status)
+    r.expire(ins_name, 60 * 20)
 
 
 # 测试1
