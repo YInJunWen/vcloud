@@ -28,6 +28,9 @@ def home(request):
 
 #  user登录跳转
 def userLogin(request):
+    o = logined(request)
+    if o:
+        return HttpResponseRedirect('/overview/')
     return render(request, 'login.html')
 
 
