@@ -51,9 +51,11 @@ var option1 = {
 			},
 			itemStyle: {
 				normal: {
-					color: '#c23531',
+                    // color: '#c23531',
+                    color: '#050d58',
 					shadowBlur: 200,
-					shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    // shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    shadowColor: 'rgba(21, 41, 185, 0.75)'
 				}
 			},
 			animationType: 'scale',
@@ -139,7 +141,14 @@ var option2 = {
 		type: 'line',
 		showSymbol: false,
 		hoverAnimation: false,
-		data: data
+		data: data,
+        itemStyle: {
+            normal: {
+                color:'#094058',
+                    borderColor: '#034458',
+                    shadowColor: 'rgba(21, 41, 185, .75)'
+            }
+        }
 	}]
 };
 myChart2.setOption(option2);
@@ -269,6 +278,13 @@ var option3 = {
 			type: 'bar',
 			xAxisIndex: 1,
 			yAxisIndex: 1,
+            itemStyle: {
+			  normal: {
+			      color:'#094058',
+                  borderColor: '#034458',
+                  shadowColor: 'rgba(21, 41, 185, .75)'
+              }
+            },
 			data: (function (){
 				var res = [];
 				var len = 10;
@@ -605,11 +621,25 @@ var option7 = {
 			type: 'line',
 			xAxisIndex: 1,
 			smooth: true,
+            itemStyle: {
+                normal: {
+                    color:'#094058',
+                    borderColor: '#034458',
+                    shadowColor: 'rgba(21, 41, 185, .75)'
+                }
+            },
 			data: [2.6,5.9,9.0,26.4,28.7,70.7,175.6,182.2,182.3,183.8,196.0,202.3]
 		},{
             name: '2017 在线',
             type: 'line',
             smooth: true,
+            itemStyle: {
+                normal: {
+                    color:'#094058',
+                    borderColor: '#034458',
+                    shadowColor: 'rgba(21, 41, 185, .75)'
+                }
+            },
             data: [3.9,5.9,11.1,18.7,48.3,69.2,171.6,176.6,175.4,178.4,179.3,180.7]
         }
 	]
@@ -665,6 +695,13 @@ var option8 = {
 			name: '攻击时段',
 			type: 'bar',
 			data: [2.0,4.9,7.0,23.2,25.6,76.7,135.6,162.2,32.6,20.0,6.4,3.3],
+            itemStyle: {
+                normal: {
+                    color:'#094058',
+                    borderColor: '#034458',
+                    shadowColor: 'rgba(21, 41, 185, .75)'
+                }
+            },
 			axisLine:{
                 lineStyle:{
                     color:'#fff',
@@ -686,6 +723,13 @@ var option8 = {
 			name: '攻击频率',
 			type: 'bar',
 			data: [2.6,5.9,9.0,26.4,28.7,70.7,175.6,182.2,48.7,18.8,6.0,2.3],
+            itemStyle: {
+                normal: {
+                    color:'#094058',
+                    borderColor: '#034458',
+                    shadowColor: 'rgba(21, 41, 185, .75)'
+                }
+            },
 			markPoint: {
 				data: [
 					{name: '年最高', value: 182.2, xAxis: 7,yAxis: 183},
@@ -712,3 +756,12 @@ window.onresize = myChart5.resize;
 window.onresize = myChart6.resize;
 window.onresize = myChart7.resize;
 window.onresize = myChart8.resize;
+
+
+// itemStyle: {
+//     normal: {
+//         color:'#094058',
+//             borderColor: '#034458',
+//             shadowColor: 'rgba(21, 41, 185, .75)'
+//     }
+// }
