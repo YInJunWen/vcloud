@@ -14,19 +14,22 @@
     </style>
 </head>
 <body style="width: 100%; height: 100%; background: #070252;">
+    <div id="bgvideo" style="width: 100%;height: 100%;position: fixed; top: 0;left: 0;z-index:-1">
+        <video src="/static/assets/video/000.mp4" autoplay="autoplay" muted="muted" loop="loop" width="100%"></video>
+    </div>
     <div id="title" style="width: 30%;height: 20%;background: url(/static/assets/img/title.png) no-repeat;background-size: contain;position: fixed;top:0;left: 50%;margin-left:-15%;z-index: 999;"></div>
     <!-- 地图构建 -->
-    <div id="map" style="width: 100%; height: 100%;position: absolute;top:0;left:0;"></div>
+    <div id="map" style="width: 100%; height: 100%;position: absolute;top:0;left:0;z-index:999;"></div>
     <!--左上流量上下行图表-->
-    <div id="traffic" style="width: 28%; height: 33%;position: absolute;top:3%;left:0;"></div>
+    <div id="traffic" style="width: 28%; height: 33%;position: absolute;top:3%;left:0;z-index:999;"></div>
     <!--data3图表-->
-    <div id="data3" style="width: 32.5%; height: 47%;position: absolute;top:27%;left:0;"></div>
+    <div id="data3" style="width: 32.5%; height: 47%;position: absolute;top:27%;left:0;z-index:999;"></div>
     <!--data4图表-->
-    <div id="data4" style="width: 37.5%; height: 23%;position: absolute;bottom:3%;left:0;"></div>
+    <div id="data4" style="width: 37.5%; height: 23%;position: absolute;bottom:3%;left:0;z-index:999;"></div>
     <!--右上流量上下行图表-->
-    <div id="data5" style="width: 25%; height: 30%;position: absolute;top:13%;right:0;"></div>
+    <div id="data5" style="width: 25%; height: 30%;position: absolute;top:13%;right:0;z-index:999;"></div>
     <!--data3图表-->
-    <div id="data6" style="width: 25%; height: 60%;position: absolute;bottom:-5%;right:0;"></div>
+    <div id="data6" style="width: 25%; height: 60%;position: absolute;bottom:-5%;right:0;z-index:999;"></div>
     <!--data4图表-->
     <!--<div id="data7" style="width: 30%; height: 25%;position: absolute;bottom:5%;right:0;"></div>-->
     <!--<button id="BtnBar" style="display: none;" onclick="BtnBar()"></button>-->
@@ -1961,7 +1964,7 @@
             },
             geo: {
 //                zoom: 0.95,
-                zoom: 0.8,
+                zoom: 1.1,
                 map: 'china',
                 label: {
                     emphasis: {
@@ -1975,13 +1978,16 @@
                 itemStyle: {
                     normal: {
                         //                    areaColor: '#071520',
-                        areaColor: '#07025a',
+{#                        areaColor: '#07025a',#}
+                        areaColor: 'transparent',
                         //                    borderColor: '#404a59'
                         borderColor: '#ffffff'
+
                     },
                     // 地图区域块颜色
                     emphasis: {
                         areaColor: '#005f97'
+{#                        areaColor: 'transparent'#}
 //                        areaColor: '#2a333d'
                     }
                 }
@@ -2282,14 +2288,14 @@
                 splitLine: {//坐标轴在 grid 区域中的分隔线。
                     show: true,
                     lineStyle: {
-                        color: '#4b476f',
+                        color: '#007dff',
                         width: 1,
                     },
                 },
                 splitArea: {//坐标轴在 grid 区域中的分隔区域，默认不显示。
-                    show: true,
+                    show: false,
                     areaStyle: {
-                        color: '#2c2949'
+{#                        color: '#2c2949'#}
                     },
                 },
                 indicator : [
@@ -2337,7 +2343,7 @@
         var data4 = echarts.init(document.getElementById('data4'));
         data4_option = {
             title: {
-                text: '各月流量分析',
+                text: 'CPU使用率',
                 textStyle: {
                     fontWeight: 'normal',
                     fontSize: 12,
@@ -2380,7 +2386,7 @@
                         color: '#57617B'
                     }
                 },
-                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                data: ['0:0', '0:0', '0:0', '0:0', '0:0', '0:0', '0:0', '0:0', '0:0', '0:0', '0:0', '0:0']
             }],
             yAxis: [{
                 type: 'value',
@@ -2405,7 +2411,7 @@
                 }
             }],
             series: [{
-                name: '流量上行',
+                name: 'CPU使用率',
                 type: 'line',
                 smooth: true,
                 lineStyle: {
@@ -2431,9 +2437,9 @@
                         color: 'rgb(255,215,0)'
                     }
                 },
-                data: [97.3,99.2,99.3,100.0,99.6,90.6,80.0,91.5,69.8,67.5,90.4,84.9]
+{#                data: [97.3,99.2,99.3,100.0,99.6,90.6,80.0,91.5,69.8,67.5,90.4,84.9]#}
             }, {
-                name: '流量下行',
+                name: 'CPU_use',
                 type: 'line',
                 smooth: true,
                 lineStyle: {
@@ -2459,7 +2465,7 @@
                         color: 'rgb(219,50,51)'
                     }
                 },
-                data: [84.2,81.0,67.5,72.1,43.7,88.5,91.9,101.8,79.7,87.6,92.9,0]
+{#                data: [84.2,81.0,67.5,72.1,43.7,88.5,91.9,101.8,79.7,87.6,92.9,0]#}
             }, ]
         };
         data4.setOption(data4_option);
@@ -2640,156 +2646,217 @@
         var oneDay = 24 * 3600 * 1000;
 
 
-        setInterval(function () {
-            var traff_data1 = [];
-            var traff_data2 = [];
-            var data3_data1 = [];
-            var data3_data2 = [];
-            var data4_data1 = [];
-            var data4_data2 = [];
-//            var traff_time = [];
+{#        setInterval(function () {#}
+{#            var traff_data1 = [];#}
+{#            var traff_data2 = [];#}
+{#            var data3_data1 = [];#}
+{#            var data3_data2 = [];#}
+{#            var data4_data1 = [];#}
+{#            var data4_data2 = [];#}
+{#//            var traff_time = [];#}
+{##}
+{##}
+{#            for (let i = 1; i <= 10; i++ ) {#}
+{#                addData1();#}
+{#            }#}
+{##}
+{#            for (let i = 1; i <=6; i++ ) {#}
+{#                addData2();#}
+{#            }#}
+{##}
+{#            for (let i = 1; i <= 12; i++ ) {#}
+{#                addData3();#}
+{#            }#}
+{##}
+{#            function addData1() {#}
+{#                var number1 = Math.random() * 0.42 * 10 ;#}
+{#                var number2 = Math.random() * 0.35 * 10 ;#}
+{#//                var nowtime = new Date();#}
+{#//                var base = +new Date(nowtime);#}
+{#//                var number3 = base + 2000;#}
+{#                traff_data1.push(number1.toFixed(2));#}
+{#                traff_data2.push(number2.toFixed(2));#}
+{#//                traff_time.push(number3);#}
+{#                console.log(traff_data1);#}
+{#                console.log(traff_data2);#}
+{#            }#}
+{##}
+{#            function addData2(){#}
+{#                var number10 = Math.random() * 100;#}
+{#                var number20 = Math.random() * 100;#}
+{#                data3_data1.push(number10.toFixed(2));#}
+{#                data3_data2.push(number20.toFixed(2));#}
+{#                console.log(data3_data1);#}
+{#                console.log(data3_data2);#}
+{#            }#}
+{##}
+{#            function addData3(){#}
+{#                var number100 = Math.random() * 100;#}
+{#                var number200 = Math.random() * 100;#}
+{#                data4_data1.push(number100.toFixed(2));#}
+{#                console.log(data4_data1);#}
+{#                data4_data2.push(number200.toFixed(2));#}
+{#            }#}
+{##}
+{#//            console.log(traff_time);#}
+{#            traffic.setOption({#}
+{#                series: [#}
+{#                    {#}
+{#                        data: traff_data1#}
+{#                    },#}
+{#                    {#}
+{#                        data: traff_data2#}
+{#                    }#}
+{#                ]#}
+{#            });#}
+{#            data3.setOption({#}
+{#                series: [#}
+{#                    {#}
+{#                        data: [#}
+{#                            {name: '07:00',value: data3_data2},#}
+{#                            {name: '08:00',value: data3_data2},#}
+{#                            {name: '09:00',value: data3_data2},#}
+{#                            {name: '10:00',value: data3_data2},#}
+{#                            {name: '11:00',value: data3_data2},#}
+{#                            {name: '12:00',value: data3_data2},#}
+{#                            {name: '13:00',value: data3_data2},#}
+{#                            {name: '14:00',value: data3_data2},#}
+{#                            {name: '15:00',value: data3_data2},#}
+{#                            {name: '16:00',value: data3_data2},#}
+{#                            {name: '17:00',value: data3_data2},#}
+{#                            {name: '18:00',value: data3_data2},#}
+{#                        ]#}
+{#                    }#}
+{#                ]#}
+{#            });#}
+{#            data4.setOption({#}
+{#                series: [#}
+{#                    {#}
+{#                        data: data4_data1#}
+{#                    },{#}
+{#                        data: data4_data2#}
+{#                    }#}
+{#                ]#}
+{#            });#}
+{#            data5.setOption({#}
+{#                series: [#}
+{#                    {#}
+{#                        data: [{#}
+{#                            value: data3_data1[0],#}
+{#                            name: 'APP事业部'#}
+{#                        }, {#}
+{#                            value: data3_data1[1],#}
+{#                            name: '家长事业部'#}
+{#                        }, {#}
+{#                            value: data3_data1[2],#}
+{#                            name: 'TV事业部'#}
+{#                        }, {#}
+{#                            value: data3_data1[3],#}
+{#                            name: '公共'#}
+{#                        }]#}
+{#                    },{#}
+{#                        data: [{#}
+{#                            value: data3_data2[0],#}
+{#                            name: '2D线'#}
+{#                        }, {#}
+{#                            value: data3_data2[1],#}
+{#                            name: '3D线'#}
+{#                        }, {#}
+{#                            value: data3_data2[2],#}
+{#                            name: '宝宝产品大全'#}
+{#                        }, {#}
+{#                            value: data3_data2[3],#}
+{#                            name: '大全产品线'#}
+{#                        }, {#}
+{#                            value: data3_data2[4],#}
+{#                            name: 'TV事业部'#}
+{#                        }, {#}
+{#                            value: data3_data2[5],#}
+{#                            name: '公共'#}
+{#                        }]#}
+{#                    }#}
+{#                ]#}
+{#            });#}
+{#            data6.setOption({#}
+{#                series: [#}
+{#                    {#}
+{#                        data: [#}
+{#                            {value:data3_data1[0], name:'直达', selected:true},#}
+{#                            {value:data3_data1[1], name:'营销广告'},#}
+{#                            {value:data3_data1[2], name:'搜索引擎'}#}
+{#                        ]#}
+{#                    },{#}
+{#                        data: [#}
+{#                            {value:data3_data2[0], name:'直达'},#}
+{#                            {value:data3_data2[1], name:'邮件营销'},#}
+{#                            {value:data3_data2[2], name:'联盟广告'},#}
+{#                            {value:data3_data2[3], name:'视频广告'},#}
+{#                            {value:data3_data2[4], name:'百度'},#}
+{#                            {value:data3_data2[5], name:'谷歌'},#}
+{#                            {value:data3_data2[6], name:'必应'},#}
+{#                            {value:data3_data2[7], name:'其他'}#}
+{#                        ]#}
+{#                    }#}
+{#                ]#}
+{#            })#}
+{#        }, 2000);#}
 
+        var cpu_use = [];
+        var cpu_useTime = [];
+        setInterval(function(){
+            $.get('http://172.16.172.106:8000/api/net').done(function (data) {
+                console.log(data);
+                cpu_use.push(data.cpu_use);
+                if (cpu_use.length > 12){
+                    cpu_use = cpu_use.slice(-12);
+                }
+                var S = data.timestamp, T = new Date(1E3 * S),
+                Format = function(Q){
+                    return Q < 10 ? '0' + Q : Q
+                },
+                Result = String(Format(T.getHours()) + ':' + Format(T.getMinutes()));
+                cpu_useTime.push(Result);
+                if (cpu_useTime.length > 12) {
+                    cpu_useTime = cpu_useTime.slice(-12);
+                }
 
-            for (let i = 1; i <= 10; i++ ) {
-                addData1();
-            }
+                console.log(cpu_useTime);
 
-            for (let i = 1; i <=6; i++ ) {
-                addData2();
-            }
-
-            for (let i = 1; i <= 12; i++ ) {
-                addData3();
-            }
-
-            function addData1() {
-                var number1 = Math.random() * 0.42 * 10 ;
-                var number2 = Math.random() * 0.35 * 10 ;
-//                var nowtime = new Date();
-//                var base = +new Date(nowtime);
-//                var number3 = base + 2000;
-                traff_data1.push(number1.toFixed(2));
-                traff_data2.push(number2.toFixed(2));
-//                traff_time.push(number3);
-            }
-
-            function addData2(){
-                var number10 = Math.random() * 100;
-                var number20 = Math.random() * 100;
-                data3_data1.push(number10.toFixed(2));
-                data3_data2.push(number20.toFixed(2));
-            }
-
-            function addData3(){
-                var number100 = Math.random() * 100;
-                var number200 = Math.random() * 100;
-                data4_data1.push(number100.toFixed(2));
-                data4_data2.push(number200.toFixed(2));
-            }
-
-//            console.log(traff_time);
-            traffic.setOption({
-                series: [
-                    {
-                        data: traff_data1
-                    },
-                    {
-                        data: traff_data2
-                    }
-                ]
+                data4.setOption({
+                    series: [
+                        {
+                            data: cpu_use
+                        }
+                    ],
+                    xAxis: [{
+                        data: cpu_useTime
+                    }]
+                });
             });
-            data3.setOption({
-                series: [
-                    {
-                        data: [
-                            {name: '07:00',value: data3_data2},
-                            {name: '08:00',value: data3_data2},
-                            {name: '09:00',value: data3_data2},
-                            {name: '10:00',value: data3_data2},
-                            {name: '11:00',value: data3_data2},
-                            {name: '12:00',value: data3_data2},
-                            {name: '13:00',value: data3_data2},
-                            {name: '14:00',value: data3_data2},
-                            {name: '15:00',value: data3_data2},
-                            {name: '16:00',value: data3_data2},
-                            {name: '17:00',value: data3_data2},
-                            {name: '18:00',value: data3_data2},
-                        ]
-                    }
-                ]
-            });
-            data4.setOption({
-                series: [
-                    {
-                        data: data4_data1
-                    },{
-                        data: data4_data2
-                    }
-                ]
-            });
-            data5.setOption({
-                series: [
-                    {
-                        data: [{
-                            value: data3_data1[0],
-                            name: 'APP事业部'
-                        }, {
-                            value: data3_data1[1],
-                            name: '家长事业部'
-                        }, {
-                            value: data3_data1[2],
-                            name: 'TV事业部'
-                        }, {
-                            value: data3_data1[3],
-                            name: '公共'
-                        }]
-                    },{
-                        data: [{
-                            value: data3_data2[0],
-                            name: '2D线'
-                        }, {
-                            value: data3_data2[1],
-                            name: '3D线'
-                        }, {
-                            value: data3_data2[2],
-                            name: '宝宝产品大全'
-                        }, {
-                            value: data3_data2[3],
-                            name: '大全产品线'
-                        }, {
-                            value: data3_data2[4],
-                            name: 'TV事业部'
-                        }, {
-                            value: data3_data2[5],
-                            name: '公共'
-                        }]
-                    }
-                ]
-            });
-            data6.setOption({
-                series: [
-                    {
-                        data: [
-                            {value:data3_data1[0], name:'直达', selected:true},
-                            {value:data3_data1[1], name:'营销广告'},
-                            {value:data3_data1[2], name:'搜索引擎'}
-                        ]
-                    },{
-                        data: [
-                            {value:data3_data2[0], name:'直达'},
-                            {value:data3_data2[1], name:'邮件营销'},
-                            {value:data3_data2[2], name:'联盟广告'},
-                            {value:data3_data2[3], name:'视频广告'},
-                            {value:data3_data2[4], name:'百度'},
-                            {value:data3_data2[5], name:'谷歌'},
-                            {value:data3_data2[6], name:'必应'},
-                            {value:data3_data2[7], name:'其他'}
-                        ]
-                    }
-                ]
-            })
         }, 2000);
 
+{#            setTimeout(function(){#}
+{#                $.get('http://172.16.172.106:5000/cpu').done(function (data) {#}
+{#                    console.log(data.cpu_use);#}
+{#                });#}
+{#            }, 2000);#}
+
+
+{#        $.ajax('http://172.16.172.106:5000/cpu', {#}
+{#            dataType: 'jsonp',#}
+{#            crossDomain: true,#}
+{#            success: function (data) {#}
+{#                console.log(data);#}
+{#            }#}
+{#        });#}
+
+{#        $.ajax({#}
+{#            url:'http://172.16.172.106:5000/cpu',#}
+{#            dataType:'json',#}
+{#            success:function(data){#}
+{#                alert(data);#}
+{#            }#}
+{#        });#}
 
         window.addEventListener("resize", function () {
             map.resize();
