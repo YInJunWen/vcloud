@@ -1,135 +1,137 @@
 ﻿{% extends "_base.html" %}
 
 {% block person %}
-<li id="rightBarlist6">
- <a href="">设置</a>
-  <div class="personCenter">
-    <div class="personCenterBox">
- <a href="">
-   <span class="fa fa-book"></span>
-   <span>个人资料</span>
- </a>
- <a href=""> 
-		 <span class="fa fa-book"></span>
-		  <span>更改密码</span>
-</a>
-		  <a href=""> 
-		   <span class="fa fa-book"></span>
-		    <span>操作日志</span>
-			</a>
-			<a href="/logout/?user={{ user_info.user }}">
-			 <span class="fa fa-book"></span>
-			  <span>退&nbsp;&nbsp;出</span>
-			  </a>
-			  </div>
-			  <p>本次登录时间 :</p>
-			  <p id="NowTime">{{ user_info.log_time }}</p>
-			  <!--<a href="">退出管理控制台</a>-->
-			  </div>
-			  </li>
+    <li id="rightBarlist6">
+        <a href="">设置</a>
+        <div class="personCenter">
+            <div class="personCenterBox">
+                <a href="">
+                    <span class="fa fa-book"></span>
+                    <span>个人资料</span>
+                </a>
+                <a href="">
+                    <span class="fa fa-book"></span>
+                    <span>更改密码</span>
+                </a>
+                <a href="">
+                    <span class="fa fa-book"></span>
+                    <span>操作日志</span>
+                </a>
+                <a href="/logout/?user={{ user_info.user }}">
+                    <span class="fa fa-book"></span>
+                    <span>退&nbsp;&nbsp;出</span>
+                </a>
+            </div>
+            <p>本次登录时间 :</p>
+            <p id="NowTime">{{ user_info.log_time }}</p>
+            <!--<a href="">退出管理控制台</a>-->
+        </div>
+    </li>
 
 {% endblock %}
 
 
 {% block main_show %}
 
-<div class="main-body-wapper">
+    <div class="main-body-wapper">
         <div id="orderView">
             <div class="container-fluid">
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="titleInfoBox">
-                                <div class="titleInfo">
-                                    丨 工单列表
-                                </div>
-                                <div class="btnBox" style="width:62px;">
-                                    <a href="" class="btn1" onclick="location.reload(true)">刷新</a>
-                                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="titleInfoBox">
+                            <div class="titleInfo">
+                                丨 工单列表
                             </div>
-                            <div id="justSearchWarpper">
-                                <form action="" class="justSearch">
-                                    <div class="select-wrapper">
-                                        <select name="" id="">
-                                            <option value="0" selected="selected">工单号</option>
-			  <option value="1">时间</option>
-			  <option value="2">事由</option>
-			  <option value="3">服务器</option>
-                                        </select>
-                                        <input type="text" placeholder="工单条件">
-                                        <button>搜索</button>
-                                    </div>
-                                </form>
+                            <div class="btnBox" style="width:62px;">
+                                <a href="" class="btn1" onclick="location.reload(true)">刷新</a>
                             </div>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th width="10">
-                                            <input type="checkbox">
-                                        </th>
-                                        <th style="text-align: center;" width="10%">工单号</th>
-                                        <th style="text-align: center;" width="20%">时间</th>
-                                        <th style="text-align: center;" width="40%">事由</th>
-                                        <th style="text-align: center;">服务器</th>
-                                        <th style="text-align: center;">状态</th>
-                                        <th style="text-align: center;">操作</th>
-                                    </tr>
-                                </thead>
-{% if order_list %}
+                        </div>
+                        <div id="justSearchWarpper">
+                            <form action="" class="justSearch">
+                                <div class="select-wrapper">
+                                    <select name="" id="">
+                                        <option value="0" selected="selected">工单号</option>
+                                        <option value="1">时间</option>
+                                        <option value="2">事由</option>
+                                        <option value="3">服务器</option>
+                                    </select>
+                                    <input type="text" placeholder="工单条件">
+                                    <button>搜索</button>
+                                </div>
+                            </form>
+                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th width="10">
+                                    <input type="checkbox">
+                                </th>
+                                <th style="text-align: center;" width="10%">工单号</th>
+                                <th style="text-align: center;" width="20%">时间</th>
+                                <th style="text-align: center;" width="40%">事由</th>
+                                <th style="text-align: center;">服务器</th>
+                                <th style="text-align: center;">状态</th>
+                                <th style="text-align: center;">操作</th>
+                            </tr>
+                            </thead>
+                            {% if order_list %}
                                 <tbody>
-{% for i in order_list %}
+                                {% for i in order_list %}
                                     <tr>
                                         <td width="10">
                                             <input type="checkbox">
                                         </td>
-                                        <td style="text-align: center;" width="10%"><a class="order_id" href="/order_detail/?id={{i.id}}&type={{i.type}}">{{i.id}}</a></td>
-                                        <td style="text-align: center;" width="20%">{{i.created_at}} </td>
-                                        <td style="text-align: center;" width="40%">{{i.reason}}</td>
-                                        <td style="text-align: center;">{{i.server}}</td>
-                                        <td style="text-align: center;">{{i.status}}</td>
+                                        <td style="text-align: center;" width="10%"><a class="order_id"
+                                                                                       href="/order_detail/?id={{ i.id }}&type={{ i.type }}">{{ i.id }}</a>
+                                        </td>
+                                        <td style="text-align: center;" width="20%">{{ i.created_at }} </td>
+                                        <td style="text-align: center;" width="40%">{{ i.reason }}</td>
+                                        <td style="text-align: center;">{{ i.server }}</td>
+                                        <td style="text-align: center;">{{ i.status }}</td>
                                         <td style="text-align: center;">
-{% if i.type != 2 %}					
-						<a href="javascript:void(0)" class="orderBtnOpen">撤销</a> |
-{%endif%} 
-						<a href="javascript:void(0)" class="order_deleteBtnOpen">删除</a>
+                                            {% if i.type != 2 %}
+                                                <a href="javascript:void(0)" class="orderBtnOpen">撤销</a> |
+                                            {% endif %}
+                                            <a href="javascript:void(0)" class="order_deleteBtnOpen">删除</a>
                                         </td>
                                     </tr>
-{% endfor %}
+                                {% endfor %}
                                 </tbody>
-                            </table>
-{% else %}
-                            <div class="noMessage">
-                                <p>没有查询到符合条件的记录!</p>
-                            </div>
-{% endif %}
-                        </div>
+                                </table>
+                            {% else %}
+                                <div class="noMessage">
+                                    <p>没有查询到符合条件的记录!</p>
+                                </div>
+                            {% endif %}
                     </div>
+                </div>
 
             </div>
         </div>
     </div>
 
-<!--撤销页面-->
-	<div class="withdrawWapper">
-		<div class="jumbotron">
-			<h3>确认 撤销工单</h3>
-			<p>请确认你的选择,此工单将被撤销!</p>
-			<div class="checkBar">
-				<button class="btn btn-default closeBtnBar">取消</button>
-				<button class="btn btn-primary withdrawBtnComputer">撤销工单</button>
-			</div>
-		</div>
-	</div>
-	
-    	<div class="deleteOrderBar">
-        	<div class="jumbotron">
-            	<h3>确认 删除工单</h3>
-            	<p>请确认你的选择,此工单将被删除!</p>
-            	<div class="checkBar">
-                	<button class="btn btn-default closeBtnBar">取消</button>
-                	<button class="btn btn-primary deleteBtnComputer">删除工单</button>
-            	</div>
-        	</div>
-    	</div>
+    <!--撤销页面-->
+    <div class="withdrawWapper">
+        <div class="jumbotron">
+            <h3>确认 撤销工单</h3>
+            <p>请确认你的选择,此工单将被撤销!</p>
+            <div class="checkBar">
+                <button class="btn btn-default closeBtnBar">取消</button>
+                <button class="btn btn-primary withdrawBtnComputer">撤销工单</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="deleteOrderBar">
+        <div class="jumbotron">
+            <h3>确认 删除工单</h3>
+            <p>请确认你的选择,此工单将被删除!</p>
+            <div class="checkBar">
+                <button class="btn btn-default closeBtnBar">取消</button>
+                <button class="btn btn-primary deleteBtnComputer">删除工单</button>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

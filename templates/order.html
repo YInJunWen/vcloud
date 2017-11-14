@@ -64,41 +64,163 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th width="10">
-                                    <input type="checkbox">
-                                </th>
-                                <th style="text-align: center;" width="10%">工单号</th>
-                                <th style="text-align: center;" width="20%">时间</th>
-                                <th style="text-align: center;" width="40%">事由</th>
-                                <th style="text-align: center;">服务器</th>
-                                <th style="text-align: center;">状态</th>
-                                <th style="text-align: center;">操作</th>
+                                <th>工单号</th>
+                                <th>审批摘要</th>
+                                <th>配置</th>
+                                <th>订单创建时间</th>
+                                <th>订单失效时间</th>
+                                <th>订单完成时间</th>
+                                <th>状态</th>
                             </tr>
                             </thead>
-                                <tbody>
-{#                                    <tr>#}
-{#                                        <td width="10">#}
-{#                                            <input type="checkbox">#}
-{#                                        </td>#}
-{#                                        <td style="text-align: center;" width="10%"><a class="order_id"#}
-{#                                                                                       href="/order_detail/?id={{ i.id }}&type={{ i.type }}">{{ i.id }}</a>#}
-{#                                        </td>#}
-{#                                        <td style="text-align: center;" width="20%">{{ i.created_at }} </td>#}
-{#                                        <td style="text-align: center;" width="40%">{{ i.reason }}</td>#}
-{#                                        <td style="text-align: center;">{{ i.server }}</td>#}
-{#                                        <td style="text-align: center;">{{ i.status }}</td>#}
-{#                                        <td style="text-align: center;">#}
-{#                                                <a href="javascript:void(0)" class="orderBtnOpen">撤销</a> |#}
-{#                                                <a href="javascript:void(0)" class="order_deleteBtnOpen">删除</a>#}
-{#                                        </td>#}
-{#                                    </tr>#}
-                                </tbody>
-                                </table>
+                            <tbody id="orderTable">
+                            {% if order %}
+                                {% for value in order %}
+                                    <tr>
+                                        <td>
+                                            {#                                            <a href="/{{ value.pid }}" style="text-decoration: underline;">{{ value.pid }}</a>#}
+                                            {{ value.pid }}
+                                        </td>
+                                        <td>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">发起人：{{ value.created_user }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">所在部门：{{ value.dept }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">事由：{{ '创建云主机' }}</span>
+                                        </td>
+                                        <td class="pz">详细配置
+                                            <ul id="hideList">
+                                                <li><h3>云主机类型详情:</h3>
+                                                    <div class="table-wapper">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <th class="hideTh">CPU</th>
+                                                                <td class="hideTd">{{ value.vcpus }}核</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">内存</th>
+                                                                <td class="hideTd">{{ value.memory }}GB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">Disk</th>
+                                                                <td class="hideTd">{{ value.disk }}GB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">带宽</th>
+                                                                <td class="hideTd">{{ value.bandwidth }}MB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">系统</th>
+                                                                <td class="hideTd">{{ value.os }}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        {#                                        <td style="font-size: 12px;">#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">主机名：{{ value.name }}</span>#}
+                                        {#                                            <br>#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">CPU：{{ value.vcpus }}核</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">内存：{{ value.memory }}GB</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">硬盘：{{ value.disk }}GB</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">带宽：{{ value.bandwidth }}MB</span>#}
+                                        {#                                            <br>#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">系统：{{ value.os }}</span>#}
+                                        {#                                        </td>#}
+                                        <td>{{ value.created_at }}</td>
+                                        <td>{{ value.expired_at }}</td>
+                                        {% if value.status != '待审核' %}
+                                            {% if value.vcloud_approval_time %}
+                                                <td>{{ value.vcloud_approval_time }}</td>
+                                            {% else %}
+                                                <td>{{ value.dept_approval_time }}</td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td>待审核</td>
+                                        {% endif %}
+                                        <td>
+                                            <ul>
+                                                {% if value.status == '已通过' or value.status == '已拒绝' %}
+                                                    <li>审批完成</li>
+                                                    <li style="position: relative;margin-bottom: 5px;">
+                                                        ({{ value.status }})
+                                                        {% if value.status == '已通过' %}
+                                                            <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -25px;right: 60%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 85px 85px;"></span>
+                                                        {% else %}
+                                                            {% if value.dept_reason %}
+                                                                <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">
+                                                                    部门审核: {{ value.dept_reason }}</li>
+                                                            {% else %}
+                                                                {#                                                            <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">部门审核: 同意</li><br>#}
+                                                                <li style="width: 180px;display: inline-block;text-align: center;margin-bottom: 5px;">
+                                                                    云计算中心: {{ value.vcloud_reason }}</li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </li>
+                                                {% else %}
+                                                    <li>审批未完成</li>
+                                                    <li>({{ value.status }})</li>
+                                                {% endif %}
+                                                {#                                                <li style="margin-bottom: 5px;">#}
+                                                {#                                                    <span style="text-align: left;">部门审核: {{ value.status }}</span>#}
+                                                {#                                                </li>#}
+                                                {#                                                <li style="margin-bottom: 5px;">#}
+                                                {#                                                    <span style="text-align: left;">云计算审核: {{ value.status }}</span>#}
+                                                {#                                                </li>#}
+                                                {#                                                {% if value.vcloud_reason != '同意' and value.dept_reason != '同意'%}#}
+                                                {#                                                    {% if value.vcloud_reason %}#}
+                                                {#                                                        <li style="margin-bottom: 5px;">#}
+                                                {#                                                            <span style="text-align: left;">审批详情: {{ value.vcloud_reason }}</span>#}
+                                                {#                                                        </li>#}
+                                                {#                                                    {% else %}#}
+                                                {#                                                        <li style="margin-bottom: 5px;">#}
+                                                {#                                                            <span style="text-align: left;">审批详情: {{ value.dept_reason }}</span>#}
+                                                {#                                                        </li>#}
+                                                {#                                                    {% endif %}#}
+                                                {#                                                {% else %}#}
+                                                {#                                                    <li style="margin-bottom: 5px;position: relative;">#}
+                                                {#                                                        <span style="text-align: left;">审批详情: 已通过</span>#}
+                                                {#                                                        <span style="display: inline-block;width: 85px;height: 85px;position: absolute;top: -50px;right: 60%;background: url(/static/assets/img/agree.png) no-repeat;background-size: 85px 85px;"></span>#}
+                                                {#                                                    </li>#}
+                                                {#                                                {% endif %}#}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        {% if order %}
+                            <div class="pagination" style="text-align: center;display: block;">
+                                <span class="step-links">
+                                    {% if order.has_previous %}
+                                        <a href="?page={{ order.previous_page_number }}">上一页</a>
+                                    {% endif %}
 
-                                <div class="noMessage">
-                                    <p>没有查询到符合条件的记录!</p>
-                                </div>
+                                    <span class="current">
+                                        当前第 {{ order.number }} 页, 共 {{ order.paginator.num_pages }} 页
+                                    </span>
 
+                                    {% if order.has_next %}
+                                        <a href="?page={{ order.next_page_number }}">下一页</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <div class="noMessage order_noMessage" style="display: none;">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                        {% else %}
+                            <div class="noMessage order_noMessage" style="display: block;">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 

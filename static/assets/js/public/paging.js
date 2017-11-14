@@ -116,7 +116,7 @@
 			});
 		},
 		format: function () {
-			var html = '<ul>'
+			var html = '<ul>';
 			html += '<li class="js-page-first js-page-action ui-pager" >' + this.settings.firstTpl + '</li>';
 			html += '<li class="js-page-prev js-page-action ui-pager">' + this.settings.prevTpl + '</li>';
 			if (this.pagecount > 6) {
@@ -193,6 +193,6 @@
 			});
 			this.container.children('ul').append(html);
 		}
-	}
+	};
 	return Paging;
 });

@@ -1,65 +1,50 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="width: 100%;height: 100%;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/assets/css/public/video-js.min.css">
     <title>Document</title>
+    <style>
+        .video_close {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 30px;
+            color: #fff;
+            z-index: 10000;
+            position: fixed;
+            top: 10px;
+            right: 15px;
+{#            display: none;#}
+            cursor: pointer;
+        }
+    </style>
 </head>
-<br>
-    <input type="text" value="1">
-    </br>
-    <input type="text" value="2">
-    <a href="javascript:void(0)">提交</a>
-    {% if data %}
-        <h1>{{ data }}</h1>
-    {% endif %}
+<body style="width: 100%;height: 100%;">
+<button class="bar">按钮</button>
+<span class="video_close">×</span>
+    <video id="my-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup="{}" style="">
+        <source type="video/mp4" src="/static/assets/video/trailer.mp4">
+        <p class="vjs-no-js">不支持播放</p>
+    </video>
+<!--[if lt IE9]>
+  	<script src="/static/assets/js/public/videojs-ie8.min.js"></script>
+<![endif]-->
     <script src="/static/assets/js/public/jquery.min.js"></script>
-{#    <script>#}
-{#        jQuery(document).ajaxSend(function(event, xhr, settings) {#}
-{#        function getCookie(name) {#}
-{#            var cookieValue = null;#}
-{#            if (document.cookie && document.cookie != '') {#}
-{#                var cookies = document.cookie.split(';');#}
-{#                for (var i = 0; i < cookies.length; i++) {#}
-{#                    var cookie = jQuery.trim(cookies[i]);#}
-{#                    // Does this cookie string begin with the name we want?#}
-{#                    if (cookie.substring(0, name.length + 1) == (name + '=')) {#}
-{#                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
-{#                        break;#}
-{#                    }#}
-{#                }#}
-{#            }#}
-{#            return cookieValue;#}
-{#        }#}
-{#        function sameOrigin(url) {#}
-{#            // url could be relative or scheme relative or absolute#}
-{#            var host = document.location.host; // host + port#}
-{#            var protocol = document.location.protocol;#}
-{#            var sr_origin = '//' + host;#}
-{#            var origin = protocol + sr_origin;#}
-{#            // Allow absolute or scheme relative URLs to same origin#}
-{#            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||#}
-{#                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||#}
-{#                // or any other URL that isn't scheme relative or absolute i.e relative.#}
-{#                !(/^(\/\/|http:|https:).*/.test(url));#}
-{#        }#}
-{#        function safeMethod(method) {#}
-{#            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));#}
-{#        }#}
-{##}
-{#        if (!safeMethod(settings.type) && sameOrigin(settings.url)) {#}
-{#            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));#}
-{#        }#}
-{#    });#}
-{#    </script>#}
+    <script src="/static/assets/js/public/video.min.js"></script>
     <script>
-            $('a').click(function(){
-                $.post('/accessIns/',function (data) {
-                    console.log(data);
-                })
-            })
+        var options = {autoplay: true};
+        $('.bar').click(function(){
+            var player = videojs("my-player", options, function onPlayerReady() {
+                this.play();
+                this.enterFullWindow();
+            });
+{#            $('.vjs-button').click();#}
+        });
     </script>
 </body>
 </html>

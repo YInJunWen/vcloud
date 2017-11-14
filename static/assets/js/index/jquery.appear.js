@@ -36,9 +36,8 @@
       }
       $prior_appeared[index] = $appeared;
     }
-  };
-
-  function add_selector(selector) {
+  }
+    function add_selector(selector) {
     selectors.push(selector);
     $prior_appeared.push();
   }

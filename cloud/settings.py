@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for cloud project.
 
@@ -44,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -82,8 +83,8 @@ DATABASES = {
 		'NAME': 'vcloud',
 		'HOST': '10.1.1.203',
 		'USER': 'vcloud',
-		'PASSWORD': 'vdin*1234',
-	}
+        'PASSWORD': 'vdin*1234',
+    }
 }
 
 
@@ -117,7 +118,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-#USE_TZ = True
+# USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -127,3 +128,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'static')
 ]
+
+
+
+EMAIL_HOST = "smtp.exmail.qq.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "no-reply@vdin.net"
+EMAIL_HOST_PASSWORD = "Vdin*1234"
+EMAIL_USE_TLS = True
+EMAIL_FROM = "no-reply"

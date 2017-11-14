@@ -33,51 +33,124 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th width="10">
-                                    <input type="checkbox">
-                                </th>
-                                <th style="text-align: center;" width="10%">工单号</th>
-                                <th style="text-align: center;" width="20%">时间</th>
-                                <th style="text-align: center;" width="40%">事由</th>
-                                <th style="text-align: center;">服务器</th>
-                                <th style="text-align: center;">申请人</th>
-                                <th style="text-align: center;">状态</th>
-                                <th style="text-align: center;">操作</th>
+                                {#                                <th width="10">#}
+                                {#                                    <input type="checkbox">#}
+                                {#                                </th>#}
+                                <th>工单号</th>
+                                <th>审批摘要</th>
+                                <th>配置</th>
+                                <th>发起时间</th>
+                                {#                                <th>事由</th>#}
+                                <th>审核人</th>
+                                <th>状态</th>
+                                {% if dept != 'zjb' %}
+                                    <th style="text-align: center;">操作</th>
+                                {% endif %}
                             </tr>
                             </thead>
-{#                            {% if order_list %}#}
-                                <tbody>
-{#                                {% for i in order_list %}#}
+                            <tbody class="yChecking-body">
+                            {% if approval %}
+                                {% for i in approval %}
                                     <tr>
-                                        <td width="10">
-                                            <input type="checkbox">
+                                        <td>{{ i.pid }}</td>
+                                        <td>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">发起人：{{ i.created_user }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">所在部门：{{ i.dept }}</span>
+                                            <br>
+                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">事由：{{ '创建云主机' }}</span>
                                         </td>
-                                        <td style="text-align: center;" width="10%"><a class="order_id"
-                                                                                       href="/order_detail/?id={{ i.id }}&type={{ i.type }}">{{ i.id }}</a>
+                                        <td class="pz">详细配置
+                                            <ul id="hideList">
+                                                <li><h3>云主机类型详情:</h3>
+                                                    <div class="table-wapper">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <th class="hideTh">CPU</th>
+                                                                <td class="hideTd">{{ i.vcpus }}核</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">内存</th>
+                                                                <td class="hideTd">{{ i.memory }}GB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">Disk</th>
+                                                                <td class="hideTd">{{ i.disk }}GB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">带宽</th>
+                                                                <td class="hideTd">{{ i.bandwidth }}MB</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="hideTh">系统</th>
+                                                                <td class="hideTd">{{ i.os }}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
-                                        <td style="text-align: center;" width="20%">{{ i.created_at }} </td>
-                                        <td style="text-align: center;" width="40%">{{ i.reason }}</td>
-                                        <td style="text-align: center;">{{ i.server }}</td>
-                                        <td style="text-align: center;">{{ i.created_user }}</td>
-                                        <td style="text-align: center;">{{ i.status }}</td>
-                                        <td style="text-align: center;">
-{#                                            {% if i.type != 2 %}#}
-                                                <a href="javascript:void(0)" class="orderBtnOpen">撤销</a> |
-{#                                            {% endif %}#}
-                                            <a href="javascript:void(0)" class="order_deleteBtnOpen">删除</a>
-                                        </td>
+                                        {#                                        <td style="font-size: 12px;">#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">主机名：{{ i.name }}</span>#}
+                                        {#                                            <br>#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">CPU：{{ i.vcpus }}核</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">内存：{{ i.memory }}GB</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">硬盘：{{ i.disk }}GB</span>#}
+                                        {#                                            丨#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">带宽：{{ i.bandwidth }}MB</span>#}
+                                        {#                                            <br>#}
+                                        {#                                            <span style="margin-bottom: 5px;display: inline-block;height: 20px;line-height: 20px;">系统：{{ i.os }}</span>#}
+                                        {#                                        </td>#}
+                                        <td>{{ i.created_at }}</td>
+                                        {#                                        <td>创建云主机</td>#}
+                                        <td>{{ i.dept_admin }}</td>
+                                        <td>{{ i.status }}</td>
+                                        {% if dept != 'zjb' %}
+                                            <td style="text-align: center;"><a href="javascript:void(0)"
+                                                                               onclick="Approval(this)">同意&nbsp;</a><a
+                                                    href="javascript:void(0)" onclick="Approval(this)">&nbsp;拒绝</a></td>
+                                            {#                                        {% else %}#}
+                                            {#                                            <td></td>#}
+                                        {% endif %}
                                     </tr>
-{#                                {% endfor %}#}
-                                </tbody>
-                                </table>
-{#                            {% else %}#}
-                                <div class="noMessage">
-                                    <p>没有查询到符合条件的记录!</p>
-                                </div>
-{#                            {% endif %}#}
-                    </div>
-                </div>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        {% if approval %}
+                            <div class="pagination" style="text-align: center;display: block;">
+                                <span class="step-links">
+                                    {% if approval.has_previous %}
+                                        <a href="?page={{ approval.previous_page_number }}">上一页</a>
+                                    {% endif %}
 
+                                    <span class="current">
+                                        当前第 {{ approval.number }} 页, 共 {{ approval.paginator.num_pages }} 页
+                                    </span>
+
+                                    {% if approval.has_next %}
+                                        <a href="?page={{ approval.next_page_number }}">下一页</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}
+                        {% if approval %}
+                            <div class="orderCk_noMessage" style="display: none;">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                        {% else %}
+                            <div class="orderCk_noMessage" style="display: block;">
+                                <p>没有查询到符合条件的记录!</p>
+                            </div>
+                            </div>
+                        {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -101,6 +174,20 @@
             <div class="checkBar">
                 <button class="btn btn-default closeBtnBar">取消</button>
                 <button class="btn btn-primary deleteBtnComputer">删除工单</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reasonOrderBar">
+        <div class="jumbotron">
+            <h3>请填写拒绝的理由！</h3>
+            <textarea class="form-control reasonValue" rows="8"
+                      style="outline:none;resize:none;width: 90%;margin: 0 auto;" maxlength="150"
+                      placeholder="最多150个字符..."></textarea>
+            <div>&nbsp;</div>
+            <div class="checkBar">
+                <button class="btn btn-default closeBtnBar">取消</button>
+                <button class="btn btn-primary reasonBtnComputer">提交</button>
             </div>
         </div>
     </div>

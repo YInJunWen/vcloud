@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="btnBox">
                                     <a href="" class="btn1" onclick="location.reload(true)">刷新</a>
-                                    <a href="/create_instance/" class="btn2">创建实例</a>
+                                    <a href="/create_instance/" class="btn2">创建虚机</a>
                                 </div>
                             </div>
                             <div id="justSearchWarpper">
@@ -35,86 +35,136 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="10">
-                                        <input type="checkbox">
-                                    </th>
-                                    <th>实例ID/名称</th>
-                                    <th>IP地址</th>
-                                    <th>配置</th>
-                                    <th>流量</th>
-                                    <th>有效期至</th>
-                                    <th>状态</th>
+                                    {#                                    <th width="10" style="text-indent: 22px;">#}
+                                    {#                                        <input type="checkbox">#}
+                                    {#                                    </th>#}
+                                    <th style="text-align:center;width:10%;" class="text_indent">实例ID/名称</th>
+                                    <th style="text-align: center;">IP地址</th>
+                                    <th style="text-align: center;">配置</th>
+                                    <th style="text-align: center;">流量</th>
+                                    <th style="text-align: center;">有效期至</th>
+                                    <th style="text-align: center;">状态</th>
                                     <th style="text-align: center;">操作</th>
                                 </tr>
                                 </thead>
-                                <tr>
-                                    <td width="10"><input type="checkbox"></td>
-                                    <td>1</td>
-                                    <td>1</td>
-
-                                    <td class='pz'>详细配置
-
-                                        <ul id='hideList'>
-                                            <li>
-                                                <h3>云主机类型详情:</h3>
-                                                <div class='table-wapper'>
-                                                    <table>
-                                                        <tbody>
-                                                        <tr>
-                                                            <th class='hideTh'>CPU</th>
-                                                            <td class='hideTd'>1</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class='hideTh'>RAM</th>
-                                                            <td class='hideTd'>1 MB</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class='hideTh'>Disk</th>
-                                                            <td class='hideTd'>Disk对应变量</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class='hideTh'>带宽</th>
-                                                            <td class='hideTd'>1</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </li>
-                                        </ul>
-
-                                    </td>
-
-                                    <td>1 MB</td>
-                                    <td>1</td>
-
-                                    <td><span class="fa fa-play" style="color:#00ff00;;"></span>&nbsp;running
-                                    </td>
-
-                                    <td span class="fa fa-stop"
-                                        style="color:#ff0000;"></span>&nbsp;stopped
-                                    </td>
-
-                                    <td style='text-align: center;'>
-                                        <select name="" class="console_select"
-                                                onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
-                                            <option value="0">--------</option>
-                                            <option value="1">开机</option>
-                                            <option value="2">关机</option>
-                                            <option value="3">重启</option>
-                                            <option value="4">修改密码</option>
-                                            <option value="5">快照</option>
-                                        </select>
-                                    </td>
-                                </tr>
-
                                 <tbody id="yDisk-body">
-
+                                {% if instancesData %}
+                                    {% for value in instancesData %}
+                                        <tr>
+                                            <td style="text-align: center;">{{ value.name }}</td>
+                                            <td style="text-align: center;text-indent: 30px;">{{ value.ip }}</td>
+                                            <td class="pz">详细配置
+                                                <ul id="hideList">
+                                                    <li><h3>云主机类型详情:</h3>
+                                                        <div class="table-wapper">
+                                                            <table>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <th class="hideTh">CPU</th>
+                                                                    <td class="hideTd">{{ value.vcpus }}核</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">内存</th>
+                                                                    <td class="hideTd">{{ value.memory }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">Disk</th>
+                                                                    <td class="hideTd">{{ value.disk }}GB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">带宽</th>
+                                                                    <td class="hideTd">{{ value.bandwidth }}MB</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="hideTh">系统</th>
+                                                                    <td class="hideTd">{{ value.os }}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                接受:{{ value.rx }}kb丨发送:{{ value.tx }}kb
+                                            </td>
+                                            <td>{{ value.expired_at }}</td>
+                                            <td>
+                                                {% if value.status == 'running' %}
+                                                    <span id="reboot" class="fa fa-play" style="color: #419641;"></span><span id="reboot_loading">  运行中</span>
+                                                {% else %}
+                                                    <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>
+                                                {% endif %}
+                                                {% if value.status == 'expire' %}
+{#                                                    <span class="fa fa-circle-o-notch" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
+                                                    <span class="fa fa-history" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>
+                                                {% endif %}
+{#                                                {% if value.state == 'active' %}#}
+{#                                                    <span class="fa fa-play" style="color: #419641;"></span><span>&nbsp;&nbsp;运行中</span>#}
+{#                                                {% else %}#}
+{#                                                    <span class="fa fa-stop" style="color: #ff0000;">&nbsp;&nbsp;已关闭</span>#}
+{#                                                {% endif %}#}
+{#                                                {% if value.status == 'expire' %}#}
+{#                                                    <span class="fa fa-circle-o-notch" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
+{#                                                    <span class="fa fa-history" style="color: #a5a5a5;">&nbsp;&nbsp;已过期</span>#}
+{#                                                {% endif %}#}
+                                            </td>
+                                            <td style="text-align:center">
+                                                {% if value.status == 'expire' %}
+                                                    <select disabled="disabled" name="" class="console_select"
+                                                            onchange="yzj_Change(this.options[this.options.selectedIndex].value)">
+                                                        <option value="0">过期锁定</option>
+                                                    </select>
+                                                {% else %}
+                                                    <select name="" class="console_select Ts_select"
+                                                            onchange="yzj_Change(this.options[this.options.selectedIndex].value,
+                                                                                 this.parentNode.parentNode.childNodes[1].innerText)">
+                                                        <option value="0">--------</option>
+                                                        {% if value.status != 'running' %}
+                                                            <option value="1">开机</option>
+                                                        {% endif %}
+                                                        {% if value.status != 'stopped' %}
+                                                            <option value="2">关机</option>
+                                                        {% endif %}
+                                                        <option value="3">重启</option>
+                                                        <option value="4">修改密码</option>
+                                                        <option value="5">快照</option>
+                                                    </select>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
-                            <div class="noMessage">
-                                <p>没有查询到符合条件的记录!</p>
-                            </div>
+                            {% if instancesData %}
+                                <div class="pagination" style="text-align: center;display: block;">
+                                    <span class="step-links">
+                                        {% if instancesData.has_previous %}
+                                            <a href="?page={{ instancesData.previous_page_number }}">上一页</a>
+                                        {% endif %}
 
+                                        <span class="current">
+                                            当前第 {{ instancesData.number }} 页, 共 {{ instancesData.paginator.num_pages }} 页
+                                        </span>
+
+                                        {% if instancesData.has_next %}
+                                            <a href="?page={{ instancesData.next_page_number }}">下一页</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                            {% if instancesData %}
+                                <div class="noMessage ins_noMessage" style="display: none;">
+                                    <p>没有查询到符合条件的记录!</p>
+                                </div>
+                            {% else %}
+                                <div class="noMessage ins_noMessage" style="display:block;">
+                                    <p>没有查询到符合条件的记录!</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </form>
@@ -193,9 +243,4 @@
         </div>
     </div>
     <script src="/static/assets/js/public/jquery.min.js"></script>
-    <script>
-        $.get('/traffic.py', function (data) {
-            console.log(data);
-        })
-    </script>
 {% endblock %}

@@ -1,39 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <!-- Page title -->
-    <title>VDIN云-为了无法计算的价值</title>
-    <!-- /Page title -->
-
-    <!-- Meta -->
+    <title>VDIN云-为了无法估量的价值</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="全中国用户正享用中德宏泰提供的云服务器、云数据库、云存储、CDN、大数据等服务，7x24售后支持，故障100倍赔偿，快速备案，5天无理由退款。">
+    <meta name="description" content="全中国用户正享用中德宏泰提供的云服务器、云数据库、云存储、CDN、大数据等服务，7x24售后支持，故障100倍赔偿，5天无理由退款。">
     <meta name="keyword" content="中德宏泰,云数据库,云服务器,云计算">
-    <!-- /Meta -->
-
-    <!-- SEO Meta -->
     <meta name="author" content="">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <!-- /SEO Meta -->
-
-    <!-- OpenGraph meta -->
     <meta property="og:image" content="icon-180x180.png">
     <meta property="og:title" content="">
     <meta property="og:description" content="">
-    <!-- /OpenGraph meta -->
-
-    <!-- Favicon -->
     <link rel="shortcut icon" href="/static/assets/img/favicon.png">
-    <!-- /Favicon -->
-
-    <!-- Styles -->
     <link rel="stylesheet" href="/static/assets/components/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/components/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/static/assets/components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/assets/css/public/video-js.min.css">
     <link rel="stylesheet" href="/static/assets/components/elegant-font/style.css">
     <link rel="stylesheet" href="/static/assets/components/owl-carousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="/static/assets/components/owl-carousel/assets/owl.theme.default.min.css">
@@ -41,9 +25,8 @@
     <link rel="stylesheet" href="/static/assets/css/index/magnific-popup.css">
     <link rel="stylesheet" href="/static/assets/css/index/theme.css" title="theme-default">
     <link rel="stylesheet" href="/static/assets/css/public/reset.css">
-    <!-- 轮播图css -->
+    <link rel="stylesheet" href="/static/assets/css/index/animate.min.css">
     <link rel="stylesheet" href="/static/assets/css/public/swiper.min.css">
-    <!-- /Styles -->
     <link rel="stylesheet" href="/static/assets/css/index/update.css">
 </head>
 <body>
@@ -59,10 +42,8 @@
 </div>
  -->
 
-<!-- MAIN CONTAINER -->
-<main class="main-container">
 
-    <!-- SECTION > HERO: Home -->
+<main class="main-container">
     <section id="home" class="section hero" style="background:rgb(36, 40, 44);">
         <div class="topbarWapper">
             <ul class="common-topbar-nav-list">
@@ -80,7 +61,7 @@
                     <span></span>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">产品</a>
+                    <a href="/create_instance/">产品</a>
                     <span></span>
                 </li>
                 <li>
@@ -107,30 +88,68 @@
                     <a href="" target="_blank">合作伙伴</a>
                     <span></span>
                 </li>
-{#                <li>#}
-{#                    <a href="" target="_blank">控制台</a>#}
-{#                    <span></span>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a href="" target="_blank">登录</a>#}
-{#                    <span></span>#}
-{#                </li>#}
+                {#                <li>#}
+                {#                    <a href="" target="_blank">控制台</a>#}
+                {#                    <span></span>#}
+                {#                </li>#}
+                {#                <li>#}
+                {#                    <a href="" target="_blank">登录</a>#}
+                {#                    <span></span>#}
+                {#                </li>#}
             </ul>
-            <a href="/register/" target="_blank">免费注册</a>
-            <a href="/login/" target="_blank" style="background: none">登录</a>
-            <a href="" target="_blank" style="background: none">控制台</a>
+            {% if not user_session %}
+                <a href="/register/" target="_blank">免费注册</a>
+                <a href="/login/" target="_blank" style="background: none">登录</a>
+            {% else %}
+{#                <span class="fa fa-user-circle user_session" style="font-size: 24px;color: #fff;float: right;height: 60px;line-height: 60px;padding: 0 32px;"></span>#}
+{#                <a href="javascript:void(0)" target="_blank" style="background: none;padding: 0;">控制台</a>#}
+                <ul class="user_session_list">
+                    <li style="position:relative;top: 0;left: 0;" class="user_info_bar">
+                        <a href="javascript:void(0)" class="fa fa-user-circle"></a>
+                        {#                        <ul style="position: absolute; width: 80px; top: 60px; left: 0;z-index: 999;">#}
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    {% for key,value in request.session.items %}
+                                        {% ifequal 'username' key %}
+                                            昵称：&nbsp;<span style="text-overflow: ellipsis">{{ value }}</span>
+                                        {% endifequal %}
+                                    {% endfor %}
+                                </a>
+                            </li>
+                             <li>
+                                <a href="/instances/">
+                                    我的虚机
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/order/">
+                                    我的工单
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout/">
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/overview/" style="color: #fff;border: 1px solid rgba(255,255,255,.35);box-sizing: border-box;padding: 5px 10px;font-size: 12px;">控制台</a></li>
+                </ul>
+            {% endif %}
         </div>
         <!-- 云主机 -->
-        <div class="swiper-container">
+        <div class="swiper-container" style="min-width: 1280px;">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" style="width:100%;height:640px;">
-{#                    <img src="/static/assets/img/banner11.jpg" alt="" height="100%" width="100%">#}
+                    <img src="/static/assets/img/home_bn11.png" alt="" height="100%" width="100%" class="home_bn">
                 </div>
                 <div class="swiper-slide" style="width:100%;height:640px;">
-{#                    <img src="/static/assets/img/banner22.jpg" alt="" height="100%" width="100%">#}
+                    <img src="/static/assets/img/home_bn22.png" alt="" height="100%" width="100%">
                 </div>
                 <div class="swiper-slide" style="width:100%;height:640px;">
-{#                    <img src="/static/assets/img/banner33.jpg" alt="" height="100%" width="100%">#}
+                    <img src="/static/assets/img/home_bn33.png" alt="" height="100%" width="100%">
                 </div>
             </div>
             <!-- 如果需要分页器 -->
@@ -139,13 +158,8 @@
         <!-- /云主机 -->
 
     </section>
-    <!-- /SECTION > HERO: Home -->
-
-    <!-- SECTION: Features -->
     <section id="features" class="section">
-        <div class="container">
-
-            <!-- Section Content -->
+        <div class="container_myself">
             <div class="row mapWapper">
                 <img src="/static/assets/img/map.jpg" alt="">
                 <div class="point-area">
@@ -172,27 +186,35 @@
                     <span></span>
                     <p>连云港</p>
                 </div>
-                <div style="text-align: center;">
-                    <img src="/static/assets/img/27000.png" alt="">
-                    <p style="padding: 5px 0;">ISO27000</p>
-                    <p>信息安全管理体系认证</p>
+                <div class="certificate">
+                    <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
+                        <img src="/static/assets/img/27001_50x50.png" alt="" style="float: left;">
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            信息安全管理体系国际认证</p>
+                    </a>
+                    <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
+                        <img src="/static/assets/img/AAA1_50x50.png" alt="" style="float: left;">
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            质量、服务、信誉AAA企业</p>
+                    </a>
+                    <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
+                        <img src="/static/assets/img/AAA2_50x50.png" alt="" style="float: left;">
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            企业信用评价AAA级信用企业</p>
+                    </a>
+                    <a href="" style="box-sizing: border-box;padding: 0 10px;float: left;width: 25%;">
+                        <img src="/static/assets/img/eID_50x50.png" alt="" style="float: left;">
+                        <p style="line-height: 50px;padding-left: 10px;font-size: 12px;float: left;color: #373d41;">
+                            中国eID网络身份识别领军企业</p>
+                    </a>
                 </div>
             </div>
-            <!-- /Section Content -->
-
         </div>
     </section>
-    <!-- /SECTION: Features -->
-
-    <!-- SECTION: Numbers -->
     <section id="numbers" class="section bg-center-top parallax mask mask-black text-white"
              style="background-image: url(/static/assets/img/2-01.jpg);" data-stellar-background-ratio="0.4">
         <div class="container mask-after">
-
-            <!-- Section Content -->
             <div class="row">
-
-                <!-- STAT NUMBER: Finished Projects-->
                 <div class="col-sm-3 col-xs-6">
                     <div class="stat-number">
                         <div class="number animate-number" data-value="180">0</div>
@@ -200,9 +222,6 @@
                         <div class="title">完成的项目</div>
                     </div>
                 </div>
-                <!-- /STAT NUMBER: Finished Projects-->
-
-                <!-- STAT NUMBER: Happy Customers-->
                 <div class="col-sm-3 col-xs-6">
                     <div class="stat-number">
                         <div class="number animate-number" data-value="1806">0</div>
@@ -210,9 +229,6 @@
                         <div class="title">合作的伙伴</div>
                     </div>
                 </div>
-                <!-- /STAT NUMBER: Happy Customers-->
-
-                <!-- STAT NUMBER: Coffee Cups-->
                 <div class="col-sm-3 col-xs-6">
                     <div class="stat-number">
                         <div class="number animate-number" data-value="238">0</div>
@@ -220,9 +236,6 @@
                         <div class="title">主机运行数量</div>
                     </div>
                 </div>
-                <!-- /STAT NUMBER: Coffee Cups-->
-
-                <!-- STAT NUMBER: Days at Work-->
                 <div class="col-sm-3 col-xs-6">
                     <div class="stat-number">
                         <div class="number animate-number" data-value="3485">0</div>
@@ -230,20 +243,11 @@
                         <div class="title">安全工作时长</div>
                     </div>
                 </div>
-                <!-- /STAT NUMBER: Days at Work-->
-
             </div>
-            <!-- /Section Content -->
-
         </div>
     </section>
-    <!-- /SECTION: Numbers -->
-
-    <!-- SECTION: Best Features Carousel -->
     <section id="best-features" class="section">
         <div class="container">
-
-            <!-- Section Header -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
                     <header class="section-header text-center">
@@ -255,30 +259,17 @@
                     </header>
                 </div>
             </div>
-            <!-- /Section Header -->
-
-            <!-- Section Content -->
             <div class="row section-content">
                 <div class="col-xs-12">
-
-                    <!-- Carousel -->
                     <div class="owl-carousel owl-theme owl-navigation reveal" data-reveal-opacity=".7"
                          data-reveal-scale="1.0">
-
-                        <!-- Carousel Item -->
                         <div class="item">
-
                             <div class="row">
-
-                                <!-- Slide Image -->
                                 <div class="col-xs-12 col-sm-6">
                                     <div class="image xs-mb">
                                         <img src="/static/assets/img/news1.png" alt="">
                                     </div>
                                 </div>
-                                <!-- /Slide Image -->
-
-                                <!-- Slide Content -->
                                 <div class="col-xs-12 col-sm-6">
 
                                     <div class="h3">大数据一体机</div>
@@ -289,37 +280,26 @@
                                     </p>
 
                                     <ul class="list-unstyled mb">
-                                        <li><i class="icon icon-inline fa fa-star"></i>hahaha</li>
-                                        <li><i class="icon icon-inline fa fa-check"></i>haha</li>
+                                        <li><i class="icon icon-inline fa fa-star"></i>收藏</li>
+                                        <li><i class="icon icon-inline fa fa-check"></i>关注</li>
                                     </ul>
 
                                     <div class="alert alert-info" role="alert">
                                         <i class="icon icon-inline icon-inline-block icon-1p5x fa fa-info-circle text-info"></i>
-                                        <span class="strong">信息:</span>
-                                        嘿嘿嘿
+                                        <span class="strong">热点:</span>
+                                        大数据一体机
                                     </div>
                                 </div>
-                                <!-- /Slide Content -->
-
                             </div>
 
                         </div>
-                        <!-- /Carousel Item -->
-
-                        <!-- Carousel Item -->
                         <div class="item">
-
                             <div class="row">
-
-                                <!-- Slide Image -->
                                 <div class="col-xs-12 col-sm-6">
                                     <div class="image xs-mb">
                                         <img src="/static/assets/img/news2.png" alt="">
                                     </div>
                                 </div>
-                                <!-- /Slide Image -->
-
-                                <!-- Slide Content -->
                                 <div class="col-xs-12 col-sm-6">
 
                                     <div class="h3 text-dark">定制企业的数据潮</div>
@@ -329,37 +309,25 @@
                                     </p>
 
                                     <ul class="list-unstyled mb">
-                                        <li><i class="icon icon-inline fa fa-star"></i>hahaha</li>
-                                        <li><i class="icon icon-inline fa fa-check"></i>haha</li>
+                                        <li><i class="icon icon-inline fa fa-star"></i>收藏</li>
+                                        <li><i class="icon icon-inline fa fa-check"></i>关注</li>
                                     </ul>
 
                                     <div class="alert alert-info" role="alert">
                                         <i class="icon icon-inline icon-inline-block icon-1p5x fa fa-info-circle text-info"></i>
                                         <span class="strong">信息:</span>
-                                        23165464
+                                        定制企业的数据潮
                                     </div>
                                 </div>
-                                <!-- /Slide Content -->
-
                             </div>
-
                         </div>
-                        <!-- /Carousel Item -->
-
-                        <!-- Carousel Item -->
                         <div class="item">
-
                             <div class="row">
-
-                                <!-- Slide Image -->
                                 <div class="col-xs-12 col-sm-6">
                                     <div class="image xs-mb">
                                         <img src="/static/assets/img/news3.png" alt="">
                                     </div>
                                 </div>
-                                <!-- /Slide Image -->
-
-                                <!-- Slide Content -->
                                 <div class="col-xs-12 col-sm-6">
 
                                     <div class="h3 text-dark">专业技术服务和研发</div>
@@ -369,47 +337,34 @@
                                     </p>
 
                                     <ul class="list-unstyled mb">
-                                        <li><i class="icon icon-inline fa fa-star"></i>hahaha</li>
-                                        <li><i class="icon icon-inline fa fa-check"></i>haha</li>
+                                        <li><i class="icon icon-inline fa fa-star"></i>收藏</li>
+                                        <li><i class="icon icon-inline fa fa-check"></i>关注</li>
                                     </ul>
 
                                     <div class="alert alert-info" role="alert">
                                         <i class="icon icon-inline icon-inline-block icon-1p5x fa fa-info-circle text-info"></i>
                                         <span class="strong">信息:</span>
-                                        哈哈哈
+                                        专业技术服务和研发
                                     </div>
                                 </div>
-                                <!-- /Slide Content -->
-
                             </div>
 
                         </div>
-                        <!-- /Carousel Item -->
-
                     </div>
-                    <!-- /Carousel -->
-
                 </div>
             </div>
-            <!-- /Section Content -->
-
         </div>
     </section>
-    <!-- /SECTION: Best Features Carousel -->
-
-    <!-- SECTION: Video Tutorial -->
-    <section id="video-tutorial" class="section text-white bg-center-top bg-fixed mask mask-black xs-text-center"
+    <section id="video-tutorial" class="section text-white bg-center-top bg-fixed xs-text-center"
              style="background-image: url(/static/assets/img/hz.jpg)">
         <div class="container mask-after">
-
-            <!-- Section Content -->
             <div class="row">
 
                 <div class="col-xs-12 col-sm-8 col-md-5 xs-mb reveal"
                      data-reveal-duration="700"
                      data-reveal-distance="30px">
 
-                    <div class="h2 text-center pt no-margin text-white">观看我们的介绍视频</div>
+                    <div class="h2 text-center pt no-margin text-white">观看介绍视频</div>
                 </div>
 
                 <div class="col-xs-12 col-sm-4 col-md-2 xs-mb reveal"
@@ -418,8 +373,9 @@
                      data-reveal-scale="1.00"
                      data-reveal-distance="0">
 
-                    <a href="#" class="block link-white text-center mt-0p5"><i
-                            class="icon icon-inline icon-4x fa fa-fw fa-play-circle-o"></i></a>
+                    <a href="javascript:void(0)" id="videoBar" class="block link-white text-center mt-0p5 video_link">
+                        <i class="icon icon-inline icon-4x fa fa-fw fa-play-circle-o"></i>
+                    </a>
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-5 reveal"
@@ -430,17 +386,11 @@
                 </div>
 
             </div>
-            <!-- /Section Content -->
 
         </div>
     </section>
-    <!-- /SECTION: Video Tutorial -->
-
-    <!-- SECTION: More BEST features -->
     <section id="additional" class="section">
         <div class="container" style="">
-
-            <!-- Section Header -->
             <div class="row">
                 <div class="col-xs-12">
                     <div style="width: 100%;text-align: center;">
@@ -455,45 +405,32 @@
                             <li><br></li>
                         </ul>
                         <span style="width: 900px;text-align: left;display: inline-block;height: 48px;">注册商标：中德宏泰&nbsp;&nbsp;VDIN&nbsp;&nbsp;威玎&nbsp;&nbsp;WNVR&nbsp;&nbsp;ADINS</span>
-                        <span style="width: 900px;text-align: left;display: inline-block;text-indent: 30px;line-height:2em;padding: 15px 0;"><span style="color: rgb(0, 112, 192);">苏州中德宏泰电子科技股份有限公司</span>（前身为玄烨科技，成立于2003年）2012年1月10日正式在昆山成立，现注册资本5401.6617万元，是一家集云计算、人工智能、大数据+城市管理、互联网+安防服务外包、相关软硬件产品研发、生产、销售于一体的高科技企业。2015年7月，中德宏泰在新三板挂牌上市，证券简称：中德宏泰，证券代码：833067。</span>
+                        <span style="width: 900px;text-align: left;display: inline-block;text-indent: 30px;line-height:2em;padding: 15px 0;"><span
+                                style="color: rgb(0, 112, 192);">苏州中德宏泰电子科技股份有限公司</span>（前身为玄烨科技，成立于2003年）2012年1月10日正式在昆山成立，现注册资本6001.6617万元，是一家集云计算、人工智能、大数据+城市管理、互联网+安防服务外包、相关软硬件产品研发、生产、销售于一体的高科技企业。2015年7月，中德宏泰在新三板挂牌上市，证券简称：中德宏泰，证券代码：833067。</span>
                         <span style="width: 900px;text-align: left;display: inline-block;text-indent: 30px;line-height:2em;padding: 15px 0;">中德宏泰坚持科技创新，汇聚了一流的研发技术精英，结合多年的市场经验，构筑了高水平的研发技术平台。公司拥有几十项专利技术及软件著作权，并推出了深度神经网络人工智能算法、大数据智能分析云服务产品以及一系列安全防范软硬件产品，为大家努力创造更舒适、更便利、更安全的生活环境。中德宏泰以人人轻松享有安全的品质生活为愿景，矢志成为受人尊敬、全球卓越的大数据智能分析服务的领导者。</span>
                         <span style="width: 900px;text-align: left;display: inline-block;text-indent: 30px;line-height:2em;padding: 15px 0;">中德宏泰（VDIN）服务网络立足国内，面向全球，希望为全球范围内的用户以及合作伙伴提供性能卓越的大数据智能分析服务产品、互联网+安防服务产品。为普及人工智能在公共安全领域的应用、维护社会公共安全贡献自己的力量。</span>
                     </div>
                 </div>
             </div>
-            <!-- /Section Header -->
         </div>
     </section>
-    <!-- /SECTION: More BEST features -->
-
-    <!-- SECTION: Why Us -->
-    <section id="why-us" class="section bg-center-top bg-fixed mask mask-black text-white"
+    <section id="why-us" class="section bg-center-top bg-fixed text-white"
              style="background-image: url(/static/assets/img/3-01.jpg)">
         <div class="container mask-after">
             <div class="row">
-
-                <!-- Clean Design -->
                 <div class="col-xs-12 col-sm-6 col-md-3">
-
-                    <!-- ICON BOX SQUARED: Clean Design -->
-                    <div class="icon-box-squared reveal">
-
+                    <div class="icon-box-squared">
                         <i class="icon fa fa-diamond"></i>
                         <div class="title">商业级数据潮</div>
                         <div class="text">
                             商业数据API为企业接入者提供便捷的获取微博官方数据的通道 从而提供数据分析、舆情监控、企业运营等服务
                         </div>
                     </div>
-                    <!-- /ICON BOX SQUARED: Clean Design -->
-
                 </div>
-                <!-- /Clean Design -->
 
-                <!-- Ultra Responsive -->
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
-                    <!-- ICON BOX SQUARED: Ultra Responsive -->
-                    <div class="icon-box-squared reveal"
+                    <div class="icon-box-squared"
                          data-reveal-delay="300">
 
                         <i class="icon fa fa-tablet"></i>
@@ -502,16 +439,13 @@
                             完善地管理各种数据库对象，具有强大的数据组织、用户管理、安全检查等功能。
                         </div>
                     </div>
-                    <!-- /ICON BOX SQUARED: Ultra Responsive -->
 
                 </div>
-                <!-- /Ultra Responsive -->
 
-                <!-- 8k+ Lines of Code -->
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
-                    <!-- ICON BOX SQUARED: 8k+ Lines of Code -->
-                    <div class="icon-box-squared reveal"
+
+                    <div class="icon-box-squared"
                          data-reveal-delay="450">
 
                         <i class="icon fa fa-code"></i>
@@ -520,16 +454,13 @@
                             融合系统的本质就是让IT回归简化的本源 它符合了IT应用的一种客观规律 也给融合系统带来了良好的发展前景
                         </div>
                     </div>
-                    <!-- /ICON BOX SQUARED: 8k+ Lines of Code -->
 
                 </div>
-                <!-- /8k+ Lines of Code -->
 
-                <!-- Ultra Responsive -->
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
-                    <!-- ICON BOX SQUARED: Ultra Responsive -->
-                    <div class="icon-box-squared reveal"
+
+                    <div class="icon-box-squared"
                          data-reveal-delay="600">
 
                         <i class="icon fa fa-coffee"></i>
@@ -538,22 +469,19 @@
                             帮助企业整合所有数据 快速分析 处理数据 让数据工作变得简单 高效 真正用数据驱动管理
                         </div>
                     </div>
-                    <!-- /ICON BOX SQUARED: Ultra Responsive -->
+
 
                 </div>
-                <!-- /Ultra Responsive -->
+
 
             </div>
         </div>
     </section>
-    <!-- /SECTION: Why Us -->
 
-    <!-- SECTION: Partners -->
     <section id="partners" class="section">
         <div class="container">
             <div class="row">
 
-                <!-- Section Header -->
                 <div class="col-xs-12 col-sm-4 col-md-3">
 
                     <header class="section-header">
@@ -568,99 +496,84 @@
                     </header>
 
                 </div>
-                <!-- /Section Header -->
 
-                <!-- Section Content -->
                 <div class="col-xs-12 col-sm-8 col-md-9">
                     <div class="row pt-2x">
 
-                        <!-- Partner 1 -->
+
                         <div class="col-xs-12 col-sm-4">
 
-                            <!-- PARTNER LOGO: Partner 1 -->
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend1.png" alt="">
                             </div>
-                            <!-- /PARTNER LOGO: Partner 1 -->
+
 
                         </div>
-                        <!-- /Partner 1 -->
 
-                        <!-- Partner 1 -->
+
                         <div class="col-xs-12 col-sm-4">
 
-                            <!-- PARTNER LOGO: Partner 1 -->
-                            <div class="partner-logo reveal">
+
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend2.png" alt="">
                             </div>
-                            <!-- /PARTNER LOGO: Partner 1 -->
+
 
                         </div>
-                        <!-- /Partner 1 -->
 
-                        <!-- Partner 1 -->
                         <div class="col-xs-12 col-sm-4">
 
-                            <!-- PARTNER LOGO: Partner 1 -->
-                            <div class="partner-logo reveal">
+
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend3.png" alt="">
                             </div>
-                            <!-- /PARTNER LOGO: Partner 1 -->
+
 
                         </div>
-                        <!-- /Partner 1 -->
 
-                        <!-- Partner 1 -->
                         <div class="col-xs-12 col-sm-4">
 
-                            <!-- PARTNER LOGO: Partner 1 -->
-                            <div class="partner-logo reveal">
+
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend4.png" alt="">
                             </div>
-                            <!-- /PARTNER LOGO: Partner 1 -->
+
 
                         </div>
-                        <!-- /Partner 1 -->
 
-                        <!-- Partner 1 -->
                         <div class="col-xs-12 col-sm-4">
 
-                            <!-- PARTNER LOGO: Partner 1 -->
-                            <div class="partner-logo reveal">
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend5.png" alt="">
                             </div>
-                            <!-- /PARTNER LOGO: Partner 1 -->
+
 
                         </div>
-                        <!-- /Partner 1 -->
 
-                        <!-- Partner 1 -->
                         <div class="col-xs-12 col-sm-4">
 
-                            <!-- PARTNER LOGO: Partner 1 -->
-                            <div class="partner-logo reveal">
+
+                            <div class="partner-logo">
                                 <img src="/static/assets/img/friend7.png" alt="">
                             </div>
-                            <!-- /PARTNER LOGO: Partner 1 -->
+
 
                         </div>
-                        <!-- /Partner 1 -->
+
 
                     </div>
                 </div>
-                <!-- /Section Content -->
+
 
             </div>
         </div>
     </section>
-    <!-- /SECTION: Partners -->
 
-    <!-- SECTION: Contact -->
     <section id="contact" class="section bg-center-top mask mask-black text-white"
              style="background-image: url(/static/assets/img/4-01.jpg)" data-stellar-background-ratio="0.4">
         <div class="container mask-after">
 
-            <!-- Section Header -->
+
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <header class="section-header">
@@ -668,17 +581,14 @@
                     </header>
                 </div>
             </div>
-            <!-- /Section Header -->
 
-            <!-- Section Content -->
             <div class="row section-content">
 
-                <!-- Office Information Column -->
+
                 <div class="col-xs-12 col-sm-6 col-md-5">
 
                     <div class="h4 strong text-uppercase text-white">苏州中德宏泰电子科技股份有限公司</div>
 
-                    <!-- ADDRESS -->
                     <address>
                         <strong class="text-uppercase">公司地址:</strong><br>
                         昆山市花桥国际商务城花安路171号1幢4楼<br>
@@ -687,27 +597,21 @@
                         客服热线：400-852-1866<br>
                         邮编：215332
                     </address>
-                    <!-- /ADDRESS -->
 
-                    <!-- Social Media -->
                     <p class="strong text-uppercase" style="margin-bottom: 10px">扫描二维码关注</p>
                     <img src="/static/assets/img/weChat.jpg" alt="" width="150" height="150"
                          style="margin-bottom: 10px">
-                    <!-- /Social Media -->
 
                     <p class="small" style="clear: both;width: 100%;text-align: center;">
                         &copy; Copyright 2016 苏州中德宏泰电子科技股份有限公司 苏ICP备12021216号 版权所有<br>
                     </p>
 
                 </div>
-                <!-- /Office Information Column -->
 
-                <!-- Contact Form Column -->
-                <div class="col-xs-12 col-sm-6 col-md-7 reveal"
+                <div class="col-xs-12 col-sm-6 col-md-7"
                      data-reveal-scale=".97"
                      data-reveal-duration="500">
 
-                    <!-- FORM: Contact Us -->
                     <form class="form-ajax" method="post">
                         <input type="hidden" name="pfvt[form]" value="Agency Landing">
                         <div class="row">
@@ -733,23 +637,22 @@
                             </button>
                         </div>
                     </form>
-                    <!-- /FORM: Contact Us -->
-
                 </div>
-                <!-- /Contact Form Column -->
-
             </div>
-            <!-- /Section Content -->
-
         </div>
     </section>
-    <!-- /SECTION: Contact -->
 
+    <span class="cha">x</span>
+    <video id="my-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup="{}"></video>
 </main>
-<!-- /MAIN CONTAINER -->
 
-<!-- SCRIPTS -->
 <script src="/static/assets/js/index/jquery-2.2.0.min.js"></script>
+<script>
+    if (!document.addEventListener) {
+        // IE6~IE8
+        document.write('<script src="/static/assets/js/public/eBetter.js"><\/script>');
+    }
+</script>
 <script src="/static/assets/components/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/assets/components/owl-carousel/owl.carousel.min.js"></script>
 <script src="/static/assets/components/sweetalert/sweetalert.min.js"></script>
@@ -764,38 +667,11 @@
 <script src="/static/assets/js/index/general.js"></script>
 <!-- 轮播图js -->
 <script src="/static/assets/js/public/swiper.jquery.min.js"></script>
-<!-- /SCRIPTS -->
-<script>
-    var mySwiper = new Swiper('.swiper-container', {
-        autoplay: 3000,
-        pagination: '.swiper-pagination',
-        slidesPerView: 1,
-        paginationClickable: true,
-        spaceBetween: 0,
-        loop: true,
-{#        effect: 'fade',#}
-{#        fade: {#}
-{#            crossFade: false,#}
-{#        },#}
-        autoplayDisableOnInteraction: false
-    });
-
-    // nav hover
-    $(function(){
-        $('.topbarWapper .common-topbar-nav-list li').hover(function(){
-            $('span',this).stop().css('height','2px');
-            $('span',this).animate({
-                left:'0',
-                width:'100%',
-                right:'0'
-            },200);
-        },function(){
-            $('span',this).stop().animate({
-                left:'50%',
-                width:'0'
-            },200);
-        });
-    });
-</script>
+<!-- If you'd like to support IE8 -->
+<!--[if lt IE9]>
+  	<script src="/static/assets/js/public/videojs-ie8.min.js"></script>
+<![endif]-->
+<script src="/static/assets/js/public/video.min.js"></script>
+<script src="/static/assets/js/index/home.js"></script>
 </body>
 </html>

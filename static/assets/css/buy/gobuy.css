@@ -66,29 +66,29 @@ body{
     background: #acafff;
 }
 
-.gobuyCenter .container .mod1 li:after{
-    display: block;
-    content: '';
-    width: 1px;
-    overflow: hidden;
-    height: 80px;
-    background: #e2e2e2;
-    position: absolute;
-    right: 0;
-    top: 10px;
-}
+/*.gobuyCenter .container .mod1 li:after{*/
+    /*display: block;*/
+    /*content: '';*/
+    /*width: 1px;*/
+    /*overflow: hidden;*/
+    /*height: 80px;*/
+    /*background: #e2e2e2;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 10px;*/
+/*}*/
 
-.gobuyCenter .container .mod1 li:after{
-    display: block;
-    content: '';
-    width: 1px;
-    overflow: hidden;
-    height: 80px;
-    background: #e2e2e2;
-    position: absolute;
-    right: 0;
-    top: 10px;
-}
+/*.gobuyCenter .container .mod1 li:after{*/
+    /*display: block;*/
+    /*content: '';*/
+    /*width: 1px;*/
+    /*overflow: hidden;*/
+    /*height: 80px;*/
+    /*background: #e2e2e2;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 10px;*/
+/*}*/
 
 .gobuyCenter .container .mod1 li:last-child:after{
     display: none;  
@@ -112,6 +112,11 @@ body{
     width: 190px;
     padding-top: 3px;
 }
+
+/*.gobuyCenter .container .mod1 li img{*/
+    /*width: 190px;*/
+    /*height: 100px;*/
+/*}*/
 
 /*广告推广end*/
 
@@ -264,7 +269,7 @@ body{
 }
 
 .mod2 .gobuyForm{
-    width: 215px;
+    width: 220px;
     /*height: 430px;*/
     text-align: left;
     position: absolute;
@@ -359,11 +364,20 @@ body{
     clear: both;
 }
 
+/*滑块*/
+body .slider_Disk,
+body .slider_Flux{
+    position: relative;
+    top: 8px;
+    width: 750px !important;
+    float: left;
+}
+
 /*a的公共 class*/
 
 .a_class{
     z-index: 2;
-    background: #eff9ff;
+    background: #fff5cd;
     border: 1px solid #b2d8ff !important;
 }
 

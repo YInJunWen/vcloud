@@ -22,9 +22,9 @@ from django.contrib import admin
 from vcloudapp.views import *
 
 urlpatterns = {
-    # url(r'^admin/', admin.site.urls),
-    # url(r'^test1/$', test1, name='test1'),  # 测试
-    # url(r'^test2/$', test2, name='test2'),  # 测试
+    url(r'^admin/', admin.site.urls),
+    url(r'^test1/$', test1, name='test1'),  # 测试
+    url(r'^test2/$', test2, name='test2'),  # 测试
     url(r'^$', home, name='home'),  # 主页
     url(r'^login/$', userLogin, name='userLogin'),  # 登陆跳转
     url(r'^register/$', register, name='register'),  # 注册跳转
@@ -45,5 +45,21 @@ urlpatterns = {
     url(r'^order_checking/$', order_checking, name='order_checking'),  # 审核中
     url(r'^order_finished/$', order_finished, name='order_finished'),  # 已完成
     url(r'^calculatePrice/$', calculatePrice, name='calculatePrice'),  # 获取价格
+    url(r'^logout/$', logout, name='logout'),  # 退出登录
+    url(r'^send_email/$', send_email, name='send_email'),  # 找回密码发送邮件
+    url(r'^accessLog/$', accessLog, name='accessLog'),  # 日志信息获取
+    # url(r'^accessIns/$', accessIns, name='accessIns'),  # 主机列表信息
+    url(r'^change_psw/$', change_psw, name='change_psw'),  # 修改登陆密码
+    # url(r'^accessOrder/$', accessOrder, name='accessOrder'),  # 工单列表
+    url(r'^approval/$', approval, name='approval'),  # 管理审核页面返回JSON
+    url(r'^finished/$', finished, name='finished'),  # 管理完成页面撤销接口
+    url(r'^check_code/$', check_code, name='check_code'),  # 验证邮箱发送验证码
+    url(r'^open_pc/$', open_pc, name='open_pc'),  # 云主机开机接口
+    url(r'^close_pc/$', close_pc, name='close_pc'),  # 云主机关闭接口
+    url(r'^reboot_pc/$', reboot_pc, name='reboot_pc'),  # 云主机重启接口
+    url(r'^OverviewData/$', OverviewData, name='OverviewData'),  # overview 控制台数据
+    # url(r'^InstanceLog/$', InstanceLog, name='InstanceLog'),  # 每个虚机流量
+    # url(r'^/$', x, name='x'),
+    # url(r'^/$', x, name='x'),
     # url(r'^/$', x, name='x'),
 }

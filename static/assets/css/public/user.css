@@ -17,6 +17,15 @@ select{
     border-color: initial;
     border-image: initial;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type="number"]{
+    -moz-appearance: textfield;
+}
+
 /* CSS Document */
 @media screen and (max-width: 1000px) {
     body {
@@ -180,9 +189,10 @@ footer {
     height: 16px;
     padding: 11px 10px;
     margin: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #aaa;
+    border-radius: 3px;
     font-size: 14px;
-    color: #666;
+    color: #aaa;
     transition: .3s;
 }
 
@@ -383,4 +393,20 @@ footer {
 /* ie */
 input:-moz-placeholder {
     color: #ddd;
+}
+/*  ========================= 邮箱验证码按钮*/
+#reg_code{
+    display: inline-block;
+    background-color: #e9e9e9;
+    color: #999;
+    font-size: 12px;
+    float: left;
+    width: 88px;
+    height: 38px;
+    border: 1px solid #aaa;
+    margin-top: 10px;
+    /*line-height: 38px;*/
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px;
 }

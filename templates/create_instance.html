@@ -1,241 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>申请云主机</title>
-	<link rel="stylesheet" href="/static/assets/css/public/reset.css">
-	<link rel="stylesheet" href="/static/assets/css/buy/tipso.min.css">
-	<link rel="stylesheet" href="/static/assets/css/buy/jquery.range.css">
-	<link rel="stylesheet" href="/static/assets/css/buy/gobuy.css">
+    <meta charset="UTF-8">
+    <title>申请云主机</title>
+    <link rel="stylesheet" href="/static/assets/css/public/reset.css">
+    <link rel="stylesheet" href="/static/assets/css/buy/tipso.min.css">
+    <link rel="stylesheet" href="/static/assets/css/buy/jquery-ui.css">
+    <link rel="stylesheet" href="/static/assets/css/buy/jquery-ui-slider-pips.css">
+    <link rel="stylesheet" href="/static/assets/css/buy/gobuy.css">
 </head>
 <body>
+{#{% if data %}#}
+{#    {{ data }}<br>#}
+{#    {% for i in data %}#}
+{#        {{ i.windows }}<br>#}
+{#        {{ i.linux }}#}
+{#    {% endfor %}#}
+{#{% endif %}#}
 <div class="gobuyCenter">
-	<div class="container">
+    <div class="container">
         <div class="mod0">
             <a href="/overview/">返回控制台</a>
         </div>
-		<div class="mod1">
-			<ul>
-				<li>
-{#					<a href="">#}
-{#						<img src="/static/assets/img/gobuy1.jpg" class="left" alt="">#}
-{#						<div class="imgTitle left">#}
-{#							<p class="title1">30元红包</p>#}
-{#							<p class="title2">新用户乐享30元</p>#}
-{#						</div>#}
-{#					</a>#}
-				</li>
-				<li>
-{#					<a href="">#}
-{#						<img src="/static/assets/img/gobuy2.jpg" class="left" alt="">#}
-{#						<div class="imgTitle left">#}
-{#							<p class="title1">68元性价比王</p>#}
-{#							<p class="title2">2核 4G内存 5M BGP带宽</p>#}
-{#						</div>#}
-{#					</a>#}
-				</li>
-				<li>
-{#					<a href="">#}
-{#						<img src="/static/assets/img/gobuy3.jpg" class="left" alt="">#}
-{#						<div class="imgTitle left">#}
-{#							<p class="title1">168元高防云</p>#}
-{#							<p class="title2">2核 4G 10M带宽 30G防御 </p>#}
-{#						</div>#}
-{#					</a>#}
-				</li>
-				<li>
-{#					<a href="">#}
-{#						<img src="/static/assets/img/gobuy4.jpg" class="left" alt="">#}
-{#						<div class="imgTitle left">#}
-{#							<p class="title1">38元香港云</p>#}
-{#							<p class="title2">1核CPU 1G内存 2M带宽</p>#}
-{#						</div>#}
-{#					</a>#}
-				</li>
-			</ul>
-		</div>
-		<div class="mod2">
-			<div class="ChildMenu">
-				<div class="ChildSelection ChildType">
-					<div class="Choice clearfix">
-						<span>类型：</span>
-					</div>
-					<a class="tipso" data-tipso="适用于中小企业展示型网站">入门型</a>
-					<a class="tipso" data-tipso="适用于企业官方网站、个人站长">标准型</a>
-					<a class="tipso a_class" data-tipso="适用于地方/行业门户网站">商务型</a>
-					<a class="tipso" data-tipso="适用于网上商城、团购网站等">舒适型</a>
-					<a class="tipso" data-tipso="适用于社区SNS/论坛/ERP/OACRM等">企业型</a>
-					<a class="tipso" data-tipso="适用于网络游戏，其它高端应用等">豪华型</a>
-					<!--<a class="tipso" data-tipso="适用于网络游戏，其它高端应用等">自定义</a>-->
-				</div>
-				<div class="ChildSelection ChildCpu">
-					<div class="Choice clearfix">
-						<span>CPU：</span>
-					</div>
-					<a class="tipso" data-tipso="建议至少用双核，单核在很多情况下容易发生CPU100%占用影响性能!">1核</a>
-					<a class="a_class">2核</a>
-					<a>4核</a>
-					<a>8核</a>
-				</div>
-				<div class="ChildSelection ChildMem">
-					<div class="Choice clearfix">
-						<span>内存：</span>
-					</div>
-					<a class="tipso" data-tipso="建议选择1G以上内存以获得更好的服务体验！">1G</a>
-					<a>2G</a>
-					<a class="a_class">4G</a>
-					<a>8G</a>
-					<a>16G</a>
-				</div>
-				<div class="ChildSelection ChildFlux">
-					<div class="Choice clearfix">
-						<span>带宽：</span>
-					</div>
-{#					<a>512Kbps</a>#}
-					<a class="a_class">1Mbps</a>
-					<a>2Mbps</a>
-					<a>4Mbps</a>
-					<a>6Mbps</a>
-				</div>
-			</div>
-			<form class="gobuyForm" method="post" action="/chkcreate_instance/" onsubmit="return checkForm()">
-				<div class="gobuyFormWapper">
-                    <div class="formTitle">当前配置</div>
-				<div class="conf">
-					主机名：<input class="zjm" value="未填写" readonly>
-                    <input type="hidden" name="instance_name" class="h_zjm" value="未填写">
-				</div>
-				<div class="conf">
-					类　型：<input class="Form_lx" value="商务型" readonly name="">
-				</div>
-				<div class="conf">
-					CPU　：<input class="Form_cpu" value="2核" readonly>
-                    <input type="hidden" class="h_Form_cpu" name="cpu" value="2">
-				</div>
-				<div class="conf">
-					内　存：<input class="Form_mem" value="4G" readonly>
-                    <input type="hidden" class="h_Form_mem" name="mem" value="4">
-				</div>
-				<div class="conf">
-					带　宽：<input class="Form_flux" value="1Mbps" readonly>
-                    <input type="hidden" value="1" class="h_Form_flux" name="bandwidth">
-				</div>
-				<div class="conf">
-					硬　盘：<input class="Form_yp" value="50" readonly>
-                    <input type="hidden" class="h_Form_yp" value="50" name="disk">
-				</div>
-				<div class="conf">
-					数据盘：<input class="Form_storage" value="SAS型硬盘" readonly>
-                    <input type="hidden" class="h_Form_storage" value="SAS" name="storage">
-				</div>
-				<div class="conf">
-					系　统：<input class="Form_os" value="--" readonly>
-                    <input type="hidden" class="h_Form_os" value="--" name="os">
-				</div>
-				<div class="conf">
-					时　长：<input class="Form_time" value="1个月" readonly>
-                    <input type="hidden" class="h_Form_time" value="1" name="expired">
-				</div>
-				<div class="conf">
-					数　量：<input class="Form_sl" value="1台" readonly>
-                    <input type="hidden" class="h_Form_sl" value="1" name="buyNumber">
-				</div>
-				<div class="conf">
-					费　用：<span class="" style="text-decoration:line-through;" id="oldPrice">￥188.75</span>
-				</div>
-				<div class="price-warp">
-					<span id="price">￥151</span>
-				</div>
-				<div class="buyBtn">
-					<input type="submit" class="ljgm" value="立即购买">
-				</div>
+        <div class="mod1">
+            <ul>
+                <li>
+                    <a href="">
+                        <img src="/static/assets/img/sm_bn20.png" class="left" alt="">
+                        {#						<div class="imgTitle left">#}
+                        {#							<p class="title1">30元红包</p>#}
+                        {#							<p class="title2">新用户乐享30元</p>#}
+                        {#						</div>#}
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="/static/assets/img/sm_bn30.png" class="left" alt="">
+                        {#						<div class="imgTitle left">#}
+                        {#							<p class="title1">68元性价比王</p>#}
+                        {#							<p class="title2">2核 4G内存 5M BGP带宽</p>#}
+                        {#						</div>#}
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="/static/assets/img/sm_bn40.png" class="left" alt="">
+                        {#						<div class="imgTitle left">#}
+                        {#							<p class="title1">168元高防云</p>#}
+                        {#							<p class="title2">2核 4G 10M带宽 30G防御 </p>#}
+                        {#						</div>#}
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="/static/assets/img/sm_bn50.png" class="left" alt="">
+                        {#						<div class="imgTitle left">#}
+                        {#							<p class="title1">38元香港云</p>#}
+                        {#							<p class="title2">1核CPU 1G内存 2M带宽</p>#}
+                        {#						</div>#}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mod2">
+            <div class="ChildMenu">
+                <div class="ChildSelection ChildType">
+                    <div class="Choice clearfix">
+                        <span>类型：</span>
+                    </div>
+                    <a class="tipso" data-tipso="适用于展示型网站">入门型</a>
+                    <a class="tipso" data-tipso="适用于企业官方网站、个人网站论坛">标准型</a>
+                    <a class="tipso a_class" data-tipso="适用于行业门户网站">商务型</a>
+                    <a class="tipso" data-tipso="适用于O2O在线购物网站等">舒适型</a>
+                    <a class="tipso" data-tipso="适用于社区/论坛/ERP等">企业型</a>
+                    <a class="tipso" data-tipso="适用于网络游戏或高端应用等">豪华型</a>
                 </div>
-			</form>
-		</div>
-		<div class="mod3">
-			<div class="ChildMenu">
-				<div class="ChildSelection">
-					<div class="Choice clearfix">
-						<span>硬盘：</span>
-					</div>
-					<input type="hidden" class="single-slider hideInput" value="50" />
-				</div>
-				<div class="ChildSelection">
-					<div class="Choice clearfix">
-						<span>数据盘：</span>
-					</div>
-					<a class="tipso a_class" data-tipso="每份数据保留4份，安全性和稳定性更高，支持热迁移。适合对稳定性、安全性要求很高的应用。">SAS型硬盘</a>
-					<a class="tipso" data-tipso="采用Intel企业级高端SSD硬盘，形成Raid阵列，拥有极高的随机读写IOPS。价格较贵，适合对IO要求特别高的应用。(暂未开放)" style="text-decoration:line-through;cursor: not-allowed">SSD型硬盘</a>
-				</div>
-				<div class="ChildSelection">
-					<div class="Choice clearfix">
-						<span>操作系统：</span>
-					</div>
-					<select name="" id="os_Name">
-						<option value="" selected="selected">---请选择---</option>
-						<option value="">Windows</option>
-						<option value="">Linux</option>
-					</select>
-					<select class="os_Option">
-						<option value="" selected="selected">---请选择---</option>
-					</select>
-					<select class="os_Option">
-						<option value="" selected="selected">---请选择---</option>
-						<option value="">Win2008R2 64(纯净版)</option>
-						<option value="">Win2008R2 64(SQLServer)</option>
-						<option value="">Win2012R2 64(纯净版)</option>
-						<option value="">Win2012R2 64(SQLServer)</option>
-					</select>
-					<select class="os_Option">
-						<option value="" selected="selected">---请选择---</option>
-						<option value="">CentOS7.2纯净版</option>
-						<option value="">CentOS7.2纯净版 + Lamp</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<div class="mod4">
-			<div class="ChildMenu">
-				<div class="ChildSelection">
-					<div class="Choice clearfix">
-						<span>主机名：</span>
-					</div>
-                    {% if err_name %}
-                        <input type="text" placeholder="名称已存在" class="Host_Name"><span style="color: #f00"> ( * 请重新输入 )</span>
-                    {% else %}
-					    <input type="text" placeholder="请输入名称" class="Host_Name"><span style="color: #f00"> ( * 必填 )</span>
-                    {% endif %}
-				</div>
-				<div class="ChildSelection ChildBuyTime">
-					<div class="Choice clearfix">
-						<span>购买时长：</span>
-					</div>
-					<a class="a_class">1个月</a>
-					<a>2个月</a>
-					<a>3个月</a>
-					<a>6个月</a>
-					<a>12个月</a>
-				</div>
-				<div class="ChildSelection">
-					<div class="Choice clearfix">
-						<span>购买数量：</span>
-					</div>
-					<!--<input type="number" style="width: 75px;" oninput="if(value.length>3)value=value.slice(0,3)" > 台-->
-					<div class="buyNumber">
-						<span class="btn jian buyNumberEnd">-</span>
-						<input type="text" value="1" class="buy_number">
-						<span class="btn jia">+</span>
-					</div>
-					<span style="width: 14px;height: 36px;margin-left: 12px;line-height: 36px;">台</span>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="ChildSelection ChildNetWork">
+                    <div class="Choice clearfix">
+                        <span>线路：</span>
+                    </div>
+                    <div style="width: 742px;float:left;" class="network">
+                        {#                        <a class="a_class">华东高防2区</a>#}
+                        {% if network %}
+                            {% for i in network %}
+                                <a href="javascript:void(0);" style="text-decoration: none;">{{ i.dis_playname }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ChildSelection ChildCpu">
+                    <div class="Choice clearfix">
+                        <span>CPU：</span>
+                    </div>
+                    <a class="tipso" data-tipso="建议至少用双核，单核容易发生CPU100%占用影响性能!">1核</a>
+                    <a class="a_class">2核</a>
+                    <a>4核</a>
+{#                    <a>8核</a>#}
+                </div>
+                <div class="ChildSelection ChildMem">
+                    <div class="Choice clearfix">
+                        <span>内存：</span>
+                    </div>
+                    <a class="tipso" data-tipso="建议选择1G以上内存！" style="display: none;">1G</a>
+                    <a>2G</a>
+                    <a class="a_class">4G</a>
+                    <a style="display: none;">8G</a>
+                    <a style="display: none;">16G</a>
+                </div>
+                <div class="ChildSelection ChildFlux">
+                    <div class="Choice clearfix">
+                        <span>带宽：</span>
+                    </div>
+                    <div class="slider_Flux"></div>
+                </div>
+            </div>
+            <form class="gobuyForm" method="post" action="/chkcreate_instance/" onsubmit="return checkForm()">
+                <div class="gobuyFormWapper">
+                    <div class="formTitle">当前配置</div>
+{#                    <div class="conf">#}
+{#                        主机名：<input class="zjm" value="未填写" readonly>#}
+{#                        <input type="hidden" name="instance_name" class="h_zjm" value="未填写">#}
+                        <input type="hidden" name="password" class="h_password" value="">
+{#                    </div>#}
+                    <div class="conf">
+                        类　型：<input class="Form_lx" value="商务型" readonly>
+                    </div>
+                    <div class="conf">
+                        线　路：<input class="Form_net" value="VLan11" readonly name="network">
+                    </div>
+                    <div class="conf">
+                        CPU　：<input class="Form_cpu" value="2核" readonly>
+                        <input type="hidden" class="h_Form_cpu" name="cpu" value="2">
+                    </div>
+                    <div class="conf">
+                        内　存：<input class="Form_mem" value="4G" readonly>
+                        <input type="hidden" class="h_Form_mem" name="mem" value="4">
+                    </div>
+                    <div class="conf">
+                        带　宽：<input class="Form_flux" value="1Mbps" readonly>
+                        <input type="hidden" value="1" class="h_Form_flux" name="bandwidth">
+                    </div>
+                    <div class="conf">
+                        硬　盘：<input class="Form_yp" value="50GB" readonly>
+                        <input type="hidden" class="h_Form_yp" value="50" name="disk">
+                    </div>
+                    <div class="conf">
+                        数据盘：<input class="Form_storage" value="SAS型硬盘" readonly>
+                        <input type="hidden" class="h_Form_storage" value="SAS" name="storage">
+                    </div>
+                    <div class="conf">
+                        系　统：<input class="Form_os" value="--" readonly style="width: 175px;">
+                        <input type="hidden" class="h_Form_os" value="--" name="os">
+                    </div>
+                    <div class="conf">
+                        时　长：<input class="Form_time" value="1个月" readonly>
+                        <input type="hidden" class="h_Form_time" value="1" name="expired">
+                    </div>
+                    <div class="conf">
+                        数　量：<input class="Form_sl" value="1台" readonly>
+                        <input type="hidden" class="h_Form_sl" value="1" name="buy_number">
+                        <input type="hidden" class="h_Form_price" value="151" name="price">
+                    </div>
+                    <div class="conf">
+                        费　用：<span class="" style="text-decoration:line-through;" id="oldPrice">￥188.75</span>
+                    </div>
+                    <div class="price-warp">
+                        <span id="price">￥151</span>
+                    </div>
+                    <div class="buyBtn">
+                        <input type="submit" class="ljgm" value="立即申请">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="mod3">
+            <div class="ChildMenu">
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>硬盘：</span>
+                    </div>
+                    {#					<input type="hidden" class="single-slider hideInput" value="50" />#}
+                    <div class="slider_Disk"></div>
+                </div>
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>数据盘：</span>
+                    </div>
+                    <a class="tipso a_class" data-tipso="支持热迁移,适合对稳定性、安全性要求很高的应用。">SAS型硬盘</a>
+                    <a class="tipso" data-tipso="测试中(即将推出)" style="text-decoration:line-through;cursor: not-allowed">SSD型硬盘</a>
+                </div>
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>操作系统：</span>
+                    </div>
+                    <select name="" id="os_Name">
+                        <option value="" selected="selected">---请选择---</option>
+                        <option value="">Windows</option>
+                        <option value="">Linux</option>
+                    </select>
+                    <select class="os_Option">
+                        <option value="" selected="selected">---请选择---</option>
+                    </select>
+                    <select class="os_Option">
+                        <option value="" selected="selected">---请选择---</option>
+                        <option value="">Win2008R2 64</option>
+                        <option value="">Win2008R2 64(SQLServer)</option>
+                        <option value="">Win2012R2 64</option>
+                        <option value="">Win2012R2 64(SQLServer)</option>
+                    </select>
+                    <select class="os_Option">
+                        <option value="" selected="selected">---请选择---</option>
+                        <option value="">CentOS7.2</option>
+                        <option value="">CentOS7.2 + Lamp</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="mod4">
+            <div class="ChildMenu">
+{#                <div class="ChildSelection">#}
+{#                    <div class="Choice clearfix">#}
+{#                        <span>主机名：</span>#}
+{#                    </div>#}
+{#                    {% if err_name %}#}
+{#                        <input type="text" placeholder="名称已存在" class="Host_Name"#}
+{#                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>#}
+{#                        <span style="color: #f00"> ( * 请重新输入 )</span>#}
+{#                    {% else %}#}
+{#                        <input type="text" placeholder="请输入名称" class="Host_Name"#}
+{#                               onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" required>#}
+{#                        <span style="color: #f00"> ( * 必填 )</span>#}
+{#                    {% endif %}#}
+{#                </div>#}
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>登陆密码：</span>
+                    </div>
+                    <input type="password" placeholder="8-20位数字密码" class="login_password" minlength="8" maxlength="20"
+                           required>
+                    <span style="color: #f00"> ( * 必填 )</span>
+                </div>
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>确认密码：</span>
+                    </div>
+                    <input type="password" placeholder="请再输入一次" class="confirm_login_password" minlength="8"
+                           maxlength="20" required>
+                    <span style="color: #f00"> ( * 必填 )</span>
+                </div>
+                <div class="ChildSelection ChildBuyTime">
+                    <div class="Choice clearfix">
+                        <span>购买时长：</span>
+                    </div>
+                    <a class="a_class">1个月</a>
+                    <a>2个月</a>
+                    <a>3个月</a>
+                    <a>6个月</a>
+                    <a>12个月</a>
+                </div>
+                <div class="ChildSelection">
+                    <div class="Choice clearfix">
+                        <span>购买数量：</span>
+                    </div>
+                    <div class="buyNumber">
+                        <span class="btn jian buyNumberEnd">-</span>
+                        <input type="text" value="1" class="buy_number" autocomplete="off">
+                        <span class="btn jia">+</span>
+                    </div>
+                    <span style="width: 14px;height: 36px;margin-left: 12px;line-height: 36px;">台</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
+</body>
 <script src="/static/assets/js/buy/jquery-1.8.3.min.js"></script>
 <script src="/static/assets/js/buy/tipso.min.js"></script>
-<script src="/static/assets/js/buy/jquery.range.js"></script>
+<script src="/static/assets/js/buy/jquery-ui.js"></script>
+<script src="/static/assets/js/buy/jquery-ui-slider-pips.js"></script>
 <script src="/static/assets/js/buy/gobuy.js"></script>
-</body>
 </html>
